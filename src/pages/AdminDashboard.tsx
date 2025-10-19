@@ -203,7 +203,7 @@ const AdminDashboard = () => {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {summaryStats.map((stat, index) => (
                 <Card key={index} className="bg-background">
-                  <CardContent className="p-6">
+                  <CardContent className="p-6 pb-5">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
@@ -288,11 +288,11 @@ const AdminDashboard = () => {
               <div className="space-y-6">
                 {/* Assigned to Me Panel */}
                 <Card className="bg-background">
-                  <CardHeader>
+                  <CardHeader className="pb-3">
                     <CardTitle>Assigned to Me</CardTitle>
                     <CardDescription>Your current project assignments</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-4 pb-5">
                     {myAssignments.map((assignment) => (
                       <div key={assignment.id} className="space-y-2 pb-4 border-b last:border-0 last:pb-0">
                         <div className="flex items-start justify-between gap-2">
@@ -316,11 +316,11 @@ const AdminDashboard = () => {
 
                 {/* Recent Activity Panel */}
                 <Card className="bg-background">
-                  <CardHeader>
+                  <CardHeader className="pb-3">
                     <CardTitle>Recent Activity</CardTitle>
                     <CardDescription>Latest updates and events</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-3 pb-5">
                     {recentActivity.map((activity) => (
                       <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
                         <div className={`h-2 w-2 rounded-full mt-1.5 flex-shrink-0 ${
