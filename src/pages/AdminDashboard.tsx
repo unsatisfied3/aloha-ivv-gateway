@@ -271,7 +271,7 @@ const AdminDashboard = () => {
                             <TableHead>Project Name</TableHead>
                             <TableHead>Agency</TableHead>
                             <TableHead className="hidden md:table-cell">Vendor</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead className="whitespace-nowrap">Status</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -291,7 +291,7 @@ const AdminDashboard = () => {
                               <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
                                 {project.ivvVendorName}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="whitespace-nowrap">
                                 <Badge variant="outline" className={getStatusColor(project.overallProjectStatus)}>
                                   {getStatusLabel(project.overallProjectStatus)}
                                 </Badge>
