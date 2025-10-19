@@ -23,9 +23,6 @@ export const Header = () => {
           <Link to="/public" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
             Public Reports
           </Link>
-          <Link to="/about" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            About
-          </Link>
           <Link to="/api" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
             API
           </Link>
@@ -67,9 +64,6 @@ export const Header = () => {
             </Link>
             <Link to="/public" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
               Public Reports
-            </Link>
-            <Link to="/about" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-              About
             </Link>
             <Link to="/api" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
               API
