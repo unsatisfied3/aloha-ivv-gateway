@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import lokahiLogo from "@/assets/lokahi-logo.png";
+import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 
 export const Footer = () => {
   return (
@@ -7,14 +7,8 @@ export const Footer = () => {
       <div className="container py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary p-1.5">
-                <img src={lokahiLogo} alt="Lōkahi Dashboard" className="h-full w-full object-contain" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-base font-semibold leading-none">Lōkahi</span>
-                <span className="text-xs text-muted-foreground">Dashboard</span>
-              </div>
+            <div className="mb-4 flex items-center">
+              <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-10" />
             </div>
             <p className="mb-4 text-sm text-muted-foreground">
               Enterprise Technology Services<br />
