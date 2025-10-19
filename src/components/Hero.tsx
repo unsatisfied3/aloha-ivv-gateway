@@ -18,7 +18,7 @@ export const Hero = () => {
         <div className="mx-auto max-w-3xl text-center">
           {/* Headline */}
           <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(197,100%,25%)] md:text-5xl lg:text-6xl animate-fade-in max-w-[700px] mx-auto">
-            One place to review Hawai'i's public IT projects.
+            One place to review & publish Hawai'i's IT projects.
           </h1>
           
           {/* Subheadline */}
