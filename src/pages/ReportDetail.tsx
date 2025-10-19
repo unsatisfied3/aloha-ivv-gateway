@@ -1,0 +1,613 @@
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AdminSidebar } from "@/components/AdminSidebar";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Download,
+  CheckCircle,
+  AlertCircle,
+  FileText,
+  Calendar,
+  Building2,
+  Users,
+  Clock,
+} from "lucide-react";
+
+// Mock data
+const mockReport = {
+  id: "1",
+  projectName: "DOH Health Connect Upgrade IV&V Report",
+  agency: "Department of Health",
+  vendor: "TechSolutions Inc.",
+  submissionDate: "2024-01-15",
+  reviewer: "Sarah Johnson",
+  status: "In Review",
+  lastUpdated: "2024-01-20",
+  progress: 60,
+};
+
+const mockComments = [
+  {
+    id: 1,
+    author: "Sarah Johnson",
+    timestamp: "2024-01-20 10:30 AM",
+    text: "Initial review completed. Risk assessment looks thorough.",
+    resolved: true,
+  },
+  {
+    id: 2,
+    author: "Mike Chen",
+    timestamp: "2024-01-20 2:15 PM",
+    text: "Need clarification on budget allocation in section 3.",
+    resolved: false,
+  },
+];
+
+const mockActivityLog = [
+  { date: "2024-01-20", action: "Review started by Sarah Johnson" },
+  { date: "2024-01-19", action: "Report assigned to Sarah Johnson" },
+  { date: "2024-01-15", action: "Report submitted by TechSolutions Inc." },
+  { date: "2024-01-10", action: "Report created" },
+];
+
+export default function ReportDetail() {
+  const { id } = useParams();
+  const { toast } = useToast();
+  const [comments, setComments] = useState(mockComments);
+  const [newComment, setNewComment] = useState("");
+
+  const handleAddComment = () => {
+    if (!newComment.trim()) return;
+    
+    const comment = {
+      id: comments.length + 1,
+      author: "Current User",
+      timestamp: new Date().toLocaleString(),
+      text: newComment,
+      resolved: false,
+    };
+    
+    setComments([...comments, comment]);
+    setNewComment("");
+    toast({
+      title: "Comment added",
+      description: "Your comment has been saved successfully.",
+    });
+  };
+
+  const handleApprove = () => {
+    toast({
+      title: "Report approved",
+      description: "The report has been marked as approved.",
+    });
+  };
+
+  const handleRequestChanges = () => {
+    toast({
+      title: "Changes requested",
+      description: "The vendor has been notified of required revisions.",
+    });
+  };
+
+  const handlePublish = () => {
+    toast({
+      title: "Report published",
+      description: "The report is now publicly available.",
+    });
+  };
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AdminSidebar />
+        
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <header className="border-b bg-card">
+            <div className="flex items-center justify-between px-8 py-4">
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink asChild>
+                      <Link to="/admin/dashboard">Reports</Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>{mockReport.projectName}</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+              
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={handleApprove}>
+                  <CheckCircle className="h-4 w-4" />
+                  Approve
+                </Button>
+                <Button variant="outline" onClick={handleRequestChanges}>
+                  <AlertCircle className="h-4 w-4" />
+                  Request Changes
+                </Button>
+                <Button onClick={handlePublish}>
+                  <FileText className="h-4 w-4" />
+                  Publish
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="flex-1 p-8 bg-muted/30 overflow-auto">
+            {/* Report Overview */}
+            <div className="mb-6">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground mb-2">
+                    {mockReport.projectName}
+                  </h1>
+                  <Badge className="bg-accent/10 text-accent border-accent/20">
+                    {mockReport.status}
+                  </Badge>
+                </div>
+                <Button variant="outline">
+                  <Download className="h-4 w-4" />
+                  Download PDF
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Building2 className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Agency</p>
+                    </div>
+                    <p className="text-sm font-medium">{mockReport.agency}</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Vendor</p>
+                    </div>
+                    <p className="text-sm font-medium">{mockReport.vendor}</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Submitted</p>
+                    </div>
+                    <p className="text-sm font-medium">{mockReport.submissionDate}</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Users className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Reviewer</p>
+                    </div>
+                    <p className="text-sm font-medium">{mockReport.reviewer}</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <FileText className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Status</p>
+                    </div>
+                    <p className="text-sm font-medium">{mockReport.status}</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <p className="text-xs text-muted-foreground">Updated</p>
+                    </div>
+                    <p className="text-sm font-medium">{mockReport.lastUpdated}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Tabs Content */}
+            <Tabs defaultValue="overview" className="mb-6">
+              <TabsList>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="risk">Risk Assessment</TabsTrigger>
+                <TabsTrigger value="compliance">Compliance Checklist</TabsTrigger>
+                <TabsTrigger value="findings">Findings & Recommendations</TabsTrigger>
+                <TabsTrigger value="attachments">Attachments</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="overview" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card className="lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Project Overview</CardTitle>
+                      <CardDescription>Summary of the IV&V assessment</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        The DOH Health Connect Upgrade project aims to modernize the state's health information exchange system. 
+                        This IV&V assessment covers the planning, design, and initial implementation phases of the project.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Key objectives include improving data interoperability, enhancing security protocols, and streamlining 
+                        healthcare provider workflows. The project is currently in Phase 2 of 4 planned phases.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Initial assessments indicate strong project management practices and clear stakeholder communication. 
+                        Some areas requiring attention include timeline optimization and resource allocation for the testing phase.
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Reviewer Comments</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        {comments.map((comment) => (
+                          <div key={comment.id} className="border-l-2 border-primary pl-3 py-2">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-xs font-medium">{comment.author}</p>
+                              {comment.resolved && (
+                                <Badge variant="secondary" className="text-xs">Resolved</Badge>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground mb-1">{comment.timestamp}</p>
+                            <p className="text-sm">{comment.text}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="space-y-2">
+                        <Textarea
+                          placeholder="Add a comment..."
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          className="min-h-[100px]"
+                        />
+                        <Button onClick={handleAddComment} className="w-full">
+                          Add Comment
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="risk" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card className="lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Risk Assessment</CardTitle>
+                      <CardDescription>Identified risks and mitigation strategies</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="border rounded-lg p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium">Schedule Risk</h4>
+                            <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Project timeline is realistic with adequate buffer periods. Regular milestone reviews in place.
+                          </p>
+                        </div>
+
+                        <div className="border rounded-lg p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium">Resource Allocation</h4>
+                            <Badge className="bg-chart-2/10 text-chart-2 border-chart-2/20">Medium</Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Current staffing levels may be insufficient for peak testing phase. Recommend additional QA resources.
+                          </p>
+                        </div>
+
+                        <div className="border rounded-lg p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium">Technical Complexity</h4>
+                            <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Technology stack is well-established. Team has appropriate expertise in chosen platforms.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Reviewer Comments</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Textarea
+                          placeholder="Add a comment..."
+                          className="min-h-[100px]"
+                        />
+                        <Button className="w-full">Add Comment</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="compliance" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card className="lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Compliance Checklist</CardTitle>
+                      <CardDescription>Regulatory and policy compliance status</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        {[
+                          { item: "HIPAA Compliance Review", status: "Complete" },
+                          { item: "State IT Security Standards", status: "Complete" },
+                          { item: "Accessibility (ADA) Requirements", status: "In Progress" },
+                          { item: "Data Privacy Impact Assessment", status: "Complete" },
+                          { item: "Disaster Recovery Plan", status: "In Progress" },
+                        ].map((item, index) => (
+                          <div key={index} className="flex items-center justify-between border-b py-3">
+                            <p className="text-sm">{item.item}</p>
+                            <Badge variant={item.status === "Complete" ? "default" : "secondary"}>
+                              {item.status}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Reviewer Comments</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Textarea
+                          placeholder="Add a comment..."
+                          className="min-h-[100px]"
+                        />
+                        <Button className="w-full">Add Comment</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="findings" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card className="lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Findings & Recommendations</CardTitle>
+                      <CardDescription>Key observations and suggested actions</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-4">
+                        <div className="border-l-4 border-primary pl-4">
+                          <h4 className="font-medium mb-2">Finding #1: Testing Coverage</h4>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Current test plan covers 85% of critical user workflows. Recommend expanding coverage to include edge cases.
+                          </p>
+                          <p className="text-sm font-medium text-primary">Recommendation: Add 15 additional test scenarios</p>
+                        </div>
+
+                        <div className="border-l-4 border-primary pl-4">
+                          <h4 className="font-medium mb-2">Finding #2: Documentation Quality</h4>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Technical documentation is comprehensive and well-organized. User documentation needs enhancement.
+                          </p>
+                          <p className="text-sm font-medium text-primary">Recommendation: Engage technical writer for user guides</p>
+                        </div>
+
+                        <div className="border-l-4 border-primary pl-4">
+                          <h4 className="font-medium mb-2">Finding #3: Stakeholder Engagement</h4>
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Regular stakeholder meetings are conducted. Consider increasing frequency during critical phases.
+                          </p>
+                          <p className="text-sm font-medium text-primary">Recommendation: Bi-weekly updates during Phase 3</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Reviewer Comments</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Textarea
+                          placeholder="Add a comment..."
+                          className="min-h-[100px]"
+                        />
+                        <Button className="w-full">Add Comment</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="attachments" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <Card className="lg:col-span-2">
+                    <CardHeader>
+                      <CardTitle>Supporting Documents</CardTitle>
+                      <CardDescription>Attachments and reference materials</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        {[
+                          { name: "Project Charter.pdf", size: "2.4 MB", date: "2024-01-10" },
+                          { name: "Risk Register.xlsx", size: "1.1 MB", date: "2024-01-12" },
+                          { name: "Test Plan v2.docx", size: "3.7 MB", date: "2024-01-15" },
+                          { name: "Architecture Diagram.pdf", size: "5.2 MB", date: "2024-01-08" },
+                        ].map((file, index) => (
+                          <div key={index} className="flex items-center justify-between border rounded-lg p-4 hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <FileText className="h-5 w-5 text-primary" />
+                              <div>
+                                <p className="text-sm font-medium">{file.name}</p>
+                                <p className="text-xs text-muted-foreground">{file.size} • {file.date}</p>
+                              </div>
+                            </div>
+                            <Button variant="ghost" size="sm">
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Reviewer Comments</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Textarea
+                          placeholder="Add a comment..."
+                          className="min-h-[100px]"
+                        />
+                        <Button className="w-full">Add Comment</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            {/* Supplementary Panels */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Project Timeline</CardTitle>
+                  <CardDescription>Review workflow progress</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Submission → In Review → Approved → Published</span>
+                        <span className="font-medium">{mockReport.progress}%</span>
+                      </div>
+                      <Progress value={mockReport.progress} className="h-2" />
+                    </div>
+                    <div className="grid grid-cols-4 gap-2 text-xs text-center">
+                      <div>
+                        <div className="w-2 h-2 rounded-full bg-primary mx-auto mb-1"></div>
+                        <p className="font-medium">Submitted</p>
+                      </div>
+                      <div>
+                        <div className="w-2 h-2 rounded-full bg-primary mx-auto mb-1"></div>
+                        <p className="font-medium">In Review</p>
+                      </div>
+                      <div>
+                        <div className="w-2 h-2 rounded-full bg-muted-foreground mx-auto mb-1"></div>
+                        <p className="text-muted-foreground">Approved</p>
+                      </div>
+                      <div>
+                        <div className="w-2 h-2 rounded-full bg-muted-foreground mx-auto mb-1"></div>
+                        <p className="text-muted-foreground">Published</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Risk Summary</CardTitle>
+                  <CardDescription>Risk level distribution</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Low Risk</span>
+                        <span className="font-medium">5 items</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div className="h-full bg-accent" style={{ width: '62%' }}></div>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Medium Risk</span>
+                        <span className="font-medium">2 items</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div className="h-full bg-chart-2" style={{ width: '25%' }}></div>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">High Risk</span>
+                        <span className="font-medium">1 item</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div className="h-full bg-destructive" style={{ width: '13%' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Activity Log */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Activity Log</CardTitle>
+                <CardDescription>Recent activity on this report</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {mockActivityLog.map((activity, index) => (
+                    <div key={index} className="flex items-start gap-3 pb-3 border-b last:border-0">
+                      <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
+                      <div className="flex-1">
+                        <p className="text-sm">{activity.action}</p>
+                        <p className="text-xs text-muted-foreground">{activity.date}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}
