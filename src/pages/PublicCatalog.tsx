@@ -64,7 +64,7 @@ const PublicCatalog = () => {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-[hsl(197,100%,25%)] to-[hsl(178,100%,24%)] text-white py-16 md:py-20">
+        <section className="bg-gradient-to-b from-[hsl(197,100%,25%)] to-[hsl(178,100%,24%)] text-white py-8 md:py-12">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
