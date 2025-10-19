@@ -49,10 +49,10 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 // Mock data
 const summaryStats = [
-  { title: "Active Projects", value: 24, trend: "+3", icon: FolderOpen, color: "text-[hsl(178,100%,24%)]" },
-  { title: "Reports In Review", value: 12, icon: FileCheck, color: "text-[hsl(197,100%,25%)]" },
-  { title: "Published Reports", value: 87, trend: "+5", icon: FileText, color: "text-secondary" },
-  { title: "High-Risk Projects", value: 3, icon: AlertTriangle, color: "text-destructive" },
+  { title: "Total Active Projects", value: 24, trend: "+3", icon: FolderOpen, color: "#007C77", bgColor: "bg-[#007C77]/10" },
+  { title: "Reports In Review", value: 12, icon: FileCheck, color: "#005B7F", bgColor: "bg-[#005B7F]/10" },
+  { title: "Published Reports", value: 87, trend: "+5", icon: FileText, color: "#3CC5C0", bgColor: "bg-[#3CC5C0]/10" },
+  { title: "High-Risk Projects", value: 3, icon: AlertTriangle, color: "#D32F2F", bgColor: "bg-[#D32F2F]/10" },
 ];
 
 const currentProjects = [
@@ -187,39 +187,54 @@ const AdminDashboard = () => {
           {/* Main Content */}
           <main className="flex-1 p-6 md:p-8">{/* ... keep existing code */}
             {/* Dashboard Header */}
-            <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
+            <div className="mb-8">
+              <div className="mb-6">
                 <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
                 <p className="text-muted-foreground">
-                  Monitor active reports, assignments, and project risks.
+                  Monitor active projects, report progress, and upcoming reviews.
                 </p>
               </div>
-              <Select defaultValue="quarter">
-                <SelectTrigger className="w-48 bg-white">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-white z-50">
-                  <SelectItem value="month">This Month</SelectItem>
-                  <SelectItem value="quarter">This Quarter</SelectItem>
-                  <SelectItem value="year">This Year</SelectItem>
-                </SelectContent>
-              </Select>
+              
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search projects, reports..."
+                    className="pl-9 bg-white"
+                  />
+                </div>
+                <Select defaultValue="quarter">
+                  <SelectTrigger className="w-full sm:w-48 bg-white">
+                    <Calendar className="mr-2 h-4 w-4" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white z-50">
+                    <SelectItem value="week">This Week</SelectItem>
+                    <SelectItem value="month">This Month</SelectItem>
+                    <SelectItem value="quarter">This Quarter</SelectItem>
+                    <SelectItem value="year">This Year</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Summary Stats */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {summaryStats.map((stat, index) => (
                 <Card 
                   key={index} 
-                  className="bg-white border-t-4 hover:shadow-md transition-shadow cursor-pointer"
-                  style={{ borderTopColor: stat.color.includes('hsl') ? stat.color.replace('text-', '') : undefined }}
+                  className="bg-white hover:shadow-md transition-shadow"
                 >
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <stat.icon className={`h-8 w-8 ${stat.color}`} />
+                    <div className="flex items-start justify-between mb-3">
+                      <div 
+                        className={`flex h-12 w-12 items-center justify-center rounded-lg ${stat.bgColor}`}
+                      >
+                        <stat.icon className="h-6 w-6" style={{ color: stat.color }} />
+                      </div>
                       {stat.trend && (
-                        <div className="flex items-center gap-1 text-secondary text-sm font-medium">
+                        <div className="flex items-center gap-1 text-[#3CC5C0] text-sm font-medium">
                           <TrendingUp className="h-4 w-4" />
                           {stat.trend}
                         </div>
@@ -297,11 +312,11 @@ const AdminDashboard = () => {
                   </CardContent>
                 </Card>
 
-                {/* Risk Summary Chart */}
+                {/* Risk Overview Chart */}
                 <Card className="bg-white">
                   <CardHeader>
-                    <CardTitle>Project Risk Levels</CardTitle>
-                    <CardDescription>Risk distribution across all active projects</CardDescription>
+                    <CardTitle>Risk Overview</CardTitle>
+                    <CardDescription>Project risk distribution across active portfolio</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-col md:flex-row items-center gap-8">
@@ -348,8 +363,8 @@ const AdminDashboard = () => {
                 {/* My Assignments */}
                 <Card className="bg-white">
                   <CardHeader>
-                    <CardTitle>My Assignments</CardTitle>
-                    <CardDescription>Reports currently assigned to you</CardDescription>
+                    <CardTitle>Assigned to Me</CardTitle>
+                    <CardDescription>Your current project assignments</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {myAssignments.map((assignment) => (
@@ -371,21 +386,22 @@ const AdminDashboard = () => {
                   </CardContent>
                 </Card>
 
-                {/* Recent Activity */}
+                {/* Recent Activity Feed */}
                 <Card className="bg-white">
                   <CardHeader>
                     <CardTitle>Recent Activity</CardTitle>
+                    <CardDescription>Latest project updates and submissions</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                    <div className="space-y-3">
                       {recentActivity.map((activity) => (
-                        <div key={activity.id} className="flex gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+                        <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#007C77]/10 text-[#007C77] flex-shrink-0">
                             <activity.icon className="h-4 w-4" />
                           </div>
-                          <div className="flex-1 space-y-1">
-                            <p className="text-sm leading-tight">{activity.text}</p>
-                            <p className="text-xs text-muted-foreground">{activity.time}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm leading-snug text-foreground">{activity.text}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
                           </div>
                         </div>
                       ))}
