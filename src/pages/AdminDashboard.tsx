@@ -3,6 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AdminSidebar } from "@/components/AdminSidebar";
 import {
   Select,
   SelectContent,
@@ -43,7 +45,6 @@ import {
   ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 // Mock data
@@ -136,276 +137,267 @@ const getStatusColor = (status: string) => {
 
 const AdminDashboard = () => {
   return (
-    <div className="min-h-screen bg-[hsl(120,20%,97%)]">
-      {/* Top Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link to="/admin/dashboard">
-              <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-8" />
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/admin/dashboard" className="text-sm font-medium text-[hsl(178,100%,24%)]">
-                Dashboard
-              </Link>
-              <Link to="/admin/reports" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                Reports
-              </Link>
-              <Link to="/admin/assignments" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                Assignments
-              </Link>
-              <Link to="/admin/analytics" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                Analytics
-              </Link>
-              <Link to="/admin/settings" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                Settings
-              </Link>
-            </nav>
-          </div>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-[hsl(120,20%,97%)]">
+        <AdminSidebar />
+        
+        <div className="flex-1 flex flex-col">
+          {/* Top Navigation Bar */}
+          <header className="sticky top-0 z-40 border-b bg-white shadow-sm">
+            <div className="flex h-16 items-center px-6 gap-4">
+              <SidebarTrigger />
+              
+              <div className="flex-1" />
+              
+              <div className="flex items-center gap-4">
+                <div className="relative hidden md:block">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search project or report..."
+                    className="w-64 pl-9 h-9"
+                  />
+                </div>
 
-          <div className="flex items-center gap-4">
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search project or report..."
-                className="w-64 pl-9 h-9"
-              />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="gap-2">
+                      <div className="h-8 w-8 rounded-full bg-[hsl(178,100%,24%)]/10 flex items-center justify-center">
+                        <User className="h-4 w-4 text-[hsl(178,100%,24%)]" />
+                      </div>
+                      <div className="hidden md:flex flex-col items-start">
+                        <span className="text-sm font-medium">Jennifer Lee</span>
+                        <span className="text-xs text-muted-foreground">ETS Reviewer</span>
+                      </div>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 bg-white z-50">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+                    <DropdownMenuItem>Notifications</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-destructive">Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="flex-1 p-6 md:p-8">{/* ... keep existing code */}
+            {/* Dashboard Header */}
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
+                <p className="text-muted-foreground">
+                  Monitor active reports, assignments, and project risks.
+                </p>
+              </div>
+              <Select defaultValue="quarter">
+                <SelectTrigger className="w-48 bg-white">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-white z-50">
+                  <SelectItem value="month">This Month</SelectItem>
+                  <SelectItem value="quarter">This Quarter</SelectItem>
+                  <SelectItem value="year">This Year</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <User className="h-4 w-4" />
-                  <span className="hidden md:inline">J. Lee</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-white z-50">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col">
-                    <span className="font-medium">Jennifer Lee</span>
-                    <span className="text-xs text-muted-foreground">ETS Reviewer</span>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-                <DropdownMenuItem>Notifications</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive">Sign Out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="container py-8">
-        {/* Dashboard Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
-            <p className="text-muted-foreground">
-              Monitor ongoing projects, review assignments, and track risk activity.
-            </p>
-          </div>
-          <Select defaultValue="month">
-            <SelectTrigger className="w-48 bg-white">
-              <Calendar className="mr-2 h-4 w-4" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent className="bg-white z-50">
-              <SelectItem value="month">This Month</SelectItem>
-              <SelectItem value="quarter">This Quarter</SelectItem>
-              <SelectItem value="year">This Year</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Summary Stats */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          {summaryStats.map((stat, index) => (
-            <Card key={index} className="bg-white">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <stat.icon className={`h-8 w-8 ${stat.color}`} />
-                  {stat.trend && (
-                    <div className="flex items-center gap-1 text-secondary text-sm font-medium">
-                      <TrendingUp className="h-4 w-4" />
-                      {stat.trend}
-                    </div>
-                  )}
-                </div>
-                <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.title}</div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Projects Table + Risk Chart */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Projects Table */}
-            <Card className="bg-white">
-              <CardHeader>
-                <CardTitle>Current Projects</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Project Name</TableHead>
-                        <TableHead>Agency</TableHead>
-                        <TableHead className="hidden md:table-cell">Vendor</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="hidden lg:table-cell">Reviewer</TableHead>
-                        <TableHead className="hidden xl:table-cell">Last Updated</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {currentProjects.map((project) => (
-                        <TableRow 
-                          key={project.id} 
-                          className="cursor-pointer hover:bg-muted/50"
-                          onClick={() => window.location.href = `/admin/report/${project.id}`}
-                        >
-                          <TableCell className="font-medium">{project.name}</TableCell>
-                          <TableCell className="text-sm">
-                            <div className="flex items-center gap-2">
-                              <Building2 className="h-4 w-4 text-muted-foreground" />
-                              <span className="hidden sm:inline">{project.agency}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                            {project.vendor}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline" className={getStatusColor(project.status)}>
-                              {project.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="hidden lg:table-cell text-sm">
-                            {project.reviewer}
-                          </TableCell>
-                          <TableCell className="hidden xl:table-cell text-sm text-muted-foreground">
-                            {project.lastUpdated}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-                <div className="mt-4">
-                  <Link to="/admin/reports">
-                    <Button variant="ghost" className="w-full sm:w-auto text-[hsl(178,100%,24%)]">
-                      View All Reports
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Risk Summary Chart */}
-            <Card className="bg-white">
-              <CardHeader>
-                <CardTitle>Risk Levels (All Projects)</CardTitle>
-                <CardDescription>Distribution of project risk across portfolio</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col md:flex-row items-center gap-8">
-                  <div className="h-64 w-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={riskData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={100}
-                          paddingAngle={2}
-                          dataKey="value"
-                        >
-                          {riskData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="flex-1 space-y-4">
-                    {riskData.map((item) => (
-                      <div key={item.name} className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div 
-                            className="h-3 w-3 rounded-full" 
-                            style={{ backgroundColor: item.color }}
-                          />
-                          <span className="text-sm font-medium">{item.name} Risk</span>
+            {/* Summary Stats */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+              {summaryStats.map((stat, index) => (
+                <Card 
+                  key={index} 
+                  className="bg-white border-t-4 hover:shadow-md transition-shadow cursor-pointer"
+                  style={{ borderTopColor: stat.color.includes('hsl') ? stat.color.replace('text-', '') : undefined }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <stat.icon className={`h-8 w-8 ${stat.color}`} />
+                      {stat.trend && (
+                        <div className="flex items-center gap-1 text-secondary text-sm font-medium">
+                          <TrendingUp className="h-4 w-4" />
+                          {stat.trend}
                         </div>
-                        <span className="text-2xl font-bold">{item.value}</span>
+                      )}
+                    </div>
+                    <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
+                    <div className="text-sm text-muted-foreground">{stat.title}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-3">
+              {/* Projects Table + Risk Chart */}
+              <div className="lg:col-span-2 space-y-6">{/* ... keep existing code */}
+                {/* Projects Table */}
+                <Card className="bg-white">
+                  <CardHeader>
+                    <CardTitle>Current Projects</CardTitle>
+                  </CardHeader>{/* ... keep existing code */}
+                  <CardContent>
+                    <div className="rounded-md border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Project Name</TableHead>
+                            <TableHead>Agency</TableHead>
+                            <TableHead className="hidden md:table-cell">Vendor</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead className="hidden lg:table-cell">Reviewer</TableHead>
+                            <TableHead className="hidden xl:table-cell">Last Updated</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {currentProjects.map((project) => (
+                            <TableRow 
+                              key={project.id} 
+                              className="cursor-pointer hover:bg-muted/50"
+                              onClick={() => window.location.href = `/admin/report/${project.id}`}
+                            >
+                              <TableCell className="font-medium">{project.name}</TableCell>
+                              <TableCell className="text-sm">
+                                <div className="flex items-center gap-2">
+                                  <Building2 className="h-4 w-4 text-muted-foreground" />
+                                  <span className="hidden sm:inline">{project.agency}</span>
+                                </div>
+                              </TableCell>
+                              <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
+                                {project.vendor}
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className={getStatusColor(project.status)}>
+                                  {project.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="hidden lg:table-cell text-sm">
+                                {project.reviewer}
+                              </TableCell>
+                              <TableCell className="hidden xl:table-cell text-sm text-muted-foreground">
+                                {project.lastUpdated}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                    <div className="mt-4">
+                      <Link to="/admin/reports">
+                        <Button variant="ghost" className="w-full sm:w-auto text-[hsl(178,100%,24%)]">
+                          View All Reports
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Risk Summary Chart */}
+                <Card className="bg-white">
+                  <CardHeader>
+                    <CardTitle>Project Risk Levels</CardTitle>
+                    <CardDescription>Risk distribution across all active projects</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-col md:flex-row items-center gap-8">
+                      <div className="h-64 w-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie
+                              data={riskData}
+                              cx="50%"
+                              cy="50%"
+                              innerRadius={60}
+                              outerRadius={100}
+                              paddingAngle={2}
+                              dataKey="value"
+                            >
+                              {riskData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                              ))}
+                            </Pie>
+                          </PieChart>
+                        </ResponsiveContainer>
+                      </div>
+                      <div className="flex-1 space-y-4">
+                        {riskData.map((item) => (
+                          <div key={item.name} className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div 
+                                className="h-3 w-3 rounded-full" 
+                                style={{ backgroundColor: item.color }}
+                              />
+                              <span className="text-sm font-medium">{item.name} Risk</span>
+                            </div>
+                            <span className="text-2xl font-bold">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Right Column: Assignments + Activity */}
+              <div className="space-y-6">{/* ... keep existing code */}
+                {/* My Assignments */}
+                <Card className="bg-white">
+                  <CardHeader>
+                    <CardTitle>My Assignments</CardTitle>
+                    <CardDescription>Reports currently assigned to you</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {myAssignments.map((assignment) => (
+                      <div key={assignment.id} className="space-y-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="text-sm font-medium leading-tight">{assignment.name}</h4>
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
+                            <Clock className="h-3 w-3" />
+                            {assignment.dueDate}
+                          </div>
+                        </div>
+                        <Progress value={assignment.progress} className="h-2" />
+                        <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
                       </div>
                     ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                    <Button variant="outline" className="w-full mt-2">
+                      View All Assignments
+                    </Button>
+                  </CardContent>
+                </Card>
 
-          {/* Right Column: Assignments + Activity */}
-          <div className="space-y-6">
-            {/* My Assignments */}
-            <Card className="bg-white">
-              <CardHeader>
-                <CardTitle>My Assignments</CardTitle>
-                <CardDescription>Reports currently assigned to you</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {myAssignments.map((assignment) => (
-                  <div key={assignment.id} className="space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <h4 className="text-sm font-medium leading-tight">{assignment.name}</h4>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
-                        <Clock className="h-3 w-3" />
-                        {assignment.dueDate}
-                      </div>
+                {/* Recent Activity */}
+                <Card className="bg-white">
+                  <CardHeader>
+                    <CardTitle>Recent Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4 max-h-96 overflow-y-auto">
+                      {recentActivity.map((activity) => (
+                        <div key={activity.id} className="flex gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
+                            <activity.icon className="h-4 w-4" />
+                          </div>
+                          <div className="flex-1 space-y-1">
+                            <p className="text-sm leading-tight">{activity.text}</p>
+                            <p className="text-xs text-muted-foreground">{activity.time}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <Progress value={assignment.progress} className="h-2" />
-                    <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
-                  </div>
-                ))}
-                <Button variant="outline" className="w-full mt-2">
-                  View All Assignments
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Recent Activity */}
-            <Card className="bg-white">
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary flex-shrink-0">
-                        <activity.icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1 space-y-1">
-                        <p className="text-sm leading-tight">{activity.text}</p>
-                        <p className="text-xs text-muted-foreground">{activity.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </main>
         </div>
-      </main>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
