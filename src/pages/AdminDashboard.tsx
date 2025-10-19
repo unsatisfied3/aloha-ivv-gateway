@@ -29,7 +29,11 @@ import {
   Clock,
   TrendingUp,
   TrendingDown,
-  ArrowRight
+  ArrowRight,
+  FolderKanban,
+  FileSearch,
+  FileCheck,
+  AlertTriangle
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -40,6 +44,7 @@ const summaryStats = [
     trend: "+12%",
     trendLabel: "from last month",
     isPositive: true,
+    icon: FolderKanban,
   },
   { 
     title: "Reports in Review", 
@@ -47,6 +52,7 @@ const summaryStats = [
     trend: "+5%",
     trendLabel: "from last month",
     isPositive: true,
+    icon: FileSearch,
   },
   { 
     title: "Published Reports", 
@@ -54,6 +60,7 @@ const summaryStats = [
     trend: "+8%",
     trendLabel: "from last month",
     isPositive: true,
+    icon: FileCheck,
   },
   { 
     title: "High-Risk Projects", 
@@ -61,6 +68,7 @@ const summaryStats = [
     trend: "-3%",
     trendLabel: "from last month",
     isPositive: false,
+    icon: AlertTriangle,
   },
 ];
 
@@ -199,16 +207,23 @@ const AdminDashboard = () => {
               {summaryStats.map((stat, index) => (
                 <Card key={index} className="bg-background">
                   <CardContent className="p-6">
-                    <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
-                    <p className="text-4xl font-bold text-foreground mb-3">{stat.value}</p>
-                    <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-[#3CC5C0]' : 'text-muted-foreground'}`}>
-                      {stat.isPositive ? (
-                        <TrendingUp className="h-4 w-4" />
-                      ) : (
-                        <TrendingDown className="h-4 w-4" />
-                      )}
-                      <span>{stat.trend}</span>
-                      <span className="text-muted-foreground font-normal">{stat.trendLabel}</span>
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
+                        <p className="text-4xl font-bold text-foreground mb-3">{stat.value}</p>
+                        <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-[#3CC5C0]' : 'text-muted-foreground'}`}>
+                          {stat.isPositive ? (
+                            <TrendingUp className="h-4 w-4" />
+                          ) : (
+                            <TrendingDown className="h-4 w-4" />
+                          )}
+                          <span>{stat.trend}</span>
+                          <span className="text-muted-foreground font-normal">{stat.trendLabel}</span>
+                        </div>
+                      </div>
+                      <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <stat.icon className="h-6 w-6 text-primary" />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
