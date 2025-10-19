@@ -24,7 +24,7 @@ const steps = [
 
 export const Workflow = () => {
   return (
-    <section className="py-20">
+    <section className="py-12 md:py-16">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">
