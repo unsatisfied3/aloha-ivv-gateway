@@ -16,11 +16,11 @@ export const Hero = () => {
       <div className="container relative py-20 md:py-32">
         <div className="mx-auto max-w-3xl text-center">
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground md:text-6xl animate-fade-in">
-            Transparency through unity
+            Hawai'i's platform for managing and reviewing public IT projects
           </h1>
           
           <p className="mb-8 text-lg text-muted-foreground md:text-xl animate-slide-up">
-            Lōkahi Dashboard connects Hawai'i's IT projects, vendors, and reviewers under one transparent system.
+            Lōkahi Dashboard simplifies how Hawai'i's state IT projects are tracked, reviewed, and shared publicly — bringing everything into one connected system.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-slide-up">
