@@ -31,136 +31,78 @@ import { Upload, Search, Download, Eye, Calendar as CalendarIcon, FileText } fro
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
-// Mock data using schema field names
+// Mock data
 const mockReports = [
   {
     id: "1",
-    projectId: "proj-001",
-    projectName: "DOH Health Connect Upgrade", // placeholder lookup
-    reportingPeriod: "Q4 2024",
-    reportingMonth: 12,
-    reportingYear: 2024,
-    reportStatus: "submitted",
-    executiveSummary: "Project on track with minor delays...",
-    overallRating: "green",
-    submittedAt: "2024-01-20T14:30:00",
-    submittedByName: "Sarah Johnson",
+    projectName: "DOH Health Connect Upgrade IV&V Report",
     agency: "Department of Health",
     vendor: "TechSolutions Inc.",
+    status: "In Review",
+    reviewer: "Sarah Johnson",
+    lastUpdated: "2024-01-20",
   },
   {
     id: "2",
-    projectId: "proj-002",
     projectName: "Education Portal Enhancement",
-    reportingPeriod: "Q4 2024",
-    reportingMonth: 12,
-    reportingYear: 2024,
-    reportStatus: "approved",
-    executiveSummary: "Successfully completed testing phase...",
-    overallRating: "green",
-    submittedAt: "2024-01-19T10:15:00",
-    submittedByName: "Mike Chen",
     agency: "Department of Education",
     vendor: "EduTech Partners",
+    status: "Approved",
+    reviewer: "Mike Chen",
+    lastUpdated: "2024-01-19",
   },
   {
     id: "3",
-    projectId: "proj-003",
     projectName: "Transportation System Modernization",
-    reportingPeriod: "Q3 2024",
-    reportingMonth: 11,
-    reportingYear: 2024,
-    reportStatus: "approved",
-    executiveSummary: "Phase 2 deployment complete...",
-    overallRating: "yellow",
-    submittedAt: "2024-01-18T16:45:00",
-    submittedByName: "Lisa Patel",
     agency: "Department of Transportation",
     vendor: "Smart Transit Co.",
+    status: "Published",
+    reviewer: "Lisa Patel",
+    lastUpdated: "2024-01-18",
   },
   {
     id: "4",
-    projectId: "proj-004",
     projectName: "Tax Processing System Update",
-    reportingPeriod: "Q4 2024",
-    reportingMonth: 12,
-    reportingYear: 2024,
-    reportStatus: "draft",
-    executiveSummary: "Initial assessment in progress...",
-    overallRating: "yellow",
-    submittedAt: "2024-01-17T09:00:00",
-    submittedByName: "Unassigned",
     agency: "Department of Taxation",
     vendor: "TechSolutions Inc.",
+    status: "Draft",
+    reviewer: "Unassigned",
+    lastUpdated: "2024-01-17",
   },
   {
     id: "5",
-    projectId: "proj-005",
     projectName: "Environmental Data Platform",
-    reportingPeriod: "Q4 2024",
-    reportingMonth: 12,
-    reportingYear: 2024,
-    reportStatus: "submitted",
-    executiveSummary: "Critical infrastructure upgrade underway...",
-    overallRating: "red",
-    submittedAt: "2024-01-16T11:30:00",
-    submittedByName: "Sarah Johnson",
     agency: "Department of Land & Natural Resources",
     vendor: "GreenData Systems",
+    status: "In Review",
+    reviewer: "Sarah Johnson",
+    lastUpdated: "2024-01-16",
   },
   {
     id: "6",
-    projectId: "proj-006",
     projectName: "Public Safety Communication Upgrade",
-    reportingPeriod: "Q3 2024",
-    reportingMonth: 11,
-    reportingYear: 2024,
-    reportStatus: "submitted",
-    executiveSummary: "Security concerns identified, action plan submitted...",
-    overallRating: "red",
-    submittedAt: "2024-01-15T13:20:00",
-    submittedByName: "Mike Chen",
     agency: "Department of Public Safety",
     vendor: "SecureComm Ltd.",
+    status: "High-Risk",
+    reviewer: "Mike Chen",
+    lastUpdated: "2024-01-15",
   },
 ];
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "draft":
-      return "bg-muted text-muted-foreground border-muted-foreground/30";
-    case "submitted":
-      return "bg-primary/20 text-primary border-primary/40";
-    case "approved":
-      return "bg-accent/20 text-accent border-accent/40";
+    case "Draft":
+      return "bg-muted text-muted-foreground border-muted-foreground/20";
+    case "In Review":
+      return "bg-chart-2/10 text-chart-2 border-chart-2/20";
+    case "Approved":
+      return "bg-accent/10 text-accent border-accent/20";
+    case "Published":
+      return "bg-primary/10 text-primary border-primary/20";
+    case "High-Risk":
+      return "bg-destructive/10 text-destructive border-destructive/20";
     default:
       return "bg-muted text-muted-foreground";
-  }
-};
-
-const getStatusLabel = (status: string) => {
-  switch (status) {
-    case "draft":
-      return "Draft";
-    case "submitted":
-      return "Submitted";
-    case "approved":
-      return "Approved";
-    default:
-      return status;
-  }
-};
-
-const getRatingDot = (rating: string) => {
-  switch (rating) {
-    case "green":
-      return "bg-accent";
-    case "yellow":
-      return "bg-yellow-500";
-    case "red":
-      return "bg-destructive";
-    default:
-      return "bg-muted-foreground";
   }
 };
 
@@ -174,13 +116,13 @@ export default function ReportsTable() {
 
   const agencies = Array.from(new Set(mockReports.map((r) => r.agency)));
   const vendors = Array.from(new Set(mockReports.map((r) => r.vendor)));
-  const statuses = ["draft", "submitted", "approved"];
+  const statuses = Array.from(new Set(mockReports.map((r) => r.status)));
 
   const filteredReports = mockReports.filter((report) => {
     const matchesSearch = report.projectName.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesAgency = agencyFilter === "all" || report.agency === agencyFilter;
     const matchesVendor = vendorFilter === "all" || report.vendor === vendorFilter;
-    const matchesStatus = statusFilter === "all" || report.reportStatus === statusFilter;
+    const matchesStatus = statusFilter === "all" || report.status === statusFilter;
     return matchesSearch && matchesAgency && matchesVendor && matchesStatus;
   });
 
@@ -228,10 +170,10 @@ export default function ReportsTable() {
 
                     {/* Agency Filter */}
                     <Select value={agencyFilter} onValueChange={setAgencyFilter}>
-                      <SelectTrigger className="bg-background">
+                      <SelectTrigger>
                         <SelectValue placeholder="All Agencies" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
+                      <SelectContent>
                         <SelectItem value="all">All Agencies</SelectItem>
                         {agencies.map((agency) => (
                           <SelectItem key={agency} value={agency}>
@@ -243,10 +185,10 @@ export default function ReportsTable() {
 
                     {/* Vendor Filter */}
                     <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                      <SelectTrigger className="bg-background">
+                      <SelectTrigger>
                         <SelectValue placeholder="All Vendors" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
+                      <SelectContent>
                         <SelectItem value="all">All Vendors</SelectItem>
                         {vendors.map((vendor) => (
                           <SelectItem key={vendor} value={vendor}>
@@ -258,14 +200,14 @@ export default function ReportsTable() {
 
                     {/* Status Filter */}
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="bg-background">
+                      <SelectTrigger>
                         <SelectValue placeholder="All Statuses" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
+                      <SelectContent>
                         <SelectItem value="all">All Statuses</SelectItem>
                         {statuses.map((status) => (
                           <SelectItem key={status} value={status}>
-                            {getStatusLabel(status)}
+                            {status}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -283,12 +225,12 @@ export default function ReportsTable() {
                     <Table>
                       <TableHeader className="sticky top-0 bg-muted/50">
                         <TableRow>
-                          <TableHead className="font-semibold">Project Name</TableHead>
-                          <TableHead className="font-semibold">Reporting Period</TableHead>
+                          <TableHead className="font-semibold">Project / Report Title</TableHead>
+                          <TableHead className="font-semibold">Agency</TableHead>
+                          <TableHead className="font-semibold">Vendor</TableHead>
                           <TableHead className="font-semibold">Status</TableHead>
-                          <TableHead className="font-semibold">Rating</TableHead>
-                          <TableHead className="font-semibold">Submitted By</TableHead>
-                          <TableHead className="font-semibold">Submitted At</TableHead>
+                          <TableHead className="font-semibold">Reviewer Assigned</TableHead>
+                          <TableHead className="font-semibold">Last Updated</TableHead>
                           <TableHead className="text-right font-semibold">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -300,22 +242,15 @@ export default function ReportsTable() {
                             onClick={() => handleRowClick(report.id)}
                           >
                             <TableCell className="font-medium">{report.projectName}</TableCell>
-                            <TableCell className="text-muted-foreground">{report.reportingPeriod}</TableCell>
+                            <TableCell className="text-muted-foreground">{report.agency}</TableCell>
+                            <TableCell className="text-muted-foreground">{report.vendor}</TableCell>
                             <TableCell>
-                              <Badge className={cn("border", getStatusColor(report.reportStatus))}>
-                                {getStatusLabel(report.reportStatus)}
+                              <Badge className={cn("border", getStatusColor(report.status))}>
+                                {report.status}
                               </Badge>
                             </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-2">
-                                <div className={cn("h-3 w-3 rounded-full", getRatingDot(report.overallRating))} />
-                                <span className="text-sm text-muted-foreground capitalize">{report.overallRating}</span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-muted-foreground">{report.submittedByName}</TableCell>
-                            <TableCell className="text-muted-foreground">
-                              {format(new Date(report.submittedAt), "MMM dd, yyyy")}
-                            </TableCell>
+                            <TableCell className="text-muted-foreground">{report.reviewer}</TableCell>
+                            <TableCell className="text-muted-foreground">{report.lastUpdated}</TableCell>
                             <TableCell className="text-right">
                               <div className="flex items-center justify-end gap-2">
                                 <Button
