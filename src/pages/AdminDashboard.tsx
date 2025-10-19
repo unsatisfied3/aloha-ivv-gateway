@@ -72,52 +72,65 @@ const summaryStats = [
   },
 ];
 
+// Mock data using schema field names
 const currentProjects = [
   {
     id: 1,
-    name: "Healthcare Data Platform",
-    agency: "Department of Health",
-    vendor: "TechCorp Solutions",
-    status: "In Review",
-    reviewer: "J. Lee",
-    lastUpdated: "2 hours ago",
+    projectName: "DOH Health Connect Upgrade",
+    sponsoringAgency: "Department of Health",
+    ivvVendorName: "TechCorp Solutions",
+    overallProjectStatus: "yellow", // red, yellow, green
+    isActive: true,
+    originalContractAmount: 2450000,
+    totalPaidToDate: 1850000,
   },
   {
     id: 2,
-    name: "Student Information System",
-    agency: "Department of Education",
-    vendor: "EduTech Partners",
-    status: "Active",
-    reviewer: "M. Santos",
-    lastUpdated: "1 day ago",
+    projectName: "Student Information System",
+    sponsoringAgency: "Department of Education",
+    ivvVendorName: "EduTech Partners",
+    overallProjectStatus: "green",
+    isActive: true,
+    originalContractAmount: 1800000,
+    totalPaidToDate: 1200000,
   },
   {
     id: 3,
-    name: "Fleet Management System",
-    agency: "Department of Transportation",
-    vendor: "AutoManage Inc",
-    status: "Published",
-    reviewer: "K. Wong",
-    lastUpdated: "3 days ago",
+    projectName: "Fleet Management System",
+    sponsoringAgency: "Department of Transportation",
+    ivvVendorName: "AutoManage Inc",
+    overallProjectStatus: "green",
+    isActive: true,
+    originalContractAmount: 980000,
+    totalPaidToDate: 780000,
   },
   {
     id: 4,
-    name: "Digital Tax Portal",
-    agency: "Department of Taxation",
-    vendor: "FinTech Solutions",
-    status: "Active",
-    reviewer: "J. Lee",
-    lastUpdated: "5 hours ago",
+    projectName: "Digital Tax Portal",
+    sponsoringAgency: "Department of Taxation",
+    ivvVendorName: "FinTech Solutions",
+    overallProjectStatus: "red",
+    isActive: true,
+    originalContractAmount: 3200000,
+    totalPaidToDate: 2100000,
   },
   {
     id: 5,
-    name: "Benefits Management System",
-    agency: "Department of Human Services",
-    vendor: "Social Systems Co",
-    status: "In Review",
-    reviewer: "M. Santos",
-    lastUpdated: "1 day ago",
+    projectName: "Benefits Management System",
+    sponsoringAgency: "Department of Human Services",
+    ivvVendorName: "Social Systems Co",
+    overallProjectStatus: "yellow",
+    isActive: true,
+    originalContractAmount: 1650000,
+    totalPaidToDate: 980000,
   },
+];
+
+const recentActivity = [
+  { id: 1, event: "Report submitted for DOH Health Connect", timestamp: "2 hours ago", type: "submission" },
+  { id: 2, event: "Student Info System marked approved", timestamp: "5 hours ago", type: "approval" },
+  { id: 3, event: "Tax Portal report revision requested", timestamp: "1 day ago", type: "revision" },
+  { id: 4, event: "New project added: Judicial Case Mgmt", timestamp: "2 days ago", type: "project" },
 ];
 
 const myAssignments = [
@@ -128,14 +141,27 @@ const myAssignments = [
 
 const getStatusColor = (status: string) => {
   switch (status) {
-    case "Active":
-      return "bg-primary/10 text-primary border-primary/20";
-    case "In Review":
-      return "bg-chart-2/10 text-chart-2 border-chart-2/20";
-    case "Published":
-      return "bg-chart-3/10 text-chart-3 border-chart-3/20";
+    case "green":
+      return "bg-accent/20 text-accent border-accent/30";
+    case "yellow":
+      return "bg-yellow-500/20 text-yellow-700 border-yellow-500/30 dark:text-yellow-400";
+    case "red":
+      return "bg-destructive/20 text-destructive border-destructive/30";
     default:
       return "bg-muted text-muted-foreground";
+  }
+};
+
+const getStatusLabel = (status: string) => {
+  switch (status) {
+    case "green":
+      return "On Track";
+    case "yellow":
+      return "At Risk";
+    case "red":
+      return "Critical";
+    default:
+      return "Unknown";
   }
 };
 
@@ -246,8 +272,6 @@ const AdminDashboard = () => {
                             <TableHead>Agency</TableHead>
                             <TableHead className="hidden md:table-cell">Vendor</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead className="hidden lg:table-cell">Reviewer</TableHead>
-                            <TableHead className="hidden xl:table-cell">Last Updated</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -257,26 +281,20 @@ const AdminDashboard = () => {
                               className="cursor-pointer hover:bg-muted/50"
                               onClick={() => window.location.href = `/admin/report/${project.id}`}
                             >
-                              <TableCell className="font-medium">{project.name}</TableCell>
+                              <TableCell className="font-medium">{project.projectName}</TableCell>
                               <TableCell className="text-sm">
                                 <div className="flex items-center gap-2">
                                   <Building2 className="h-4 w-4 text-muted-foreground" />
-                                  <span className="hidden sm:inline">{project.agency}</span>
+                                  <span className="hidden sm:inline">{project.sponsoringAgency}</span>
                                 </div>
                               </TableCell>
                               <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                                {project.vendor}
+                                {project.ivvVendorName}
                               </TableCell>
                               <TableCell>
-                                <Badge variant="outline" className={getStatusColor(project.status)}>
-                                  {project.status}
+                                <Badge variant="outline" className={getStatusColor(project.overallProjectStatus)}>
+                                  {getStatusLabel(project.overallProjectStatus)}
                                 </Badge>
-                              </TableCell>
-                              <TableCell className="hidden lg:table-cell text-sm">
-                                {project.reviewer}
-                              </TableCell>
-                              <TableCell className="hidden xl:table-cell text-sm text-muted-foreground">
-                                {project.lastUpdated}
                               </TableCell>
                             </TableRow>
                           ))}
@@ -295,8 +313,9 @@ const AdminDashboard = () => {
                 </Card>
               </div>
 
-              {/* Assigned to Me Panel */}
-              <div>
+              {/* Right Column - Assignments & Activity */}
+              <div className="space-y-6">
+                {/* Assigned to Me Panel */}
                 <Card className="bg-background">
                   <CardHeader>
                     <CardTitle>Assigned to Me</CardTitle>
@@ -318,6 +337,30 @@ const AdminDashboard = () => {
                           <Badge variant="outline" className="text-xs">
                             {assignment.status}
                           </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
+
+                {/* Recent Activity Panel */}
+                <Card className="bg-background">
+                  <CardHeader>
+                    <CardTitle>Recent Activity</CardTitle>
+                    <CardDescription>Latest updates and events</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {recentActivity.map((activity) => (
+                      <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
+                        <div className={`h-2 w-2 rounded-full mt-1.5 flex-shrink-0 ${
+                          activity.type === 'approval' ? 'bg-accent' :
+                          activity.type === 'revision' ? 'bg-destructive' :
+                          activity.type === 'submission' ? 'bg-primary' :
+                          'bg-muted-foreground'
+                        }`} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm leading-tight">{activity.event}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
                         </div>
                       </div>
                     ))}
