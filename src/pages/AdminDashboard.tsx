@@ -33,36 +33,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// Sparkline component
-const Sparkline = ({ data, positive = true }: { data: number[], positive?: boolean }) => {
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const range = max - min;
-  
-  const points = data.map((value, index) => {
-    const x = (index / (data.length - 1)) * 100;
-    const y = 100 - ((value - min) / range) * 100;
-    return `${x},${y}`;
-  }).join(' ');
-
-  return (
-    <svg viewBox="0 0 100 100" className="w-20 h-12" preserveAspectRatio="none">
-      <polyline
-        points={points}
-        fill="none"
-        stroke={positive ? "#3CC5C0" : "#94A3B8"}
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.8"
-      />
-    </svg>
-  );
-};
-
-// Mock data
-const sparklineData = [60, 70, 65, 80, 75, 90, 100];
-
 const summaryStats = [
   { 
     title: "Total Active Projects", 
@@ -70,7 +40,6 @@ const summaryStats = [
     trend: "+12%",
     trendLabel: "from last month",
     isPositive: true,
-    sparkline: sparklineData
   },
   { 
     title: "Reports in Review", 
@@ -78,7 +47,6 @@ const summaryStats = [
     trend: "+5%",
     trendLabel: "from last month",
     isPositive: true,
-    sparkline: [40, 45, 50, 55, 48, 52, 60]
   },
   { 
     title: "Published Reports", 
@@ -86,7 +54,6 @@ const summaryStats = [
     trend: "+8%",
     trendLabel: "from last month",
     isPositive: true,
-    sparkline: [70, 75, 72, 80, 85, 88, 95]
   },
   { 
     title: "High-Risk Projects", 
@@ -94,7 +61,6 @@ const summaryStats = [
     trend: "-3%",
     trendLabel: "from last month",
     isPositive: false,
-    sparkline: [25, 22, 20, 18, 17, 16, 15]
   },
 ];
 
@@ -233,21 +199,16 @@ const AdminDashboard = () => {
               {summaryStats.map((stat, index) => (
                 <Card key={index} className="bg-background">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
-                        <p className="text-4xl font-bold text-foreground mb-3">{stat.value}</p>
-                        <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-[#3CC5C0]' : 'text-muted-foreground'}`}>
-                          {stat.isPositive ? (
-                            <TrendingUp className="h-4 w-4" />
-                          ) : (
-                            <TrendingDown className="h-4 w-4" />
-                          )}
-                          <span>{stat.trend}</span>
-                          <span className="text-muted-foreground font-normal">{stat.trendLabel}</span>
-                        </div>
-                      </div>
-                      <Sparkline data={stat.sparkline} positive={stat.isPositive} />
+                    <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
+                    <p className="text-4xl font-bold text-foreground mb-3">{stat.value}</p>
+                    <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-[#3CC5C0]' : 'text-muted-foreground'}`}>
+                      {stat.isPositive ? (
+                        <TrendingUp className="h-4 w-4" />
+                      ) : (
+                        <TrendingDown className="h-4 w-4" />
+                      )}
+                      <span>{stat.trend}</span>
+                      <span className="text-muted-foreground font-normal">{stat.trendLabel}</span>
                     </div>
                   </CardContent>
                 </Card>
