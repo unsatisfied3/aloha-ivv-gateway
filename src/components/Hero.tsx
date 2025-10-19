@@ -23,7 +23,7 @@ export const Hero = () => {
           
           {/* Subheadline */}
           <p className="mb-10 text-lg text-muted-foreground md:text-xl animate-fade-in">
-            Ditch the endless PDFs and review and track reports in real time.
+            Review and track reports in real time — no more manual PDFs.
           </p>
 
           {/* Primary CTA Buttons */}
