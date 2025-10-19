@@ -18,12 +18,12 @@ export const Hero = () => {
         <div className="mx-auto max-w-3xl text-center">
           {/* Headline */}
           <h1 className="mb-4 text-4xl font-bold tracking-tight text-[hsl(197,100%,25%)] md:text-5xl lg:text-6xl animate-fade-in max-w-[700px] mx-auto">
-            One place to review & publish Hawai'i's IT projects.
+            One place to review and publish projects.
           </h1>
           
           {/* Subheadline */}
           <p className="mb-10 text-lg text-muted-foreground md:text-xl animate-fade-in">
-            Lōkahi Dashboard unifies agency and vendor reports for faster review.
+            Ditch the endless PDFs and review and track reports in real time.
           </p>
 
           {/* Primary CTA Buttons */}
