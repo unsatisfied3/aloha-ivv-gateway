@@ -3,7 +3,7 @@ import heroImage from "@/assets/hero-image.jpg";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-[500px] md:min-h-[550px] flex items-center overflow-hidden py-12 md:py-16">
+    <section className="relative min-h-[500px] md:min-h-[550px] flex items-center overflow-hidden py-4 md:py-6">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <img
@@ -23,7 +23,7 @@ export const Hero = () => {
           
           {/* Subheadline */}
           <p className="mb-10 text-lg text-muted-foreground md:text-xl animate-fade-in">
-            Lōkahi Dashboard unifies agency and vendor reports for faster review and easier oversight.
+            Lōkahi Dashboard unifies agency and vendor reports for faster review.
           </p>
 
           {/* Primary CTA Buttons */}

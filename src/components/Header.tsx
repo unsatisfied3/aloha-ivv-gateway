@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Menu, X, Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
@@ -34,6 +35,14 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <div className="relative hidden md:block">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search projects..."
+              className="h-10 w-64 pl-9"
+            />
+          </div>
           <Button variant="outline" className="hidden md:flex">
             Sign In
           </Button>
