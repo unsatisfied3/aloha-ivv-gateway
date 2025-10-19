@@ -64,15 +64,12 @@ const PublicCatalog = () => {
       
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-[hsl(197,100%,25%)] to-[hsl(178,100%,24%)] text-white py-8 md:py-12">
+        <section className="bg-gradient-to-b from-[hsl(197,100%,25%)] to-[hsl(178,100%,24%)] text-white py-6 md:py-8">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <h1 className="text-2xl md:text-3xl font-bold mb-6">
                 Public IV&V Reports
               </h1>
-              <p className="text-lg md:text-xl text-white/90 mb-8">
-                Browse and search validated Independent Verification & Validation reports across all state agencies.
-              </p>
 
               {/* Search Bar */}
               <div className="flex flex-col sm:flex-row gap-3 p-2 bg-white rounded-lg shadow-lg">
@@ -83,12 +80,12 @@ const PublicCatalog = () => {
                     placeholder="Search by project, agency, or category..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-14 pl-12 border-0 bg-transparent text-base text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="h-12 pl-12 border-0 bg-transparent text-base text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
                   />
                 </div>
                 <Button 
                   size="lg" 
-                  className="h-14 px-8 bg-[hsl(178,100%,24%)] hover:bg-[hsl(178,100%,20%)] text-white"
+                  className="h-12 px-6 bg-[hsl(178,100%,24%)] hover:bg-[hsl(178,100%,20%)] text-white"
                 >
                   <Search className="mr-2 h-5 w-5" />
                   Search
