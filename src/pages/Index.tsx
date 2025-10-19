@@ -1,8 +1,7 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Workflow } from "@/components/Workflow";
-import { Features } from "@/components/Features";
-import { PortalTiles } from "@/components/PortalTiles";
+import { SearchPreview } from "@/components/SearchPreview";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -12,8 +11,7 @@ const Index = () => {
       <main>
         <Hero />
         <Workflow />
-        <Features />
-        <PortalTiles />
+        <SearchPreview />
       </main>
       <Footer />
     </div>

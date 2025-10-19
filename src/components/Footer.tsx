@@ -10,47 +10,17 @@ export const Footer = () => {
             <div className="mb-4 flex items-center">
               <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-8" />
             </div>
-            <p className="mb-4 text-sm text-muted-foreground">
-              Enterprise Technology Services<br />
-              State of Hawai'i
-            </p>
             <p className="text-sm text-muted-foreground">
-              Built with aloha, powered by data integrity. Together for transparency in Hawai'i's IT project oversight.
+              Built by the Hawai'i Office of Enterprise Technology Services.
             </p>
           </div>
 
           <div>
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
+            <h4 className="mb-4 text-sm font-semibold text-foreground">Links</h4>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About Lōkahi Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/public" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Public Reports
-                </Link>
-              </li>
-              <li>
-                <Link to="/api" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  API Documentation
-                </Link>
-              </li>
-              <li>
-                <Link to="/help" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Help & Support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Legal</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
+                  About
                 </Link>
               </li>
               <li>
@@ -59,17 +29,19 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/transparency" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Transparency
+                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Privacy
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Contact Us
+                  Contact
                 </Link>
               </li>
             </ul>
           </div>
+
+          <div></div>
         </div>
 
         <div className="mt-8 border-t border-border pt-8 text-center">

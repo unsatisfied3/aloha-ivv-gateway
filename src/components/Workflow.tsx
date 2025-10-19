@@ -5,50 +5,42 @@ const steps = [
   {
     icon: Upload,
     title: "Vendors Submit Reports",
-    description: "Digitally submit IV&V deliverables with built-in standardization",
+    description: "Upload standardized IV&V deliverables",
     color: "text-primary",
   },
   {
     icon: CheckCircle2,
     title: "ETS Reviews & Validates",
-    description: "Assess quality, compliance, and project health",
+    description: "Oversee compliance and project health",
     color: "text-secondary",
   },
   {
     icon: Eye,
     title: "Reports Published Publicly",
-    description: "Browse validated reports for transparency and oversight",
+    description: "Transparency for all",
     color: "text-accent",
   },
 ];
 
 export const Workflow = () => {
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-16 md:py-20 bg-[hsl(120,20%,97%)]">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">
             How Lōkahi Works
           </h2>
-          <p className="text-lg text-muted-foreground">
-            A simple three-step process for transparent project oversight
-          </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
           {steps.map((step, index) => (
             <div key={index} className="relative">
-              <Card className="h-full bg-gradient-card p-8 shadow-soft transition-all hover:shadow-medium animate-fade-in">
+              <Card className="h-full bg-card p-8 shadow-sm transition-all hover:shadow-md animate-fade-in">
                 <div className={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 ${step.color}`}>
                   <step.icon className="h-7 w-7" />
                 </div>
                 
-                <div className="mb-2 flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                    {index + 1}
-                  </span>
-                  <h3 className="text-xl font-semibold text-card-foreground">{step.title}</h3>
-                </div>
+                <h3 className="text-xl font-semibold text-card-foreground mb-3">{step.title}</h3>
                 
                 <p className="text-muted-foreground">{step.description}</p>
               </Card>
