@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
             <div className="mb-4 flex items-center">
-              <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-10" />
+              <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-8" />
             </div>
             <p className="mb-4 text-sm text-muted-foreground">
               Enterprise Technology Services<br />
