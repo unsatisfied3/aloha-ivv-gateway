@@ -37,7 +37,7 @@ export function AdminSidebar() {
           />
           {!collapsed && (
             <div>
-              <div className="text-base font-semibold text-primary">Lōkahi</div>
+              <div className="text-base font-semibold text-[#007C77]">Lōkahi</div>
               <div className="text-sm text-muted-foreground">Dashboard</div>
             </div>
           )}
@@ -59,7 +59,7 @@ export function AdminSidebar() {
                       className={({ isActive }) =>
                         `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                           isActive
-                            ? "bg-primary/10 text-primary font-medium"
+                            ? "bg-[#007C77]/10 text-[#007C77] font-medium"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground"
                         }`
                       }
