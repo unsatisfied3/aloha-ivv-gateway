@@ -5,6 +5,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -26,25 +27,29 @@ export function AdminSidebar() {
   const collapsed = state === "collapsed";
 
   return (
-    <Sidebar className="border-r bg-white">
-      <SidebarHeader className="border-b p-4">
-        <div className="flex items-center gap-2">
+    <Sidebar className="border-r bg-background">
+      <SidebarHeader className="border-b px-6 py-5">
+        <div className="flex items-center gap-3">
           <img 
             src={lokahiLogo} 
             alt="Lōkahi" 
-            className={collapsed ? "h-8 w-8" : "h-10"}
+            className="h-8 w-8"
           />
           {!collapsed && (
-            <span className="text-lg font-semibold text-[hsl(178,100%,24%)]">
-              Lōkahi
-            </span>
+            <div>
+              <div className="text-base font-semibold text-[#007C77]">Lōkahi</div>
+              <div className="text-sm text-muted-foreground">Dashboard</div>
+            </div>
           )}
         </div>
       </SidebarHeader>
       
-      <SidebarContent>
+      <SidebarContent className="px-3 py-4">
         <SidebarGroup>
-          <SidebarGroupContent>
+          <SidebarGroupLabel className="px-3 text-xs font-medium text-muted-foreground">
+            Navigation
+          </SidebarGroupLabel>
+          <SidebarGroupContent className="mt-2">
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
@@ -52,12 +57,14 @@ export function AdminSidebar() {
                     <NavLink
                       to={item.url}
                       className={({ isActive }) =>
-                        isActive
-                          ? "bg-[hsl(178,100%,24%)]/10 text-[hsl(178,100%,24%)] font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                          isActive
+                            ? "bg-[#007C77]/10 text-[#007C77] font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`
                       }
                     >
-                      <item.icon className="h-5 w-5" />
+                      <item.icon className="h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>

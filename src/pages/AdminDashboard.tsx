@@ -6,13 +6,6 @@ import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -31,28 +24,78 @@ import {
 import { 
   Search, 
   User, 
-  FolderOpen, 
-  FileCheck, 
-  FileText, 
-  AlertTriangle,
-  TrendingUp,
   Calendar,
   Building2,
-  Users,
   Clock,
-  CheckCircle2,
-  Upload,
+  TrendingUp,
+  TrendingDown,
   ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+
+// Sparkline component
+const Sparkline = ({ data, positive = true }: { data: number[], positive?: boolean }) => {
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min;
+  
+  const points = data.map((value, index) => {
+    const x = (index / (data.length - 1)) * 100;
+    const y = 100 - ((value - min) / range) * 100;
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <svg viewBox="0 0 100 100" className="w-20 h-12" preserveAspectRatio="none">
+      <polyline
+        points={points}
+        fill="none"
+        stroke={positive ? "#3CC5C0" : "#94A3B8"}
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        opacity="0.8"
+      />
+    </svg>
+  );
+};
 
 // Mock data
+const sparklineData = [60, 70, 65, 80, 75, 90, 100];
+
 const summaryStats = [
-  { title: "Total Active Projects", value: 24, trend: "+3", icon: FolderOpen, color: "#007C77", bgColor: "bg-[#007C77]/10" },
-  { title: "Reports In Review", value: 12, icon: FileCheck, color: "#005B7F", bgColor: "bg-[#005B7F]/10" },
-  { title: "Published Reports", value: 87, trend: "+5", icon: FileText, color: "#3CC5C0", bgColor: "bg-[#3CC5C0]/10" },
-  { title: "High-Risk Projects", value: 3, icon: AlertTriangle, color: "#D32F2F", bgColor: "bg-[#D32F2F]/10" },
+  { 
+    title: "Total Active Projects", 
+    value: 127, 
+    trend: "+12%",
+    trendLabel: "from last month",
+    isPositive: true,
+    sparkline: sparklineData
+  },
+  { 
+    title: "Reports in Review", 
+    value: 34, 
+    trend: "+5%",
+    trendLabel: "from last month",
+    isPositive: true,
+    sparkline: [40, 45, 50, 55, 48, 52, 60]
+  },
+  { 
+    title: "Published Reports", 
+    value: 89, 
+    trend: "+8%",
+    trendLabel: "from last month",
+    isPositive: true,
+    sparkline: [70, 75, 72, 80, 85, 88, 95]
+  },
+  { 
+    title: "High-Risk Projects", 
+    value: 15, 
+    trend: "-3%",
+    trendLabel: "from last month",
+    isPositive: false,
+    sparkline: [25, 22, 20, 18, 17, 16, 15]
+  },
 ];
 
 const currentProjects = [
@@ -104,32 +147,19 @@ const currentProjects = [
 ];
 
 const myAssignments = [
-  { id: 1, name: "Healthcare Data Platform", dueDate: "Oct 25", progress: 75 },
-  { id: 2, name: "Digital Tax Portal", dueDate: "Oct 28", progress: 40 },
-  { id: 3, name: "Library System Upgrade", dueDate: "Nov 2", progress: 20 },
-];
-
-const recentActivity = [
-  { id: 1, text: "TechCorp Solutions submitted Healthcare Data Platform Report", time: "2 hours ago", icon: Upload },
-  { id: 2, text: "Review completed by J. Lee", time: "5 hours ago", icon: CheckCircle2 },
-  { id: 3, text: "Student Information System report published", time: "1 day ago", icon: FileText },
-  { id: 4, text: "New assignment: Fleet Management System", time: "2 days ago", icon: Users },
-];
-
-const riskData = [
-  { name: "Low", value: 18, color: "#3CC5C0" },
-  { name: "Medium", value: 3, color: "#FFC107" },
-  { name: "High", value: 3, color: "#D32F2F" },
+  { id: 1, name: "Student Records System", dueDate: "Dec 15, 2024", progress: 65, status: "In Progress" },
+  { id: 2, name: "Public Health Portal", dueDate: "Dec 20, 2024", progress: 40, status: "Under Review" },
+  { id: 3, name: "Tax Management Platform", dueDate: "Jan 5, 2025", progress: 20, status: "Starting Soon" },
 ];
 
 const getStatusColor = (status: string) => {
   switch (status) {
     case "Active":
-      return "bg-[hsl(178,100%,24%)]/10 text-[hsl(178,100%,24%)] border-[hsl(178,100%,24%)]/20";
+      return "bg-[#007C77]/10 text-[#007C77] border-[#007C77]/20";
     case "In Review":
-      return "bg-[hsl(45,100%,51%)]/10 text-[hsl(45,100%,35%)] border-[hsl(45,100%,51%)]/20";
+      return "bg-[#3CC5C0]/10 text-[#3CC5C0] border-[#3CC5C0]/20";
     case "Published":
-      return "bg-secondary/10 text-secondary border-secondary/20";
+      return "bg-[#005B7F]/10 text-[#005B7F] border-[#005B7F]/20";
     default:
       return "bg-muted text-muted-foreground";
   }
@@ -138,40 +168,29 @@ const getStatusColor = (status: string) => {
 const AdminDashboard = () => {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-[hsl(120,20%,97%)]">
+      <div className="flex min-h-screen w-full">
         <AdminSidebar />
         
         <div className="flex-1 flex flex-col">
           {/* Top Navigation Bar */}
-          <header className="sticky top-0 z-40 border-b bg-white shadow-sm">
-            <div className="flex h-16 items-center px-6 gap-4">
+          <header className="sticky top-0 z-40 border-b bg-background">
+            <div className="flex h-16 items-center px-8 gap-4">
               <SidebarTrigger />
               
-              <div className="flex-1" />
+              <h1 className="text-xl font-semibold text-foreground flex-1">
+                Admin Dashboard — State Project Oversight
+              </h1>
               
               <div className="flex items-center gap-4">
-                <div className="relative hidden md:block">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search project or report..."
-                    className="w-64 pl-9 h-9"
-                  />
-                </div>
-
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="gap-2">
-                      <div className="h-8 w-8 rounded-full bg-[hsl(178,100%,24%)]/10 flex items-center justify-center">
-                        <User className="h-4 w-4 text-[hsl(178,100%,24%)]" />
-                      </div>
-                      <div className="hidden md:flex flex-col items-start">
-                        <span className="text-sm font-medium">Jennifer Lee</span>
-                        <span className="text-xs text-muted-foreground">ETS Reviewer</span>
+                      <div className="h-8 w-8 rounded-full bg-[#007C77]/10 flex items-center justify-center">
+                        <User className="h-4 w-4 text-[#007C77]" />
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 bg-white z-50">
+                  <DropdownMenuContent align="end" className="w-56 bg-background z-50">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Profile Settings</DropdownMenuItem>
@@ -185,76 +204,63 @@ const AdminDashboard = () => {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-6 md:p-8">{/* ... keep existing code */}
+          <main className="flex-1 p-8 bg-[#F8FAF9]">
             {/* Dashboard Header */}
             <div className="mb-8">
-              <div className="mb-6">
-                <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h1>
-                <p className="text-muted-foreground">
-                  Monitor active projects, report progress, and upcoming reviews.
-                </p>
-              </div>
+              <h2 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h2>
+              <p className="text-muted-foreground mb-6">
+                Monitor active projects, report progress, and upcoming reviews.
+              </p>
               
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative flex-1 max-w-md">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     type="search"
-                    placeholder="Search projects, reports..."
-                    className="pl-9 bg-white"
+                    placeholder="Search projects, vendors, or agencies..."
+                    className="pl-9 bg-background"
                   />
                 </div>
-                <Select defaultValue="quarter">
-                  <SelectTrigger className="w-full sm:w-48 bg-white">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white z-50">
-                    <SelectItem value="week">This Week</SelectItem>
-                    <SelectItem value="month">This Month</SelectItem>
-                    <SelectItem value="quarter">This Quarter</SelectItem>
-                    <SelectItem value="year">This Year</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Button variant="outline" className="gap-2 bg-background">
+                  <Calendar className="h-4 w-4" />
+                  Date Range
+                </Button>
               </div>
             </div>
 
             {/* Summary Stats */}
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {summaryStats.map((stat, index) => (
-                <Card 
-                  key={index} 
-                  className="bg-white hover:shadow-md transition-shadow"
-                >
+                <Card key={index} className="bg-background">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <div 
-                        className={`flex h-12 w-12 items-center justify-center rounded-lg ${stat.bgColor}`}
-                      >
-                        <stat.icon className="h-6 w-6" style={{ color: stat.color }} />
-                      </div>
-                      {stat.trend && (
-                        <div className="flex items-center gap-1 text-[#3CC5C0] text-sm font-medium">
-                          <TrendingUp className="h-4 w-4" />
-                          {stat.trend}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
+                        <p className="text-4xl font-bold text-foreground mb-3">{stat.value}</p>
+                        <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-[#3CC5C0]' : 'text-muted-foreground'}`}>
+                          {stat.isPositive ? (
+                            <TrendingUp className="h-4 w-4" />
+                          ) : (
+                            <TrendingDown className="h-4 w-4" />
+                          )}
+                          <span>{stat.trend}</span>
+                          <span className="text-muted-foreground font-normal">{stat.trendLabel}</span>
                         </div>
-                      )}
+                      </div>
+                      <Sparkline data={stat.sparkline} positive={stat.isPositive} />
                     </div>
-                    <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground">{stat.title}</div>
                   </CardContent>
                 </Card>
               ))}
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3">
-              {/* Projects Table + Risk Chart */}
-              <div className="lg:col-span-2 space-y-6">{/* ... keep existing code */}
-                {/* Projects Table */}
-                <Card className="bg-white">
+              {/* Active Projects Table */}
+              <div className="lg:col-span-2">
+                <Card className="bg-background">
                   <CardHeader>
-                    <CardTitle>Current Projects</CardTitle>
-                  </CardHeader>{/* ... keep existing code */}
+                    <CardTitle>Active Projects</CardTitle>
+                  </CardHeader>
                   <CardContent>
                     <div className="rounded-md border">
                       <Table>
@@ -303,7 +309,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="mt-4">
                       <Link to="/admin/reports">
-                        <Button variant="ghost" className="w-full sm:w-auto text-[hsl(178,100%,24%)]">
+                        <Button variant="ghost" className="w-full sm:w-auto text-[#007C77]">
                           View All Reports
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
@@ -311,101 +317,34 @@ const AdminDashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
-
-                {/* Risk Overview Chart */}
-                <Card className="bg-white">
-                  <CardHeader>
-                    <CardTitle>Risk Overview</CardTitle>
-                    <CardDescription>Project risk distribution across active portfolio</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-col md:flex-row items-center gap-8">
-                      <div className="h-64 w-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                          <PieChart>
-                            <Pie
-                              data={riskData}
-                              cx="50%"
-                              cy="50%"
-                              innerRadius={60}
-                              outerRadius={100}
-                              paddingAngle={2}
-                              dataKey="value"
-                            >
-                              {riskData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                              ))}
-                            </Pie>
-                          </PieChart>
-                        </ResponsiveContainer>
-                      </div>
-                      <div className="flex-1 space-y-4">
-                        {riskData.map((item) => (
-                          <div key={item.name} className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <div 
-                                className="h-3 w-3 rounded-full" 
-                                style={{ backgroundColor: item.color }}
-                              />
-                              <span className="text-sm font-medium">{item.name} Risk</span>
-                            </div>
-                            <span className="text-2xl font-bold">{item.value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
 
-              {/* Right Column: Assignments + Activity */}
-              <div className="space-y-6">{/* ... keep existing code */}
-                {/* My Assignments */}
-                <Card className="bg-white">
+              {/* Assigned to Me Panel */}
+              <div>
+                <Card className="bg-background">
                   <CardHeader>
                     <CardTitle>Assigned to Me</CardTitle>
                     <CardDescription>Your current project assignments</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {myAssignments.map((assignment) => (
-                      <div key={assignment.id} className="space-y-2">
+                      <div key={assignment.id} className="space-y-2 pb-4 border-b last:border-0 last:pb-0">
                         <div className="flex items-start justify-between gap-2">
                           <h4 className="text-sm font-medium leading-tight">{assignment.name}</h4>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
-                            <Clock className="h-3 w-3" />
-                            {assignment.dueDate}
-                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Clock className="h-3 w-3" />
+                          {assignment.dueDate}
                         </div>
                         <Progress value={assignment.progress} className="h-2" />
-                        <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
+                          <Badge variant="outline" className="text-xs">
+                            {assignment.status}
+                          </Badge>
+                        </div>
                       </div>
                     ))}
-                    <Button variant="outline" className="w-full mt-2">
-                      View All Assignments
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                {/* Recent Activity Feed */}
-                <Card className="bg-white">
-                  <CardHeader>
-                    <CardTitle>Recent Activity</CardTitle>
-                    <CardDescription>Latest project updates and submissions</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {recentActivity.map((activity) => (
-                        <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#007C77]/10 text-[#007C77] flex-shrink-0">
-                            <activity.icon className="h-4 w-4" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm leading-snug text-foreground">{activity.text}</p>
-                            <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
                   </CardContent>
                 </Card>
               </div>
