@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   useSidebar,
 } from "@/components/ui/sidebar";
-import lokahiLogo from "@/assets/lokahi-logo.png";
+import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 
 const menuItems = [
   { title: "Dashboard", url: "/admin/dashboard", icon: Home },
@@ -30,16 +30,18 @@ export function AdminSidebar() {
     <Sidebar className="border-r bg-background">
       <SidebarHeader className="border-b px-6 py-5">
         <div className="flex items-center gap-3">
-          <img 
-            src={lokahiLogo} 
-            alt="Lōkahi" 
-            className="h-8 w-8"
-          />
-          {!collapsed && (
-            <div>
-              <div className="text-base font-semibold text-primary">Lōkahi</div>
-              <div className="text-sm text-muted-foreground">Dashboard</div>
-            </div>
+          {!collapsed ? (
+            <img 
+              src={lokahiFullLogo} 
+              alt="Lōkahi Dashboard" 
+              className="h-8 w-auto"
+            />
+          ) : (
+            <img 
+              src={lokahiFullLogo} 
+              alt="Lōkahi" 
+              className="h-6 w-6 object-contain"
+            />
           )}
         </div>
       </SidebarHeader>
