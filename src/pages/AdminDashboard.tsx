@@ -6,14 +6,6 @@ import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Table,
   TableBody,
   TableCell,
@@ -22,8 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { 
-  Search, 
-  User, 
+  Search,
   Calendar,
   Building2,
   Clock,
@@ -180,26 +171,6 @@ const AdminDashboard = () => {
               <h1 className="text-xl font-semibold text-foreground flex-1">
                 Admin Dashboard — State Project Oversight
               </h1>
-              
-              <div className="flex items-center gap-4">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-2">
-                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <User className="h-4 w-4 text-primary" />
-                      </div>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 bg-background z-50">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-                    <DropdownMenuItem>Notifications</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-destructive">Logout</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
             </div>
           </header>
 
