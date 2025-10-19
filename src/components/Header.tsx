@@ -10,42 +10,42 @@ export const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="container flex h-16 items-center justify-between">
-        <div className="flex items-center">
+      <nav className="container mx-auto flex h-16 items-center justify-center">
+        <div className="flex items-center gap-8">
           <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-8" />
-        </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex">
-          <Link to="/" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            Home
-          </Link>
-          <Link to="/public" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            Public Reports
-          </Link>
-          <Link to="/about" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            About
-          </Link>
-          <Link to="/api" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            API
-          </Link>
-          <Link to="/help" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            Help
-          </Link>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="relative hidden md:block">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search projects..."
-              className="h-10 w-64 pl-9"
-            />
+          
+          {/* Desktop Navigation */}
+          <div className="hidden items-center gap-6 md:flex">
+            <Link to="/" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+              Home
+            </Link>
+            <Link to="/public" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+              Public Reports
+            </Link>
+            <Link to="/about" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+              About
+            </Link>
+            <Link to="/api" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+              API
+            </Link>
+            <Link to="/help" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+              Help
+            </Link>
           </div>
-          <Button variant="outline" className="hidden md:flex">
-            Sign In
-          </Button>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search projects..."
+                className="h-10 w-64 pl-9"
+              />
+            </div>
+            <Button variant="outline">
+              Sign In
+            </Button>
+          </div>
           
           {/* Mobile Menu Button */}
           <button
