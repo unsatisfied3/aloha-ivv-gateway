@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import lokahiLogo from "@/assets/lokahi-logo.png";
 
 export const Footer = () => {
   return (
@@ -6,13 +7,11 @@ export const Footer = () => {
       <div className="container py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="mb-4 flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-ocean">
-                <span className="text-xl font-bold text-primary-foreground">IV</span>
-              </div>
+            <div className="mb-4 flex items-center gap-3">
+              <img src={lokahiLogo} alt="Lōkahi Dashboard" className="h-10 w-10" />
               <div className="flex flex-col">
-                <span className="text-sm font-bold leading-none">IV&V Nexus</span>
-                <span className="text-xs text-muted-foreground">Hawai'i ETS</span>
+                <span className="text-base font-semibold leading-none">Lōkahi</span>
+                <span className="text-xs text-muted-foreground">Dashboard</span>
               </div>
             </div>
             <p className="mb-4 text-sm text-muted-foreground">
@@ -20,8 +19,7 @@ export const Footer = () => {
               State of Hawai'i
             </p>
             <p className="text-sm text-muted-foreground">
-              Bringing transparency and accountability to Hawaii's IT project oversight through
-              standardized IV&V reporting.
+              Built with aloha, powered by data integrity. Together for transparency in Hawai'i's IT project oversight.
             </p>
           </div>
 
@@ -30,7 +28,7 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About IV&V Nexus
+                  About Lōkahi Dashboard
                 </Link>
               </li>
               <li>

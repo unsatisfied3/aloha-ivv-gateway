@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import lokahiLogo from "@/assets/lokahi-logo.png";
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -9,13 +10,11 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <nav className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-ocean">
-            <span className="text-xl font-bold text-primary-foreground">IV</span>
-          </div>
+        <div className="flex items-center gap-3">
+          <img src={lokahiLogo} alt="Lōkahi Dashboard" className="h-10 w-10" />
           <div className="flex flex-col">
-            <span className="text-sm font-bold leading-none">IV&V Nexus</span>
-            <span className="text-xs text-muted-foreground">Hawai'i ETS</span>
+            <span className="text-base font-semibold leading-none">Lōkahi</span>
+            <span className="text-xs text-muted-foreground">Dashboard</span>
           </div>
         </div>
 
