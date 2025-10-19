@@ -5,70 +5,31 @@ export const Footer = () => {
   return (
     <footer className="border-t border-border bg-primary-light/10">
       <div className="container py-12">
-        <div className="grid gap-8 md:grid-cols-4">
-          <div className="md:col-span-2">
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="md:col-span-1">
             <div className="mb-4 flex items-center">
               <img src={lokahiFullLogo} alt="Lōkahi Dashboard" className="h-8" />
             </div>
-            <p className="mb-4 text-sm text-muted-foreground">
-              Enterprise Technology Services<br />
-              State of Hawai'i
-            </p>
             <p className="text-sm text-muted-foreground">
-              Built with aloha, powered by data integrity. Together for transparency in Hawai'i's IT project oversight.
+              Built by the Hawai'i Office of Enterprise Technology Services.
             </p>
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  About Lōkahi Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/public" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Public Reports
-                </Link>
-              </li>
-              <li>
-                <Link to="/api" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  API Documentation
-                </Link>
-              </li>
-              <li>
-                <Link to="/help" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Help & Support
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Legal</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link to="/accessibility" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Accessibility
-                </Link>
-              </li>
-              <li>
-                <Link to="/transparency" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Transparency
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
+          <div className="md:col-span-2">
+            <nav className="flex flex-wrap gap-6 justify-end" aria-label="Footer navigation">
+              <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                About
+              </Link>
+              <Link to="/accessibility" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Accessibility
+              </Link>
+              <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Privacy
+              </Link>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Contact
+              </Link>
+            </nav>
           </div>
         </div>
 
