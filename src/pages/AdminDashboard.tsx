@@ -129,11 +129,11 @@ const myAssignments = [
 const getStatusColor = (status: string) => {
   switch (status) {
     case "Active":
-      return "bg-[#007C77]/10 text-[#007C77] border-[#007C77]/20";
+      return "bg-primary/10 text-primary border-primary/20";
     case "In Review":
-      return "bg-[#3CC5C0]/10 text-[#3CC5C0] border-[#3CC5C0]/20";
+      return "bg-chart-2/10 text-chart-2 border-chart-2/20";
     case "Published":
-      return "bg-[#005B7F]/10 text-[#005B7F] border-[#005B7F]/20";
+      return "bg-chart-3/10 text-chart-3 border-chart-3/20";
     default:
       return "bg-muted text-muted-foreground";
   }
@@ -159,8 +159,8 @@ const AdminDashboard = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="sm" className="gap-2">
-                      <div className="h-8 w-8 rounded-full bg-[#007C77]/10 flex items-center justify-center">
-                        <User className="h-4 w-4 text-[#007C77]" />
+                      <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <User className="h-4 w-4 text-primary" />
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
@@ -178,7 +178,7 @@ const AdminDashboard = () => {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-8 bg-[#F8FAF9]">
+          <main className="flex-1 p-8 bg-muted/30">
             {/* Dashboard Header */}
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h2>
@@ -211,7 +211,7 @@ const AdminDashboard = () => {
                       <div className="flex-1">
                         <p className="text-sm text-muted-foreground mb-2">{stat.title}</p>
                         <p className="text-4xl font-bold text-foreground mb-3">{stat.value}</p>
-                        <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-[#3CC5C0]' : 'text-muted-foreground'}`}>
+                        <div className={`flex items-center gap-1 text-sm font-medium ${stat.isPositive ? 'text-primary' : 'text-muted-foreground'}`}>
                           {stat.isPositive ? (
                             <TrendingUp className="h-4 w-4" />
                           ) : (
@@ -285,7 +285,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="mt-4">
                       <Link to="/admin/reports">
-                        <Button variant="ghost" className="w-full sm:w-auto text-[#007C77]">
+                        <Button variant="ghost" className="w-full sm:w-auto text-primary">
                           View All Reports
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
