@@ -24,7 +24,8 @@ import {
   FolderKanban,
   FileSearch,
   FileCheck,
-  AlertTriangle
+  AlertTriangle,
+  Plus
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -209,7 +210,7 @@ const AdminDashboard = () => {
               
               <Link to="/admin/project/new">
                 <Button className="bg-secondary hover:bg-secondary/90 gap-2">
-                  <FolderKanban className="h-4 w-4" />
+                  <Plus className="h-4 w-4" />
                   New Project
                 </Button>
               </Link>
