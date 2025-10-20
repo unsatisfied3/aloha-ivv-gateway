@@ -110,7 +110,6 @@ const VendorReportForm = () => {
   const sections = [
     { id: "period", label: "Project & Period" },
     { id: "summary", label: "Summary" },
-    { id: "rating", label: "Rating" },
     { id: "highlights", label: "Highlights" },
     { id: "variance", label: "Variance" },
     { id: "findings", label: "Findings" },
@@ -279,9 +278,9 @@ const VendorReportForm = () => {
                   <Card id="period" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Project & Reporting Period</CardTitle>
-                      <CardDescription>Select the project and reporting period for this report</CardDescription>
+                      <CardDescription>Select the project, reporting period, and overall rating</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-2 md:col-span-1">
                           <Label htmlFor="project">Project</Label>
@@ -340,6 +339,40 @@ const VendorReportForm = () => {
                           )}
                         </div>
                       </div>
+
+                      <div className="space-y-2">
+                        <Label>Overall Project Rating</Label>
+                        <div className="flex gap-3">
+                          {["green", "yellow", "red"].map((rating) => (
+                            <button
+                              key={rating}
+                              type="button"
+                              onClick={() => setValue("overallRating", rating as "green" | "yellow" | "red")}
+                              className={`flex-1 p-4 rounded-lg border-2 transition-all ${
+                                overallRating === rating
+                                  ? getRatingColor(rating)
+                                  : "border-border hover:border-primary/50"
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-3">
+                                <div
+                                  className={`w-6 h-6 rounded-full flex-shrink-0 ${
+                                    rating === "green"
+                                      ? "bg-accent"
+                                      : rating === "yellow"
+                                      ? "bg-yellow-500"
+                                      : "bg-destructive"
+                                  }`}
+                                />
+                                <p className="font-medium text-sm">{getRatingLabel(rating)}</p>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                        {errors.overallRating && (
+                          <p className="text-sm text-destructive mt-2">{errors.overallRating.message}</p>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -367,46 +400,6 @@ const VendorReportForm = () => {
                           )}
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Overall Rating */}
-                  <Card id="rating" className="bg-background scroll-mt-24">
-                    <CardHeader>
-                      <CardTitle>Overall Project Rating</CardTitle>
-                      <CardDescription>Select the overall status of the project</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex gap-3">
-                        {["green", "yellow", "red"].map((rating) => (
-                          <button
-                            key={rating}
-                            type="button"
-                            onClick={() => setValue("overallRating", rating as "green" | "yellow" | "red")}
-                            className={`flex-1 p-4 rounded-lg border-2 transition-all ${
-                              overallRating === rating
-                                ? getRatingColor(rating)
-                                : "border-border hover:border-primary/50"
-                            }`}
-                          >
-                            <div className="flex items-center justify-center gap-3">
-                              <div
-                                className={`w-6 h-6 rounded-full flex-shrink-0 ${
-                                  rating === "green"
-                                    ? "bg-accent"
-                                    : rating === "yellow"
-                                    ? "bg-yellow-500"
-                                    : "bg-destructive"
-                                }`}
-                              />
-                              <p className="font-medium text-sm">{getRatingLabel(rating)}</p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                      {errors.overallRating && (
-                        <p className="text-sm text-destructive mt-2">{errors.overallRating.message}</p>
-                      )}
                     </CardContent>
                   </Card>
 
