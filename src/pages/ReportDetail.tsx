@@ -522,19 +522,19 @@ export default function ReportDetail() {
                     </div>
                     <div className="grid grid-cols-4 gap-2 text-xs text-center">
                       <div>
-                        <div className="w-2 h-2 rounded-full bg-primary mx-auto mb-1"></div>
+                        <div className="w-2 h-2 rounded-full bg-blue-500 mx-auto mb-1"></div>
                         <p className="font-medium">Submitted</p>
                       </div>
                       <div>
-                        <div className="w-2 h-2 rounded-full bg-primary mx-auto mb-1"></div>
+                        <div className="w-2 h-2 rounded-full bg-yellow-500 mx-auto mb-1"></div>
                         <p className="font-medium">In Review</p>
                       </div>
                       <div>
-                        <div className="w-2 h-2 rounded-full bg-muted-foreground mx-auto mb-1"></div>
+                        <div className="w-2 h-2 rounded-full bg-green-500 mx-auto mb-1"></div>
                         <p className="text-muted-foreground">Approved</p>
                       </div>
                       <div>
-                        <div className="w-2 h-2 rounded-full bg-muted-foreground mx-auto mb-1"></div>
+                        <div className="w-2 h-2 rounded-full bg-purple-500 mx-auto mb-1"></div>
                         <p className="text-muted-foreground">Published</p>
                       </div>
                     </div>
