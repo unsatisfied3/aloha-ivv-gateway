@@ -58,18 +58,18 @@ export function AdminSidebar() {
       </SidebarHeader>
       
       <SidebarContent className="px-3 py-4">
-        <div className="mb-4 px-2">
-          <Link to="/admin/project/new">
-            <Button className="w-full bg-secondary hover:bg-secondary/90 gap-2">
-              <Plus className="h-4 w-4" />
-              {!collapsed && <span>New Project</span>}
-            </Button>
-          </Link>
-        </div>
-        
         <SidebarGroup>
-          <SidebarGroupContent className="mt-2">
+          <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-medium">
+                  <Link to="/admin/project/new">
+                    <Plus className="h-4 w-4" />
+                    {!collapsed && <span>New Project</span>}
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
