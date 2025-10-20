@@ -288,7 +288,7 @@ export default function ReportsTable() {
                           <TableHead className="font-semibold">Rating</TableHead>
                           <TableHead className="font-semibold">Reported By</TableHead>
                           <TableHead className="font-semibold">Submission Date</TableHead>
-                          <TableHead className="text-right font-semibold">Actions</TableHead>
+                          <TableHead className="text-right font-semibold"></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>

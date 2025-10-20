@@ -329,7 +329,7 @@ export default function AdminProjects() {
                           <TableHead className="font-semibold">Status</TableHead>
                           <TableHead className="font-semibold">Budget Used</TableHead>
                           <TableHead className="font-semibold">Timeline</TableHead>
-                          <TableHead className="text-right font-semibold">Actions</TableHead>
+                          <TableHead className="text-right font-semibold"></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>

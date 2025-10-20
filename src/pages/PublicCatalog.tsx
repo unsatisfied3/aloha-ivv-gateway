@@ -380,7 +380,7 @@ const PublicCatalog = () => {
                             <TableHead>Vendor</TableHead>
                             <TableHead>Period</TableHead>
                             <TableHead>Rating</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
+                            <TableHead className="text-right"></TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
