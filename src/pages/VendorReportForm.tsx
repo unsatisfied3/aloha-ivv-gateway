@@ -96,6 +96,7 @@ const VendorReportForm = () => {
   const [findings, setFindings] = useState<Finding[]>([]);
   const [findingDialogOpen, setFindingDialogOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("project");
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [currentFinding, setCurrentFinding] = useState<FindingFormData>({
     findingNumber: "",
     findingType: "issue",
@@ -138,6 +139,18 @@ const VendorReportForm = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges]);
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -155,7 +168,7 @@ const VendorReportForm = () => {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ReportFormData>({
     resolver: zodResolver(reportSchema),
     defaultValues: {
@@ -165,6 +178,10 @@ const VendorReportForm = () => {
       projectId: "",
     },
   });
+
+  useEffect(() => {
+    setHasUnsavedChanges(isDirty || findings.length > 0);
+  }, [isDirty, findings]);
 
   const executiveSummary = watch("executiveSummary") || "";
   const overallRating = watch("overallRating");
@@ -218,12 +235,14 @@ const VendorReportForm = () => {
 
   const onSaveDraft = (data: ReportFormData) => {
     console.log("Saving draft:", { ...data, reportStatus: "draft", findings });
+    setHasUnsavedChanges(false);
     toast.success("Report saved as draft");
     navigate("/vendor/dashboard");
   };
 
   const onSubmitReport = (data: ReportFormData) => {
     console.log("Submitting report:", { ...data, reportStatus: "submitted", findings });
+    setHasUnsavedChanges(false);
     toast.success("Report submitted for review");
     navigate("/vendor/dashboard");
   };
@@ -246,29 +265,6 @@ const VendorReportForm = () => {
           <main className="flex-1 p-8 bg-muted/30">
             <div className="max-w-7xl mx-auto">
               <div className="flex gap-8">
-                {/* Sticky Side Navigation */}
-                <nav className="hidden lg:block w-48 flex-shrink-0">
-                  <div className="sticky top-24 space-y-1">
-                    <p className="text-xs font-semibold text-muted-foreground mb-3 px-3">
-                      SECTIONS
-                    </p>
-                    {sections.map((section) => (
-                      <button
-                        key={section.id}
-                        onClick={() => scrollToSection(section.id)}
-                        className={cn(
-                          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
-                          activeSection === section.id
-                            ? "bg-primary/10 text-primary font-medium"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        )}
-                      >
-                        {section.label}
-                      </button>
-                    ))}
-                  </div>
-                </nav>
-
                 {/* Main Content */}
                 <div className="flex-1 max-w-4xl space-y-6">
                   <div className="mb-6">
@@ -720,6 +716,29 @@ const VendorReportForm = () => {
                     </CardContent>
                   </Card>
                 </div>
+
+                {/* Sticky Side Navigation - Right */}
+                <nav className="hidden lg:block w-48 flex-shrink-0">
+                  <div className="sticky top-24 space-y-1">
+                    <p className="text-xs font-semibold text-muted-foreground mb-3 px-3">
+                      SECTIONS
+                    </p>
+                    {sections.map((section) => (
+                      <button
+                        key={section.id}
+                        onClick={() => scrollToSection(section.id)}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+                          activeSection === section.id
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {section.label}
+                      </button>
+                    ))}
+                  </div>
+                </nav>
               </div>
             </div>
           </main>
