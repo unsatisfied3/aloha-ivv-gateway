@@ -282,15 +282,10 @@ export default function ReportDetail() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
-                        {comments.map((comment) => (
+                        {comments.filter(c => !c.resolved).map((comment) => (
                           <div key={comment.id} className="border-l-2 border-primary pl-3 py-2">
                             <div className="flex items-center justify-between mb-1">
-                              <div className="flex items-center gap-2">
-                                <p className="text-xs font-medium">{comment.author}</p>
-                                {comment.resolved && (
-                                  <Badge variant="secondary" className="text-xs">Resolved</Badge>
-                                )}
-                              </div>
+                              <p className="text-xs font-medium">{comment.author}</p>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
@@ -298,19 +293,17 @@ export default function ReportDetail() {
                                   </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="bg-background">
-                                  {!comment.resolved && (
-                                    <DropdownMenuItem
-                                      onClick={() => {
-                                        const updatedComments = comments.map(c => 
-                                          c.id === comment.id ? { ...c, resolved: true } : c
-                                        );
-                                        setComments(updatedComments);
-                                        toast({ title: "Comment resolved" });
-                                      }}
-                                    >
-                                      Resolve
-                                    </DropdownMenuItem>
-                                  )}
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      const updatedComments = comments.map(c => 
+                                        c.id === comment.id ? { ...c, resolved: true } : c
+                                      );
+                                      setComments(updatedComments);
+                                      toast({ title: "Comment resolved" });
+                                    }}
+                                  >
+                                    Resolve
+                                  </DropdownMenuItem>
                                   <DropdownMenuItem
                                     onClick={() => {
                                       toast({ title: "Reply feature coming soon" });
