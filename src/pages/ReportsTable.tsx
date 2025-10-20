@@ -208,67 +208,65 @@ export default function ReportsTable() {
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
             {/* Filter Bar */}
-            <Card>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                    {/* Search */}
-                    <div className="lg:col-span-2 relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Search by project or report title..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
+            <div className="mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                {/* Search */}
+                <div className="lg:col-span-2 relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search by project or report title..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 bg-background"
+                  />
+                </div>
 
-                    {/* Agency Filter */}
-                    <Select value={agencyFilter} onValueChange={setAgencyFilter}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="All Agencies" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
-                        <SelectItem value="all">All Agencies</SelectItem>
-                        {agencies.map((agency) => (
-                          <SelectItem key={agency} value={agency}>
-                            {agency}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                {/* Agency Filter */}
+                <Select value={agencyFilter} onValueChange={setAgencyFilter}>
+                  <SelectTrigger className="bg-background">
+                    <SelectValue placeholder="Agency" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background z-50">
+                    <SelectItem value="all">Agency</SelectItem>
+                    {agencies.map((agency) => (
+                      <SelectItem key={agency} value={agency}>
+                        {agency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-                    {/* Vendor Filter */}
-                    <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="All Vendors" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
-                        <SelectItem value="all">All Vendors</SelectItem>
-                        {vendors.map((vendor) => (
-                          <SelectItem key={vendor} value={vendor}>
-                            {vendor}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                {/* Vendor Filter */}
+                <Select value={vendorFilter} onValueChange={setVendorFilter}>
+                  <SelectTrigger className="bg-background">
+                    <SelectValue placeholder="Vendor" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background z-50">
+                    <SelectItem value="all">Vendor</SelectItem>
+                    {vendors.map((vendor) => (
+                      <SelectItem key={vendor} value={vendor}>
+                        {vendor}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
-                    {/* Status Filter */}
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="bg-background">
-                        <SelectValue placeholder="All Statuses" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background z-50">
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        {statuses.map((status) => (
-                          <SelectItem key={status} value={status}>
-                            {getStatusLabel(status)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </CardContent>
-              </Card>
+                {/* Status Filter */}
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="bg-background">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background z-50">
+                    <SelectItem value="all">Status</SelectItem>
+                    {statuses.map((status) => (
+                      <SelectItem key={status} value={status}>
+                        {getStatusLabel(status)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
             {/* Data Table */}
             {filteredReports.length > 0 ? (
