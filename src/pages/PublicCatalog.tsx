@@ -268,7 +268,7 @@ const PublicCatalog = () => {
                       <SelectValue placeholder="Agencies" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Agencies</SelectItem>
+                      <SelectItem value="all">Agencies</SelectItem>
                       {agencies.map(agency => (
                         <SelectItem key={agency} value={agency}>{agency}</SelectItem>
                       ))}
@@ -280,7 +280,7 @@ const PublicCatalog = () => {
                       <SelectValue placeholder="Vendors" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Vendors</SelectItem>
+                      <SelectItem value="all">Vendors</SelectItem>
                       {vendors.map(vendor => (
                         <SelectItem key={vendor} value={vendor}>{vendor}</SelectItem>
                       ))}
@@ -292,7 +292,7 @@ const PublicCatalog = () => {
                       <SelectValue placeholder="Periods" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Periods</SelectItem>
+                      <SelectItem value="all">Periods</SelectItem>
                       {periods.map(period => (
                         <SelectItem key={period} value={period}>{period}</SelectItem>
                       ))}
@@ -304,7 +304,7 @@ const PublicCatalog = () => {
                       <SelectValue placeholder="Ratings" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Ratings</SelectItem>
+                      <SelectItem value="all">Ratings</SelectItem>
                       <SelectItem value="green">🟢 On Track</SelectItem>
                       <SelectItem value="yellow">🟡 At Risk</SelectItem>
                       <SelectItem value="red">🔴 Critical</SelectItem>
