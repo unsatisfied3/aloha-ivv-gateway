@@ -42,9 +42,11 @@ export function VendorSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-ocean">
-            <span className="text-lg font-bold text-white">L</span>
-          </div>
+          <img 
+            src="/src/assets/lokahi-logo.png" 
+            alt="Lōkahi" 
+            className="h-8 w-8 object-contain"
+          />
           {open && (
             <div className="flex flex-col">
               <span className="text-sm font-semibold text-foreground">Lōkahi</span>
