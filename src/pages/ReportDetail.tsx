@@ -170,67 +170,63 @@ export default function ReportDetail() {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Building2 className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Agency</p>
+              {/* Condensed metadata table */}
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4">
+                    <div className="flex items-start gap-3">
+                      <Building2 className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">Agency</p>
+                        <p className="text-sm font-medium">{mockReport.agency}</p>
+                      </div>
                     </div>
-                    <p className="text-sm font-medium">{mockReport.agency}</p>
-                  </CardContent>
-                </Card>
 
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Vendor</p>
+                    <div className="flex items-start gap-3">
+                      <Users className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">Vendor</p>
+                        <p className="text-sm font-medium">{mockReport.vendor}</p>
+                      </div>
                     </div>
-                    <p className="text-sm font-medium">{mockReport.vendor}</p>
-                  </CardContent>
-                </Card>
 
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Submitted</p>
+                    <div className="flex items-start gap-3">
+                      <Users className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">Reviewer</p>
+                        <p className="text-sm font-medium">{mockReport.reviewer}</p>
+                      </div>
                     </div>
-                    <p className="text-sm font-medium">{mockReport.submissionDate}</p>
-                  </CardContent>
-                </Card>
 
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Reviewer</p>
+                    <div className="flex items-start gap-3">
+                      <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">Submitted</p>
+                        <p className="text-sm font-medium">{mockReport.submissionDate}</p>
+                      </div>
                     </div>
-                    <p className="text-sm font-medium">{mockReport.reviewer}</p>
-                  </CardContent>
-                </Card>
 
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <FileText className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Status</p>
+                    <div className="flex items-start gap-3">
+                      <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">Last Updated</p>
+                        <p className="text-sm font-medium">{mockReport.lastUpdated}</p>
+                      </div>
                     </div>
-                    <p className="text-sm font-medium">{mockReport.status}</p>
-                  </CardContent>
-                </Card>
 
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Clock className="h-4 w-4 text-muted-foreground" />
-                      <p className="text-xs text-muted-foreground">Updated</p>
+                    <div className="flex items-start gap-3">
+                      <FileText className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">Review Progress</p>
+                        <div className="flex items-center gap-2">
+                          <Progress value={mockReport.progress} className="h-2 w-20" />
+                          <span className="text-sm font-medium">{mockReport.progress}%</span>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-sm font-medium">{mockReport.lastUpdated}</p>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Tabs Content */}
