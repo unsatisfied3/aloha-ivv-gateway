@@ -265,14 +265,6 @@ const VendorReportForm = () => {
               <div className="flex gap-8">
                 {/* Main Content */}
                 <div className="flex-1 max-w-4xl space-y-6">
-                  <div className="mb-6">
-                    <h2 className="text-3xl font-bold text-foreground mb-2">
-                      {id ? "Edit Report" : "New Monthly Report"}
-                    </h2>
-                    <p className="text-muted-foreground">
-                      Provide your monthly update for your assigned project.
-                    </p>
-                  </div>
 
                   {/* Project Selection & Reporting Period */}
                   <Card id="period" className="bg-background scroll-mt-24">
