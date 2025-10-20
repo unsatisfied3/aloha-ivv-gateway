@@ -206,6 +206,13 @@ const AdminDashboard = () => {
               <h1 className="text-base font-semibold text-foreground flex-1">
                 Admin Dashboard — State Project Oversight
               </h1>
+              
+              <Link to="/admin/project/new">
+                <Button className="bg-secondary hover:bg-secondary/90 gap-2">
+                  <FolderKanban className="h-4 w-4" />
+                  New Project
+                </Button>
+              </Link>
             </div>
           </header>
 
