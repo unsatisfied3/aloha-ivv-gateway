@@ -283,10 +283,10 @@ export default function ReportsTable() {
                       <TableHeader className="sticky top-0 bg-muted/50">
                         <TableRow>
                           <TableHead className="font-semibold">Project Name</TableHead>
-                          <TableHead className="font-semibold">Reporting Period</TableHead>
+                          <TableHead className="font-semibold">Period</TableHead>
                           <TableHead className="font-semibold">Status</TableHead>
                           <TableHead className="font-semibold">Rating</TableHead>
-                          <TableHead className="font-semibold">Reported By</TableHead>
+                          <TableHead className="font-semibold">Reporter</TableHead>
                           <TableHead className="font-semibold">Submission Date</TableHead>
                           <TableHead className="text-right font-semibold"></TableHead>
                         </TableRow>
