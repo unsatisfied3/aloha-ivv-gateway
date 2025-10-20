@@ -218,9 +218,7 @@ const AdminDashboard = () => {
                           <span className="text-muted-foreground font-normal">{stat.trendLabel}</span>
                         </div>
                       </div>
-                      <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <stat.icon className="h-6 w-6 text-primary" />
-                      </div>
+                      <stat.icon className="h-5 w-5 text-muted-foreground" />
                     </div>
                   </CardContent>
                 </Card>
