@@ -61,21 +61,18 @@ export function VendorSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <div className="px-3 mb-4">
-          <Button 
-            asChild 
-            className="w-full justify-start gap-2 bg-primary hover:bg-primary/90"
-          >
-            <NavLink to="/vendor/report/new">
-              <Plus className="h-4 w-4" />
-              {open && <span>New Report</span>}
-            </NavLink>
-          </Button>
-        </div>
-
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild className="bg-primary/10 text-primary hover:bg-primary/20 font-medium">
+                  <NavLink to="/vendor/report/new">
+                    <Plus className="h-4 w-4" />
+                    <span>New Report</span>
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
