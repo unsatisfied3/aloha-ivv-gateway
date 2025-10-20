@@ -29,6 +29,8 @@ import {
   Clock,
   MoreVertical,
   ChevronDown,
+  Flag,
+  Check,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -85,6 +87,8 @@ export default function ReportDetail() {
   const { toast } = useToast();
   const [comments, setComments] = useState(mockComments);
   const [newComment, setNewComment] = useState("");
+  const [riskStatuses, setRiskStatuses] = useState<Record<string, 'pending' | 'resolved' | 'flagged'>>({});
+  const [complianceStatuses, setComplianceStatuses] = useState<Record<string, 'pending' | 'resolved' | 'flagged'>>({});
 
   const handleAddComment = () => {
     if (!newComment.trim()) return;
@@ -124,6 +128,26 @@ export default function ReportDetail() {
       title: "Report published",
       description: "The report is now publicly available.",
     });
+  };
+
+  const handleResolveRisk = (riskId: string) => {
+    setRiskStatuses(prev => ({ ...prev, [riskId]: 'resolved' }));
+    toast({ title: "Risk resolved", description: "The risk has been marked as resolved." });
+  };
+
+  const handleFlagRisk = (riskId: string) => {
+    setRiskStatuses(prev => ({ ...prev, [riskId]: 'flagged' }));
+    toast({ title: "Risk flagged", description: "The risk has been flagged for follow-up." });
+  };
+
+  const handleResolveCompliance = (itemId: string) => {
+    setComplianceStatuses(prev => ({ ...prev, [itemId]: 'resolved' }));
+    toast({ title: "Item resolved", description: "The compliance item has been marked as resolved." });
+  };
+
+  const handleFlagCompliance = (itemId: string) => {
+    setComplianceStatuses(prev => ({ ...prev, [itemId]: 'flagged' }));
+    toast({ title: "Item flagged", description: "The compliance item has been flagged for follow-up." });
   };
 
   return (
@@ -367,12 +391,39 @@ export default function ReportDetail() {
                       <CardTitle>Risk Assessment</CardTitle>
                       <CardDescription>Identified risks and mitigation strategies</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                     <CardContent className="space-y-4">
                       <div className="space-y-3">
                         <div className="border rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-medium">Schedule Risk</h4>
-                            <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-medium">Schedule Risk</h4>
+                              {riskStatuses['schedule'] === 'resolved' && (
+                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20">Resolved</Badge>
+                              )}
+                              {riskStatuses['schedule'] === 'flagged' && (
+                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20">Flagged</Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="bg-background">
+                                  <DropdownMenuItem onClick={() => handleResolveRisk('schedule')}>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Resolve
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleFlagRisk('schedule')}>
+                                    <Flag className="h-4 w-4 mr-2" />
+                                    Flag for Follow-up
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
                           </div>
                           <p className="text-sm text-muted-foreground">
                             Project timeline is realistic with adequate buffer periods. Regular milestone reviews in place.
@@ -381,8 +432,35 @@ export default function ReportDetail() {
 
                         <div className="border rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-medium">Resource Allocation</h4>
-                            <Badge className="bg-chart-2/10 text-chart-2 border-chart-2/20">Medium</Badge>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-medium">Resource Allocation</h4>
+                              {riskStatuses['resource'] === 'resolved' && (
+                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20">Resolved</Badge>
+                              )}
+                              {riskStatuses['resource'] === 'flagged' && (
+                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20">Flagged</Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className="bg-chart-2/10 text-chart-2 border-chart-2/20">Medium</Badge>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="bg-background">
+                                  <DropdownMenuItem onClick={() => handleResolveRisk('resource')}>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Resolve
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleFlagRisk('resource')}>
+                                    <Flag className="h-4 w-4 mr-2" />
+                                    Flag for Follow-up
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
                           </div>
                           <p className="text-sm text-muted-foreground">
                             Current staffing levels may be insufficient for peak testing phase. Recommend additional QA resources.
@@ -391,8 +469,35 @@ export default function ReportDetail() {
 
                         <div className="border rounded-lg p-4">
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-medium">Technical Complexity</h4>
-                            <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-medium">Technical Complexity</h4>
+                              {riskStatuses['technical'] === 'resolved' && (
+                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20">Resolved</Badge>
+                              )}
+                              {riskStatuses['technical'] === 'flagged' && (
+                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20">Flagged</Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="bg-background">
+                                  <DropdownMenuItem onClick={() => handleResolveRisk('technical')}>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Resolve
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleFlagRisk('technical')}>
+                                    <Flag className="h-4 w-4 mr-2" />
+                                    Flag for Follow-up
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
                           </div>
                           <p className="text-sm text-muted-foreground">
                             Technology stack is well-established. Team has appropriate expertise in chosen platforms.
@@ -426,20 +531,47 @@ export default function ReportDetail() {
                       <CardTitle>Compliance Checklist</CardTitle>
                       <CardDescription>Regulatory and policy compliance status</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                     <CardContent>
                       <div className="space-y-2">
                         {[
-                          { item: "HIPAA Compliance Review", status: "Complete" },
-                          { item: "State IT Security Standards", status: "Complete" },
-                          { item: "Accessibility (ADA) Requirements", status: "In Progress" },
-                          { item: "Data Privacy Impact Assessment", status: "Complete" },
-                          { item: "Disaster Recovery Plan", status: "In Progress" },
-                        ].map((item, index) => (
-                          <div key={index} className="flex items-center justify-between border-b py-3">
-                            <p className="text-sm">{item.item}</p>
-                            <Badge variant={item.status === "Complete" ? "default" : "secondary"}>
-                              {item.status}
-                            </Badge>
+                          { id: "hipaa", item: "HIPAA Compliance Review", status: "Complete" },
+                          { id: "security", item: "State IT Security Standards", status: "Complete" },
+                          { id: "ada", item: "Accessibility (ADA) Requirements", status: "In Progress" },
+                          { id: "privacy", item: "Data Privacy Impact Assessment", status: "Complete" },
+                          { id: "disaster", item: "Disaster Recovery Plan", status: "In Progress" },
+                        ].map((item) => (
+                          <div key={item.id} className="flex items-center justify-between border-b py-3">
+                            <div className="flex items-center gap-2">
+                              <p className="text-sm">{item.item}</p>
+                              {complianceStatuses[item.id] === 'resolved' && (
+                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20 text-xs">Resolved</Badge>
+                              )}
+                              {complianceStatuses[item.id] === 'flagged' && (
+                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20 text-xs">Flagged</Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge variant={item.status === "Complete" ? "default" : "secondary"}>
+                                {item.status}
+                              </Badge>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="bg-background">
+                                  <DropdownMenuItem onClick={() => handleResolveCompliance(item.id)}>
+                                    <Check className="h-4 w-4 mr-2" />
+                                    Resolve
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => handleFlagCompliance(item.id)}>
+                                    <Flag className="h-4 w-4 mr-2" />
+                                    Flag for Follow-up
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
                           </div>
                         ))}
                       </div>
