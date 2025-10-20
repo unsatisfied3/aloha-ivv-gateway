@@ -701,7 +701,7 @@ const VendorReportForm = () => {
                       <div className="flex justify-between items-center">
                         <Button
                           type="button"
-                          variant="ghost"
+                          variant="outline"
                           onClick={() => {
                             if (hasUnsavedChanges) {
                               if (confirm("You have unsaved changes. Are you sure you want to leave?")) {
@@ -756,24 +756,26 @@ const VendorReportForm = () => {
                       </div>
                     </div>
 
-                    <div className="border-t pt-4 space-y-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={handleSubmit(onSaveDraft)}
-                        className="w-full"
-                        size="sm"
-                      >
-                        Save Draft
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={handleSubmit(onSubmitReport)}
-                        className="w-full"
-                        size="sm"
-                      >
-                        Submit
-                      </Button>
+                    <div className="border-t pt-4">
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleSubmit(onSaveDraft)}
+                          className="flex-1"
+                          size="sm"
+                        >
+                          Save Draft
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={handleSubmit(onSubmitReport)}
+                          className="flex-1"
+                          size="sm"
+                        >
+                          Submit
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </nav>
