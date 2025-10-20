@@ -28,6 +28,7 @@ import {
   Users,
   Clock,
   MoreVertical,
+  ChevronDown,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -178,10 +179,23 @@ export default function ReportDetail() {
                     {mockReport.status}
                   </Badge>
                 </div>
-                <Button variant="outline">
-                  <Download className="h-4 w-4" />
-                  Download PDF
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      <Download className="h-4 w-4" />
+                      Download PDF
+                      <ChevronDown className="h-4 w-4 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-background">
+                    <DropdownMenuItem onClick={() => toast({ title: "Downloading PDF..." })}>
+                      Download as PDF
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast({ title: "Downloading Word document..." })}>
+                      Download as Word
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               {/* Condensed metadata table */}
