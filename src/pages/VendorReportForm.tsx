@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -95,6 +95,7 @@ const VendorReportForm = () => {
   const navigate = useNavigate();
   const [findings, setFindings] = useState<Finding[]>([]);
   const [findingDialogOpen, setFindingDialogOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("project");
   const [currentFinding, setCurrentFinding] = useState<FindingFormData>({
     findingNumber: "",
     findingType: "issue",
@@ -104,6 +105,50 @@ const VendorReportForm = () => {
     vendorRecommendation: "",
     currentStatus: "open",
   });
+
+  const sections = [
+    { id: "project", label: "Project" },
+    { id: "period", label: "Period" },
+    { id: "summary", label: "Summary" },
+    { id: "rating", label: "Rating" },
+    { id: "highlights", label: "Highlights" },
+    { id: "variance", label: "Variance" },
+    { id: "findings", label: "Findings" },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sectionElements = sections.map(section => ({
+        id: section.id,
+        element: document.getElementById(section.id)
+      }));
+
+      const scrollPosition = window.scrollY + 200;
+
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const section = sectionElements[i];
+        if (section.element && section.element.offsetTop <= scrollPosition) {
+          setActiveSection(section.id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition = element.offsetTop - offset;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth"
+      });
+    }
+  };
 
   const {
     register,
@@ -199,55 +244,72 @@ const VendorReportForm = () => {
           </header>
 
           <main className="flex-1 p-8 bg-muted/30">
-            <div className="max-w-5xl mx-auto">
-              <div className="mb-6">
-                <h2 className="text-3xl font-bold text-foreground mb-2">
-                  {id ? "Edit Report" : "New Monthly Report"}
-                </h2>
-                <p className="text-muted-foreground">
-                  Provide your monthly update for your assigned project.
-                </p>
-              </div>
-
-              <Card className="bg-background mb-6">
-                <CardHeader>
-                  <CardTitle>Project Selection</CardTitle>
-                  <CardDescription>Select the project for this report</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="project">Project</Label>
-                    <Select onValueChange={(value) => setValue("projectId", value)}>
-                      <SelectTrigger id="project">
-                        <SelectValue placeholder="Select a project" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background">
-                        {mockProjects.map((project) => (
-                          <SelectItem key={project.id} value={project.id}>
-                            {project.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.projectId && (
-                      <p className="text-sm text-destructive">{errors.projectId.message}</p>
-                    )}
+            <div className="max-w-7xl mx-auto">
+              <div className="flex gap-8">
+                {/* Sticky Side Navigation */}
+                <nav className="hidden lg:block w-48 flex-shrink-0">
+                  <div className="sticky top-24 space-y-1">
+                    <p className="text-xs font-semibold text-muted-foreground mb-3 px-3">
+                      SECTIONS
+                    </p>
+                    {sections.map((section) => (
+                      <button
+                        key={section.id}
+                        onClick={() => scrollToSection(section.id)}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+                          activeSection === section.id
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {section.label}
+                      </button>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
+                </nav>
 
-              <Tabs defaultValue="period" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-6 bg-muted">
-                  <TabsTrigger value="period">Period</TabsTrigger>
-                  <TabsTrigger value="summary">Summary</TabsTrigger>
-                  <TabsTrigger value="rating">Rating</TabsTrigger>
-                  <TabsTrigger value="highlights">Highlights</TabsTrigger>
-                  <TabsTrigger value="variance">Variance</TabsTrigger>
-                  <TabsTrigger value="findings">Findings</TabsTrigger>
-                </TabsList>
+                {/* Main Content */}
+                <div className="flex-1 max-w-4xl space-y-6">
+                  <div className="mb-6">
+                    <h2 className="text-3xl font-bold text-foreground mb-2">
+                      {id ? "Edit Report" : "New Monthly Report"}
+                    </h2>
+                    <p className="text-muted-foreground">
+                      Provide your monthly update for your assigned project.
+                    </p>
+                  </div>
 
-                <TabsContent value="period">
-                  <Card className="bg-background">
+                  {/* Project Selection */}
+                  <Card id="project" className="bg-background scroll-mt-24">
+                    <CardHeader>
+                      <CardTitle>Project Selection</CardTitle>
+                      <CardDescription>Select the project for this report</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <Label htmlFor="project">Project</Label>
+                        <Select onValueChange={(value) => setValue("projectId", value)}>
+                          <SelectTrigger id="project">
+                            <SelectValue placeholder="Select a project" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background">
+                            {mockProjects.map((project) => (
+                              <SelectItem key={project.id} value={project.id}>
+                                {project.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {errors.projectId && (
+                          <p className="text-sm text-destructive">{errors.projectId.message}</p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Reporting Period */}
+                  <Card id="period" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Reporting Period</CardTitle>
                       <CardDescription>Select the month and year for this report</CardDescription>
@@ -294,10 +356,9 @@ const VendorReportForm = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
 
-                <TabsContent value="summary">
-                  <Card className="bg-background">
+                  {/* Executive Summary */}
+                  <Card id="summary" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Executive Summary</CardTitle>
                       <CardDescription>
@@ -322,10 +383,9 @@ const VendorReportForm = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
 
-                <TabsContent value="rating">
-                  <Card className="bg-background">
+                  {/* Overall Rating */}
+                  <Card id="rating" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Overall Project Rating</CardTitle>
                       <CardDescription>Select the overall status of the project</CardDescription>
@@ -363,76 +423,65 @@ const VendorReportForm = () => {
                       )}
                     </CardContent>
                   </Card>
-                </TabsContent>
 
-                <TabsContent value="highlights">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card className="bg-background">
-                      <CardHeader>
-                        <CardTitle>Key Achievements</CardTitle>
-                        <CardDescription>List significant accomplishments this month</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <Textarea
-                          {...register("keyAchievements")}
-                          placeholder="• Achievement 1&#10;• Achievement 2&#10;• Achievement 3"
-                          className="min-h-[200px]"
-                        />
-                      </CardContent>
-                    </Card>
+                  {/* Highlights */}
+                  <Card id="highlights" className="bg-background scroll-mt-24">
+                    <CardHeader>
+                      <CardTitle>Key Highlights</CardTitle>
+                      <CardDescription>Document achievements and challenges</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label>Key Achievements</Label>
+                          <Textarea
+                            {...register("keyAchievements")}
+                            placeholder="• Achievement 1&#10;• Achievement 2&#10;• Achievement 3"
+                            className="min-h-[200px]"
+                          />
+                        </div>
 
-                    <Card className="bg-background">
-                      <CardHeader>
-                        <CardTitle>Key Challenges</CardTitle>
-                        <CardDescription>Document challenges and obstacles faced</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <Textarea
-                          {...register("keyChallenges")}
-                          placeholder="• Challenge 1&#10;• Challenge 2&#10;• Challenge 3"
-                          className="min-h-[200px]"
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </TabsContent>
+                        <div className="space-y-2">
+                          <Label>Key Challenges</Label>
+                          <Textarea
+                            {...register("keyChallenges")}
+                            placeholder="• Challenge 1&#10;• Challenge 2&#10;• Challenge 3"
+                            className="min-h-[200px]"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                <TabsContent value="variance">
-                  <div className="space-y-6">
-                    <Card className="bg-background">
-                      <CardHeader>
-                        <CardTitle>Schedule Variance Analysis</CardTitle>
-                        <CardDescription>
-                          Analyze any schedule deviations and their impact
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
+                  {/* Variance Analysis */}
+                  <Card id="variance" className="bg-background scroll-mt-24">
+                    <CardHeader>
+                      <CardTitle>Variance Analysis</CardTitle>
+                      <CardDescription>Analyze schedule and budget deviations</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="space-y-2">
+                        <Label>Schedule Variance Analysis</Label>
                         <Textarea
                           {...register("scheduleVarianceAnalysis")}
                           placeholder="Describe schedule variances, causes, and mitigation strategies..."
                           className="min-h-[150px]"
                         />
-                      </CardContent>
-                    </Card>
+                      </div>
 
-                    <Card className="bg-background">
-                      <CardHeader>
-                        <CardTitle>Budget Variance Analysis</CardTitle>
-                        <CardDescription>Analyze any budget deviations and their impact</CardDescription>
-                      </CardHeader>
-                      <CardContent>
+                      <div className="space-y-2">
+                        <Label>Budget Variance Analysis</Label>
                         <Textarea
                           {...register("budgetVarianceAnalysis")}
                           placeholder="Describe budget variances, causes, and corrective actions..."
                           className="min-h-[150px]"
                         />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </TabsContent>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                <TabsContent value="findings">
-                  <Card className="bg-background">
+                  {/* Findings */}
+                  <Card id="findings" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <div>
@@ -649,28 +698,29 @@ const VendorReportForm = () => {
                       )}
                     </CardContent>
                   </Card>
-                </TabsContent>
-              </Tabs>
 
-              <Card className="bg-background mt-6">
-                <CardContent className="p-6">
-                  <div className="flex justify-end gap-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleSubmit(onSaveDraft)}
-                      className="gap-2"
-                    >
-                      <Save className="h-4 w-4" />
-                      Save as Draft
-                    </Button>
-                    <Button type="button" onClick={handleSubmit(onSubmitReport)} className="gap-2">
-                      <Send className="h-4 w-4" />
-                      Submit Report
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                  {/* Action Buttons */}
+                  <Card className="bg-background">
+                    <CardContent className="p-6">
+                      <div className="flex justify-end gap-4">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleSubmit(onSaveDraft)}
+                          className="gap-2"
+                        >
+                          <Save className="h-4 w-4" />
+                          Save as Draft
+                        </Button>
+                        <Button type="button" onClick={handleSubmit(onSubmitReport)} className="gap-2">
+                          <Send className="h-4 w-4" />
+                          Submit Report
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
             </div>
           </main>
         </div>
