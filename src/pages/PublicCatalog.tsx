@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, FileText, X, Circle } from "lucide-react";
+import { Search, FileText, X, Circle, Download, Eye } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -211,19 +211,16 @@ const PublicCatalog = () => {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="text-white py-8 md:py-12" style={{ background: 'linear-gradient(to bottom, #007C77, #3CC5C0)' }}>
+        {/* Compact Hero + Search + Filters Section */}
+        <section className="text-white py-6" style={{ background: 'linear-gradient(to bottom, #007C77, #3CC5C0)' }}>
           <div className="container">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+            <div className="max-w-6xl mx-auto">
+              <h1 className="text-2xl md:text-3xl font-bold mb-3 text-center">
                 Public IV&V Reports Catalog
               </h1>
-              <p className="text-lg text-white/90 mb-6">
-                Browse and search approved independent verification and validation reports across all state IT projects
-              </p>
 
               {/* Search Bar */}
-              <div className="flex gap-2 p-2 bg-white rounded-lg shadow-lg">
+              <div className="flex gap-2 p-2 bg-white rounded-lg shadow-lg mb-3">
                 <div className="relative flex-1">
                   <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -231,128 +228,90 @@ const PublicCatalog = () => {
                     placeholder="Search by project name or keywords..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-12 pl-12 border-0 bg-transparent text-base text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="h-11 pl-12 border-0 bg-transparent text-base text-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
                     aria-label="Search reports by keywords"
                   />
+                </div>
+              </div>
+
+              {/* Horizontal Filters */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm font-medium text-white/90 mr-1">Filters:</span>
+                  
+                  <Select value={agencyFilter} onValueChange={setAgencyFilter}>
+                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by agency">
+                      <SelectValue placeholder="All Agencies" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Agencies</SelectItem>
+                      {agencies.map(agency => (
+                        <SelectItem key={agency} value={agency}>{agency}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={vendorFilter} onValueChange={setVendorFilter}>
+                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by vendor">
+                      <SelectValue placeholder="All Vendors" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Vendors</SelectItem>
+                      {vendors.map(vendor => (
+                        <SelectItem key={vendor} value={vendor}>{vendor}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={periodFilter} onValueChange={setPeriodFilter}>
+                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by reporting period">
+                      <SelectValue placeholder="All Periods" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Periods</SelectItem>
+                      {periods.map(period => (
+                        <SelectItem key={period} value={period}>{period}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={ratingFilter} onValueChange={setRatingFilter}>
+                    <SelectTrigger className="h-9 w-auto min-w-[130px] bg-white/95 border-0" aria-label="Filter by overall rating">
+                      <SelectValue placeholder="All Ratings" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Ratings</SelectItem>
+                      <SelectItem value="green">🟢 On Track</SelectItem>
+                      <SelectItem value="yellow">🟡 At Risk</SelectItem>
+                      <SelectItem value="red">🔴 Critical</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  {hasActiveFilters && (
+                    <Button 
+                      variant="secondary"
+                      size="sm" 
+                      onClick={clearFilters}
+                      className="h-9 gap-1.5 bg-white/95 text-foreground hover:bg-white ml-auto"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                      Clear
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Filters and Results Section */}
-        <section className="py-8 md:py-12">
+        {/* Results Section */}
+        <section className="py-6">
           <div className="container">
-            <div className="max-w-7xl mx-auto">
-              {/* Filters */}
-              <Card className="mb-6 p-6 bg-white shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-foreground">Filter Reports</h2>
-                  {hasActiveFilters && (
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={clearFilters}
-                      className="gap-2"
-                    >
-                      <X className="h-4 w-4" />
-                      Clear Filters
-                    </Button>
-                  )}
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <label htmlFor="agency-filter" className="text-sm font-medium mb-2 block">
-                      Agency
-                    </label>
-                    <Select value={agencyFilter} onValueChange={setAgencyFilter}>
-                      <SelectTrigger id="agency-filter" aria-label="Filter by agency">
-                        <SelectValue placeholder="All Agencies" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Agencies</SelectItem>
-                        {agencies.map(agency => (
-                          <SelectItem key={agency} value={agency}>{agency}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="project-filter" className="text-sm font-medium mb-2 block">
-                      Project
-                    </label>
-                    <Select value={projectFilter} onValueChange={setProjectFilter}>
-                      <SelectTrigger id="project-filter" aria-label="Filter by project">
-                        <SelectValue placeholder="All Projects" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Projects</SelectItem>
-                        {projects.map(project => (
-                          <SelectItem key={project} value={project}>{project}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="vendor-filter" className="text-sm font-medium mb-2 block">
-                      Vendor
-                    </label>
-                    <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                      <SelectTrigger id="vendor-filter" aria-label="Filter by vendor">
-                        <SelectValue placeholder="All Vendors" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Vendors</SelectItem>
-                        {vendors.map(vendor => (
-                          <SelectItem key={vendor} value={vendor}>{vendor}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="period-filter" className="text-sm font-medium mb-2 block">
-                      Reporting Period
-                    </label>
-                    <Select value={periodFilter} onValueChange={setPeriodFilter}>
-                      <SelectTrigger id="period-filter" aria-label="Filter by reporting period">
-                        <SelectValue placeholder="All Periods" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Periods</SelectItem>
-                        {periods.map(period => (
-                          <SelectItem key={period} value={period}>{period}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="rating-filter" className="text-sm font-medium mb-2 block">
-                      Overall Rating
-                    </label>
-                    <Select value={ratingFilter} onValueChange={setRatingFilter}>
-                      <SelectTrigger id="rating-filter" aria-label="Filter by overall rating">
-                        <SelectValue placeholder="All Ratings" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Ratings</SelectItem>
-                        <SelectItem value="green">🟢 On Track</SelectItem>
-                        <SelectItem value="yellow">🟡 At Risk</SelectItem>
-                        <SelectItem value="red">🔴 Critical</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </Card>
-
+            <div className="max-w-6xl mx-auto">
               {/* Results Count */}
               <div className="mb-4">
                 <p className="text-sm text-muted-foreground">
-                  Showing <span className="font-semibold text-foreground">{filteredReports.length}</span> approved report{filteredReports.length !== 1 ? 's' : ''}
+                  <span className="font-semibold text-foreground">{filteredReports.length}</span> approved report{filteredReports.length !== 1 ? 's' : ''} found
                 </p>
               </div>
 
@@ -370,8 +329,7 @@ const PublicCatalog = () => {
                             <TableHead>Vendor</TableHead>
                             <TableHead>Period</TableHead>
                             <TableHead>Rating</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Action</TableHead>
+                            <TableHead className="text-right">Actions</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -382,21 +340,30 @@ const PublicCatalog = () => {
                               <TableCell>{report.ivvVendorName}</TableCell>
                               <TableCell>{report.reportingMonth} {report.reportingYear}</TableCell>
                               <TableCell>{getRatingIcon(report.overallRating)}</TableCell>
-                              <TableCell>
-                                <Badge 
-                                  className="bg-[#3CC5C0] text-white hover:bg-[#007C77]"
-                                >
-                                  Approved
-                                </Badge>
-                              </TableCell>
                               <TableCell className="text-right">
-                                <Button 
-                                  variant="outline" 
-                                  size="sm"
-                                  onClick={() => navigate(`/public/report/${report.id}`)}
-                                >
-                                  View Report
-                                </Button>
+                                <div className="flex items-center justify-end gap-2">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    onClick={() => navigate(`/public/report/${report.id}`)}
+                                    className="gap-1.5"
+                                  >
+                                    <Eye className="h-4 w-4" />
+                                    View
+                                  </Button>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    onClick={() => {
+                                      // Simulate download
+                                      console.log(`Downloading report ${report.id}`);
+                                    }}
+                                    className="gap-1.5"
+                                  >
+                                    <Download className="h-4 w-4" />
+                                    Download
+                                  </Button>
+                                </div>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -427,23 +394,30 @@ const PublicCatalog = () => {
                           </div>
 
                           <div className="flex items-center justify-between pt-2">
-                            <div className="flex items-center gap-3">
-                              <div className="flex items-center gap-1">
-                                {getRatingIcon(report.overallRating)}
-                              </div>
-                              <Badge 
-                                className="bg-[#3CC5C0] text-white hover:bg-[#007C77]"
-                              >
-                                Approved
-                              </Badge>
+                            <div className="flex items-center gap-2">
+                              {getRatingIcon(report.overallRating)}
                             </div>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => navigate(`/public/report/${report.id}`)}
-                            >
-                              View
-                            </Button>
+                            <div className="flex gap-2">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => navigate(`/public/report/${report.id}`)}
+                                className="gap-1.5"
+                              >
+                                <Eye className="h-4 w-4" />
+                                View
+                              </Button>
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => {
+                                  console.log(`Downloading report ${report.id}`);
+                                }}
+                                className="gap-1.5"
+                              >
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </Card>
