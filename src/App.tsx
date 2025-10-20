@@ -11,6 +11,7 @@ import ReportDetail from "./pages/ReportDetail";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VendorDashboard from "./pages/VendorDashboard";
+import VendorReportForm from "./pages/VendorReportForm";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,8 @@ const App = () => (
           <Route path="/admin/reports" element={<ReportsTable />} />
           <Route path="/admin/report/:id" element={<ReportDetail />} />
           <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+          <Route path="/vendor/report/new" element={<VendorReportForm />} />
+          <Route path="/vendor/report/:id" element={<VendorReportForm />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
