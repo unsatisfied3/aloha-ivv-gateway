@@ -203,17 +203,6 @@ export default function AdminProjects() {
               </div>
 
               <div className="flex items-center gap-3">
-                {/* Search */}
-                <div className="relative hidden md:block w-80">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search project or agency..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-
                 {/* New Project Button */}
                 <Link to="/admin/project/new">
                   <Button>
@@ -227,23 +216,21 @@ export default function AdminProjects() {
 
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
-            {/* Mobile Search */}
-            <div className="mb-6 md:hidden">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search project or agency..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-
             {/* Filter Bar */}
             <Card className="mb-6">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                  {/* Search */}
+                  <div className="lg:col-span-2 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search project or agency..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 bg-background"
+                    />
+                  </div>
+
                   {/* Agency Filter */}
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
                     <SelectTrigger className="bg-background">
@@ -382,7 +369,7 @@ export default function AdminProjects() {
                                       ${(project.totalPaidToDate / 1000000).toFixed(1)}M / ${(project.originalContractAmount / 1000000).toFixed(1)}M
                                     </span>
                                   </div>
-                                  <Progress value={budgetUsed} className="h-2" />
+                                  <Progress value={budgetUsed} className="h-2 bg-muted [&>div]:bg-primary" />
                                 </div>
                               </TableCell>
                               <TableCell className="text-muted-foreground text-sm whitespace-nowrap">
