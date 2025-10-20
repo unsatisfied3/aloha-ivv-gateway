@@ -698,20 +698,34 @@ const VendorReportForm = () => {
                   {/* Action Buttons */}
                   <Card className="bg-background">
                     <CardContent className="p-6">
-                      <div className="flex justify-end gap-4">
+                      <div className="flex justify-between items-center">
                         <Button
                           type="button"
-                          variant="outline"
-                          onClick={handleSubmit(onSaveDraft)}
-                          className="gap-2"
+                          variant="ghost"
+                          onClick={() => {
+                            if (hasUnsavedChanges) {
+                              if (confirm("You have unsaved changes. Are you sure you want to leave?")) {
+                                navigate("/vendor/dashboard");
+                              }
+                            } else {
+                              navigate("/vendor/dashboard");
+                            }
+                          }}
                         >
-                          <Save className="h-4 w-4" />
-                          Save as Draft
+                          Cancel
                         </Button>
-                        <Button type="button" onClick={handleSubmit(onSubmitReport)} className="gap-2">
-                          <Send className="h-4 w-4" />
-                          Submit Report
-                        </Button>
+                        <div className="flex gap-3">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={handleSubmit(onSaveDraft)}
+                          >
+                            Save Draft
+                          </Button>
+                          <Button type="button" onClick={handleSubmit(onSubmitReport)}>
+                            Submit
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -719,24 +733,48 @@ const VendorReportForm = () => {
 
                 {/* Sticky Side Navigation - Right */}
                 <nav className="hidden lg:block w-48 flex-shrink-0">
-                  <div className="sticky top-24 space-y-1">
-                    <p className="text-xs font-semibold text-muted-foreground mb-3 px-3">
-                      SECTIONS
-                    </p>
-                    {sections.map((section) => (
-                      <button
-                        key={section.id}
-                        onClick={() => scrollToSection(section.id)}
-                        className={cn(
-                          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
-                          activeSection === section.id
-                            ? "bg-primary/10 text-primary font-medium"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                        )}
+                  <div className="sticky top-24 space-y-4">
+                    <div>
+                      <p className="text-xs font-semibold text-muted-foreground mb-3 px-3">
+                        SECTIONS
+                      </p>
+                      <div className="space-y-1">
+                        {sections.map((section) => (
+                          <button
+                            key={section.id}
+                            onClick={() => scrollToSection(section.id)}
+                            className={cn(
+                              "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+                              activeSection === section.id
+                                ? "bg-primary/10 text-primary font-medium"
+                                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            )}
+                          >
+                            {section.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="border-t pt-4 space-y-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handleSubmit(onSaveDraft)}
+                        className="w-full"
+                        size="sm"
                       >
-                        {section.label}
-                      </button>
-                    ))}
+                        Save Draft
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handleSubmit(onSubmitReport)}
+                        className="w-full"
+                        size="sm"
+                      >
+                        Submit
+                      </Button>
+                    </div>
                   </div>
                 </nav>
               </div>
