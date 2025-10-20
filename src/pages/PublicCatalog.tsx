@@ -267,7 +267,7 @@ const PublicCatalog = () => {
               </div>
 
               {/* Horizontal Filters */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+              <div className="p-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
                     <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by agency">
