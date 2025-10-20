@@ -178,10 +178,24 @@ export default function ReportDetail() {
                     {mockReport.status}
                   </Badge>
                 </div>
-                <Button variant="outline">
-                  <Download className="h-4 w-4" />
-                  Download PDF
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      <Download className="h-4 w-4" />
+                      Download
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="bg-background">
+                    <DropdownMenuItem onClick={() => toast({ title: "Downloading PDF..." })}>
+                      <FileText className="h-4 w-4 mr-2" />
+                      Download as PDF
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast({ title: "Downloading Word document..." })}>
+                      <FileText className="h-4 w-4 mr-2" />
+                      Download as Word
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               {/* Condensed metadata table */}
