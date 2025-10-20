@@ -425,7 +425,7 @@ const AdminDashboard = () => {
                     <div className="mt-4">
                       <Link to="/admin/reports">
                         <Button variant="ghost" className="w-full sm:w-auto text-primary">
-                          View All Projects
+                          View All Reports
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </Link>
