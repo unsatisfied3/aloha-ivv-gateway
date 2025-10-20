@@ -398,24 +398,6 @@ export default function AdminProjects() {
                     </PopoverContent>
                   </Popover>
                 </div>
-
-                {/* Reset Button Row - Only show when filters are applied */}
-                {(searchQuery || 
-                  agencyFilter !== "all" || 
-                  vendorFilter !== "all" || 
-                  statusFilter !== "all" || 
-                  activeFilter !== "active") && (
-                  <div className="flex items-center justify-end mt-4 pt-4 border-t">
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={clearFilters} 
-                      className="text-xs"
-                    >
-                      Reset All
-                    </Button>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
