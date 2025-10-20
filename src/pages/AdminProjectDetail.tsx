@@ -195,7 +195,7 @@ export default function AdminProjectDetail() {
             <div className="flex h-16 items-center px-8 gap-4">
               <SidebarTrigger />
               
-              <div className="flex-1">
+              <div className="flex-1 flex items-center gap-3">
                 <Breadcrumb>
                   <BreadcrumbList>
                     <BreadcrumbItem>
@@ -207,6 +207,15 @@ export default function AdminProjectDetail() {
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
+                <Badge className={cn("border", statusBadge.className)}>
+                  <statusBadge.icon className="h-4 w-4 mr-1" />
+                  {statusBadge.label}
+                </Badge>
+                {!project.isActive && (
+                  <Badge variant="outline" className="bg-muted text-muted-foreground border-muted-foreground/30">
+                    Archived
+                  </Badge>
+                )}
               </div>
 
               <div className="flex items-center gap-3">
@@ -224,21 +233,6 @@ export default function AdminProjectDetail() {
 
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
-            {/* Header Section */}
-            <div className="mb-8">
-              <div className="flex items-start gap-4 mb-2">
-                <h1 className="text-3xl font-bold flex-1">{project.projectName}</h1>
-                <Badge className={cn("border text-base px-3 py-1", statusBadge.className)}>
-                  <statusBadge.icon className="h-4 w-4 mr-2" />
-                  {statusBadge.label}
-                </Badge>
-                {!project.isActive && (
-                  <Badge variant="outline" className="text-base px-3 py-1 bg-muted text-muted-foreground border-muted-foreground/30">
-                    Archived
-                  </Badge>
-                )}
-              </div>
-            </div>
 
             {/* Section 1: Project Snapshot */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -305,7 +299,7 @@ export default function AdminProjectDetail() {
                           ${(project.totalPaidToDate / 1000000).toFixed(2)}M of ${(project.originalContractAmount / 1000000).toFixed(2)}M
                         </span>
                       </div>
-                      <Progress value={budgetUsed} className="h-3 [&>div]:bg-primary" />
+                      <Progress value={budgetUsed} className="h-3 bg-muted [&>div]:bg-primary" />
                     </div>
                   </div>
 
@@ -372,34 +366,41 @@ export default function AdminProjectDetail() {
                           <TableHead>Reporting Period</TableHead>
                           <TableHead>Vendor Contact</TableHead>
                           <TableHead>Status</TableHead>
-                          <TableHead>Overall Rating</TableHead>
+                          <TableHead>Risk Tag</TableHead>
                           <TableHead>Submitted On</TableHead>
                           <TableHead className="text-right">Action</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {projectReports.map((report) => (
-                          <TableRow key={report.id}>
-                            <TableCell className="font-medium">{report.reportingPeriod}</TableCell>
-                            <TableCell>{report.vendorContact}</TableCell>
-                            <TableCell>
-                              <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
-                                {report.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-xl">{getRatingBadge(report.overallRating)}</TableCell>
-                            <TableCell>{format(new Date(report.submittedOn), "MMM dd, yyyy")}</TableCell>
-                            <TableCell className="text-right">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => navigate(`/admin/report/${report.id}`)}
-                              >
-                                View Report
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {projectReports.map((report) => {
+                          const ratingBadge = getStatusBadge(report.overallRating);
+                          return (
+                            <TableRow key={report.id}>
+                              <TableCell className="font-medium">{report.reportingPeriod}</TableCell>
+                              <TableCell>{report.vendorContact}</TableCell>
+                              <TableCell>
+                                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
+                                  {report.status}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge className={cn("border", ratingBadge.className)}>
+                                  {ratingBadge.label}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>{format(new Date(report.submittedOn), "MMM dd, yyyy")}</TableCell>
+                              <TableCell className="text-right">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => navigate(`/admin/report/${report.id}`)}
+                                >
+                                  View Report
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                       </TableBody>
                     </Table>
                   </div>
@@ -420,29 +421,38 @@ export default function AdminProjectDetail() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 cursor-pointer hover:bg-red-500/20 transition-colors" onClick={() => navigate(`/admin/reports?status=open&project=${id}`)}>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-red-700">Open</span>
                       <AlertCircle className="h-5 w-5 text-red-600" />
                     </div>
                     <p className="text-3xl font-bold text-red-700">{mockFindings.open}</p>
                     <p className="text-xs text-red-600 mt-1">Requires immediate attention</p>
+                    <Button variant="ghost" size="sm" className="mt-3 w-full text-red-700 hover:text-red-800 hover:bg-red-500/20">
+                      View Open Issues
+                    </Button>
                   </div>
-                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 cursor-pointer hover:bg-yellow-500/20 transition-colors" onClick={() => navigate(`/admin/reports?status=in-progress&project=${id}`)}>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-yellow-700">In Progress</span>
                       <Clock className="h-5 w-5 text-yellow-600" />
                     </div>
                     <p className="text-3xl font-bold text-yellow-700">{mockFindings.inProgress}</p>
                     <p className="text-xs text-yellow-600 mt-1">Being addressed by team</p>
+                    <Button variant="ghost" size="sm" className="mt-3 w-full text-yellow-700 hover:text-yellow-800 hover:bg-yellow-500/20">
+                      View In Progress
+                    </Button>
                   </div>
-                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 cursor-pointer hover:bg-green-500/20 transition-colors" onClick={() => navigate(`/admin/reports?status=closed&project=${id}`)}>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-green-700">Closed</span>
                       <CheckCircle className="h-5 w-5 text-green-600" />
                     </div>
                     <p className="text-3xl font-bold text-green-700">{mockFindings.closed}</p>
                     <p className="text-xs text-green-600 mt-1">Successfully resolved</p>
+                    <Button variant="ghost" size="sm" className="mt-3 w-full text-green-700 hover:text-green-800 hover:bg-green-500/20">
+                      View Closed Issues
+                    </Button>
                   </div>
                 </div>
               </CardContent>
