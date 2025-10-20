@@ -207,17 +207,8 @@ export default function ReportsTable() {
 
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
-            {/* Page Header */}
-            <div className="mb-8">
-              <div className="flex items-start justify-between mb-6">
-                <Button>
-                  <Upload className="h-4 w-4" />
-                  Upload New Report
-                </Button>
-              </div>
-
-              {/* Filter Bar */}
-              <Card>
+            {/* Filter Bar */}
+            <Card>
                 <CardContent className="pt-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                     {/* Search */}
@@ -278,7 +269,6 @@ export default function ReportsTable() {
                   </div>
                 </CardContent>
               </Card>
-            </div>
 
             {/* Data Table */}
             {filteredReports.length > 0 ? (
@@ -292,8 +282,8 @@ export default function ReportsTable() {
                           <TableHead className="font-semibold">Reporting Period</TableHead>
                           <TableHead className="font-semibold">Status</TableHead>
                           <TableHead className="font-semibold">Rating</TableHead>
-                          <TableHead className="font-semibold">Submitted By</TableHead>
-                          <TableHead className="font-semibold">Submitted At</TableHead>
+                          <TableHead className="font-semibold">Reported By</TableHead>
+                          <TableHead className="font-semibold">Submission Date</TableHead>
                           <TableHead className="text-right font-semibold">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
