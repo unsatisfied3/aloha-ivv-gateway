@@ -521,8 +521,7 @@ export default function ReportDetail() {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Submission → In Review → Approved → Published</span>
+                      <div className="flex justify-end text-sm mb-1">
                         <span className="font-medium">{mockReport.progress}%</span>
                       </div>
                       <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
