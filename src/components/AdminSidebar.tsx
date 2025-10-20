@@ -74,9 +74,11 @@ export function AdminSidebar() {
                     <NavLink
                       to={item.url}
                       className={({ isActive }) =>
-                        isActive
-                          ? "bg-primary text-primary-foreground font-semibold"
-                          : "text-foreground/70 hover:bg-accent hover:text-accent-foreground"
+                        `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                          isActive
+                            ? "bg-primary/10 text-primary font-medium"
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        }`
                       }
                     >
                       <item.icon className="h-4 w-4" />
