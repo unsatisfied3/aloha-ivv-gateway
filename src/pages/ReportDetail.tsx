@@ -189,10 +189,10 @@ export default function ReportDetail() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-background">
                     <DropdownMenuItem onClick={() => toast({ title: "Downloading PDF..." })}>
-                      as PDF
+                      PDF
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => toast({ title: "Downloading Word document..." })}>
-                      as Word
+                      Word
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
