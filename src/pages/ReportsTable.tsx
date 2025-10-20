@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -194,17 +194,25 @@ export default function ReportsTable() {
         <AdminSidebar />
 
         <div className="flex-1 flex flex-col">
+          {/* Top Navigation Bar */}
+          <header className="sticky top-0 z-40 border-b bg-background">
+            <div className="flex h-16 items-center px-8 gap-4">
+              <SidebarTrigger />
+              
+              <h1 className="text-base font-semibold text-foreground flex-1">
+                All Reports
+              </h1>
+            </div>
+          </header>
+
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
             {/* Page Header */}
             <div className="mb-8">
               <div className="flex items-start justify-between mb-6">
-                <div>
-                  <h1 className="text-3xl font-bold text-foreground mb-2">All Reports</h1>
-                  <p className="text-muted-foreground">
-                    View, filter, and manage IV&V reports across all Hawaiʻi agencies.
-                  </p>
-                </div>
+                <p className="text-muted-foreground">
+                  View, filter, and manage IV&V reports across all Hawaiʻi agencies.
+                </p>
                 <Button>
                   <Upload className="h-4 w-4" />
                   Upload New Report
