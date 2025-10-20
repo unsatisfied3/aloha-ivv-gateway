@@ -151,16 +151,16 @@ const getStatusLabel = (status: string) => {
   }
 };
 
-const getRatingDot = (rating: string) => {
+const getRatingBadge = (rating: string) => {
   switch (rating) {
     case "green":
-      return "bg-accent";
+      return { label: "On Track", className: "bg-green-500/20 text-green-700 border-green-500/30" };
     case "yellow":
-      return "bg-yellow-500";
+      return { label: "At Risk", className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30" };
     case "red":
-      return "bg-destructive";
+      return { label: "Critical", className: "bg-red-500/20 text-red-700 border-red-500/30" };
     default:
-      return "bg-muted-foreground";
+      return { label: "Unknown", className: "bg-muted text-muted-foreground" };
   }
 };
 
@@ -210,9 +210,6 @@ export default function ReportsTable() {
             {/* Page Header */}
             <div className="mb-8">
               <div className="flex items-start justify-between mb-6">
-                <p className="text-muted-foreground">
-                  View, filter, and manage IV&V reports across all Hawaiʻi agencies.
-                </p>
                 <Button>
                   <Upload className="h-4 w-4" />
                   Upload New Report
@@ -315,10 +312,14 @@ export default function ReportsTable() {
                               </Badge>
                             </TableCell>
                             <TableCell>
-                              <div className="flex items-center gap-2">
-                                <div className={cn("h-3 w-3 rounded-full", getRatingDot(report.overallRating))} />
-                                <span className="text-sm text-muted-foreground capitalize">{report.overallRating}</span>
-                              </div>
+                              {(() => {
+                                const rating = getRatingBadge(report.overallRating);
+                                return (
+                                  <Badge className={cn("border", rating.className)}>
+                                    {rating.label}
+                                  </Badge>
+                                );
+                              })()}
                             </TableCell>
                             <TableCell className="text-muted-foreground">{report.submittedByName}</TableCell>
                             <TableCell className="text-muted-foreground">
