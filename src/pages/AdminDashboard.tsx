@@ -27,6 +27,8 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 
 const summaryStats = [
   { 
@@ -130,6 +132,39 @@ const myAssignments = [
   { id: 3, name: "Tax Management Platform", dueDate: "Jan 5, 2025", progress: 20, status: "Starting Soon" },
 ];
 
+// Schedule variance data (baseline vs current)
+const scheduleVarianceData = [
+  { month: "Oct", baseline: 85, current: 75 },
+  { month: "Nov", baseline: 92, current: 88 },
+  { month: "Dec", baseline: 100, current: 95 },
+];
+
+// Financial variance data (contract vs paid)
+const financialVarianceData = [
+  { project: "P1", contract: 2450000, paid: 1850000 },
+  { project: "P2", contract: 1800000, paid: 1200000 },
+  { project: "P3", contract: 980000, paid: 780000 },
+];
+
+const chartConfig = {
+  baseline: {
+    label: "Baseline",
+    color: "hsl(var(--primary))",
+  },
+  current: {
+    label: "Current",
+    color: "hsl(var(--accent))",
+  },
+  contract: {
+    label: "Contract",
+    color: "hsl(var(--primary))",
+  },
+  paid: {
+    label: "Paid",
+    color: "hsl(var(--accent))",
+  },
+};
+
 const getStatusColor = (status: string) => {
   switch (status) {
     case "green":
@@ -223,6 +258,51 @@ const AdminDashboard = () => {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            {/* Variance Charts */}
+            <div className="grid gap-6 md:grid-cols-2 mb-8">
+              <Card className="bg-background">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Schedule Variance</CardTitle>
+                  <CardDescription>Baseline vs. Current Progress (%)</CardDescription>
+                </CardHeader>
+                <CardContent className="pb-5">
+                  <ChartContainer config={chartConfig} className="h-[200px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={scheduleVarianceData}>
+                        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                        <XAxis dataKey="month" className="text-xs" />
+                        <YAxis className="text-xs" />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar dataKey="baseline" fill="var(--color-baseline)" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="current" fill="var(--color-current)" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-background">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Financial Variance</CardTitle>
+                  <CardDescription>Contract vs. Paid Amount ($)</CardDescription>
+                </CardHeader>
+                <CardContent className="pb-5">
+                  <ChartContainer config={chartConfig} className="h-[200px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={financialVarianceData}>
+                        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                        <XAxis dataKey="project" className="text-xs" />
+                        <YAxis className="text-xs" tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`} />
+                        <ChartTooltip content={<ChartTooltipContent formatter={(value) => `$${(value as number).toLocaleString()}`} />} />
+                        <Bar dataKey="contract" fill="var(--color-contract)" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="paid" fill="var(--color-paid)" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
             </div>
 
             <div className="grid gap-6 lg:grid-cols-3">
