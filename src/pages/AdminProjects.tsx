@@ -250,7 +250,7 @@ export default function AdminProjects() {
                       <SelectValue placeholder="Agency" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">All Agencies</SelectItem>
+                      <SelectItem value="all">Agency</SelectItem>
                       {agencies.map((agency) => (
                         <SelectItem key={agency} value={agency}>
                           {agency}
@@ -265,7 +265,7 @@ export default function AdminProjects() {
                       <SelectValue placeholder="Vendor" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">All Vendors</SelectItem>
+                      <SelectItem value="all">Vendor</SelectItem>
                       {vendors.map((vendor) => (
                         <SelectItem key={vendor} value={vendor}>
                           {vendor}
@@ -280,7 +280,7 @@ export default function AdminProjects() {
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">All Statuses</SelectItem>
+                      <SelectItem value="all">Status</SelectItem>
                       {statuses.map((status) => {
                         const badge = getStatusBadge(status);
                         return (
@@ -298,28 +298,26 @@ export default function AdminProjects() {
                       <SelectValue placeholder="Active Status" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">All Projects</SelectItem>
+                      <SelectItem value="all">Active Status</SelectItem>
                       <SelectItem value="active">Active Only</SelectItem>
                       <SelectItem value="archived">Archived Only</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  {/* Clear Filters */}
-                  <Button 
-                    variant="ghost" 
-                    onClick={clearFilters} 
-                    className={
-                      searchQuery || 
-                      agencyFilter !== "all" || 
-                      vendorFilter !== "all" || 
-                      statusFilter !== "all" || 
-                      activeFilter !== "active"
-                        ? "underline"
-                        : ""
-                    }
-                  >
-                    Clear
-                  </Button>
+                  {/* Clear Filters - Only show when filters are applied */}
+                  {(searchQuery || 
+                    agencyFilter !== "all" || 
+                    vendorFilter !== "all" || 
+                    statusFilter !== "all" || 
+                    activeFilter !== "active") && (
+                    <Button 
+                      variant="ghost" 
+                      onClick={clearFilters} 
+                      className="underline px-2"
+                    >
+                      Clear
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
