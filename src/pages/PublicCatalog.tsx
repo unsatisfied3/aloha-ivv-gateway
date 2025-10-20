@@ -265,7 +265,7 @@ const PublicCatalog = () => {
                 <div className="flex flex-wrap items-center gap-2">
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
                     <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by agency">
-                      <SelectValue placeholder="All Agencies" />
+                      <SelectValue placeholder="Agencies" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Agencies</SelectItem>
@@ -277,7 +277,7 @@ const PublicCatalog = () => {
 
                   <Select value={vendorFilter} onValueChange={setVendorFilter}>
                     <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by vendor">
-                      <SelectValue placeholder="All Vendors" />
+                      <SelectValue placeholder="Vendors" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Vendors</SelectItem>
@@ -289,7 +289,7 @@ const PublicCatalog = () => {
 
                   <Select value={periodFilter} onValueChange={setPeriodFilter}>
                     <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by reporting period">
-                      <SelectValue placeholder="All Periods" />
+                      <SelectValue placeholder="Periods" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Periods</SelectItem>
@@ -301,7 +301,7 @@ const PublicCatalog = () => {
 
                   <Select value={ratingFilter} onValueChange={setRatingFilter}>
                     <SelectTrigger className="h-9 w-auto min-w-[130px] bg-white border-0 text-foreground" aria-label="Filter by overall rating">
-                      <SelectValue placeholder="All Ratings" />
+                      <SelectValue placeholder="Ratings" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Ratings</SelectItem>
@@ -313,12 +313,11 @@ const PublicCatalog = () => {
 
                   {hasActiveFilters && (
                     <Button 
-                      variant="secondary"
+                      variant="ghost"
                       size="sm" 
                       onClick={clearFilters}
-                      className="h-9 gap-1.5 bg-white text-foreground hover:bg-white/90 ml-auto"
+                      className="h-9 text-white underline hover:bg-transparent hover:text-white/90 ml-auto"
                     >
-                      <X className="h-3.5 w-3.5" />
                       Clear
                     </Button>
                   )}
