@@ -230,7 +230,7 @@ export default function AdminProjects() {
             {/* Filter Bar */}
             <Card className="mb-6">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
                   {/* Search */}
                   <div className="lg:col-span-2 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -301,22 +301,26 @@ export default function AdminProjects() {
                       <SelectItem value="archived">Archived Only</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
 
-                {/* Filter Popover and Reset Row */}
-                <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t">
                   {/* Filter Popover Button */}
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        <Filter className="h-4 w-4 mr-2" />
-                        All Filters
+                      <Button variant="outline" size="icon" className="bg-background">
+                        <Filter className="h-4 w-4" />
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-80 bg-background z-50" align="end">
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <h4 className="font-semibold text-sm">Filters</h4>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={clearFilters}
+                            className="h-8 px-2 text-xs"
+                          >
+                            Reset All
+                          </Button>
                         </div>
 
                         {/* Agency Filter */}
@@ -393,13 +397,15 @@ export default function AdminProjects() {
                       </div>
                     </PopoverContent>
                   </Popover>
+                </div>
 
-                  {/* Reset Button - Only show when filters are applied */}
-                  {(searchQuery || 
-                    agencyFilter !== "all" || 
-                    vendorFilter !== "all" || 
-                    statusFilter !== "all" || 
-                    activeFilter !== "active") && (
+                {/* Reset Button Row - Only show when filters are applied */}
+                {(searchQuery || 
+                  agencyFilter !== "all" || 
+                  vendorFilter !== "all" || 
+                  statusFilter !== "all" || 
+                  activeFilter !== "active") && (
+                  <div className="flex items-center justify-end mt-4 pt-4 border-t">
                     <Button 
                       variant="ghost" 
                       size="sm"
@@ -408,8 +414,8 @@ export default function AdminProjects() {
                     >
                       Reset All
                     </Button>
-                  )}
-                </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
