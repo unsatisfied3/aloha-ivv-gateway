@@ -33,6 +33,7 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
+  MoreVertical,
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -212,10 +213,6 @@ export default function AdminProjectDetail() {
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
-                <Badge className={cn("border", statusBadge.className)}>
-                  <statusBadge.icon className="h-4 w-4 mr-1" />
-                  {statusBadge.label}
-                </Badge>
                 {!project.isActive && (
                   <Badge variant="outline" className="bg-muted text-muted-foreground border-muted-foreground/30">
                     Archived
@@ -276,7 +273,7 @@ export default function AdminProjectDetail() {
                   <div className="flex items-start gap-3">
                     <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Risk Status</p>
+                      <p className="text-sm text-muted-foreground">Status</p>
                       <Badge className={cn("border mt-1", statusBadge.className)}>
                         <statusBadge.icon className="h-3 w-3 mr-1" />
                         {statusBadge.label}
@@ -344,7 +341,91 @@ export default function AdminProjectDetail() {
               </Card>
             </div>
 
-            {/* Section 2: Description */}
+            {/* Section 2: Project Schedule Timeline */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Project Schedule Timeline</CardTitle>
+                <CardDescription>Baseline vs current schedule comparison</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6" role="region" aria-label="Project schedule timeline chart showing baseline and current dates">
+                  {/* Timeline visualization */}
+                  <div className="space-y-4">
+                    {/* Dates row */}
+                    <div className="flex justify-between text-sm font-medium">
+                      <div>
+                        <span className="text-muted-foreground">Start: </span>
+                        <span>{format(new Date(project.startDate), "MMM yyyy")}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Planned End: </span>
+                        <span>{format(new Date(project.plannedEndDate), "MMM yyyy")}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Current Projection: </span>
+                        <span>{format(new Date(project.currentProjectedEndDate), "MMM yyyy")}</span>
+                      </div>
+                    </div>
+
+                    {/* Baseline bar */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-primary" />
+                        <span className="text-sm font-medium">Baseline Schedule</span>
+                      </div>
+                      <div className="relative h-8 bg-muted rounded-md overflow-hidden">
+                        <div 
+                          className="absolute h-full bg-primary rounded-md"
+                          style={{ 
+                            left: '0%', 
+                            width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Current projection bar */}
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-primary/50" />
+                        <span className="text-sm font-medium">Current Projection</span>
+                      </div>
+                      <div className="relative h-8 bg-muted rounded-md overflow-hidden">
+                        <div 
+                          className="absolute h-full bg-primary/50 rounded-md"
+                          style={{ left: '0%', width: '100%' }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Schedule variance summary */}
+                    {scheduleDelayDays > 0 && (
+                      <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-4 mt-4">
+                        <p className="text-sm font-medium text-yellow-700">
+                          Delayed +{Math.floor(scheduleDelayDays / 7)} weeks ({scheduleDelayDays} days)
+                        </p>
+                      </div>
+                    )}
+                    {scheduleDelayDays < 0 && (
+                      <div className="bg-green-500/10 border border-green-500/30 rounded-md p-4 mt-4">
+                        <p className="text-sm font-medium text-green-700">
+                          Ahead {Math.floor(Math.abs(scheduleDelayDays) / 7)} weeks ({Math.abs(scheduleDelayDays)} days)
+                        </p>
+                      </div>
+                    )}
+                    {scheduleDelayDays === 0 && (
+                      <div className="bg-green-500/10 border border-green-500/30 rounded-md p-4 mt-4">
+                        <p className="text-sm font-medium text-green-700">
+                          On schedule
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Section 3: Description */}
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle>Project Overview</CardTitle>
@@ -357,7 +438,7 @@ export default function AdminProjectDetail() {
               </CardContent>
             </Card>
 
-            {/* Section 3: Reports for This Project */}
+            {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle>Monthly Reports</CardTitle>
@@ -374,7 +455,7 @@ export default function AdminProjectDetail() {
                           <TableHead>Status</TableHead>
                           <TableHead>Risk Tag</TableHead>
                           <TableHead>Submitted On</TableHead>
-                          <TableHead className="text-right">Action</TableHead>
+                          <TableHead className="w-12"></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -395,13 +476,13 @@ export default function AdminProjectDetail() {
                                 </Badge>
                               </TableCell>
                               <TableCell>{format(new Date(report.submittedOn), "MMM dd, yyyy")}</TableCell>
-                              <TableCell className="text-right">
+                              <TableCell>
                                 <Button
                                   variant="ghost"
-                                  size="sm"
+                                  size="icon"
                                   onClick={() => navigate(`/admin/report/${report.id}`)}
                                 >
-                                  View Report
+                                  <MoreVertical className="h-4 w-4" />
                                 </Button>
                               </TableCell>
                             </TableRow>
@@ -419,7 +500,7 @@ export default function AdminProjectDetail() {
               </CardContent>
             </Card>
 
-            {/* Section 4: Risk Findings - Tasks Table */}
+            {/* Section 5: Risk Findings - Tasks Table */}
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle>Risk Findings & Tasks</CardTitle>
@@ -430,11 +511,11 @@ export default function AdminProjectDetail() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="w-[50%]">Task / Issue</TableHead>
+                        <TableHead className="w-[45%]">Task / Issue</TableHead>
                         <TableHead>Risk Factor</TableHead>
                         <TableHead>Assignee</TableHead>
                         <TableHead>Due Date</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead className="w-12"></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -451,11 +532,12 @@ export default function AdminProjectDetail() {
                             <TableCell className="text-muted-foreground">{task.assignee}</TableCell>
                             <TableCell className="text-muted-foreground">{format(new Date(task.dueDate), "MMM dd, yyyy")}</TableCell>
                             <TableCell>
-                              <Badge variant="outline" className={cn(
-                                task.status === "open" ? "bg-red-500/10 text-red-700 border-red-500/30" : "bg-yellow-500/10 text-yellow-700 border-yellow-500/30"
-                              )}>
-                                {task.status === "open" ? "Open" : "In Progress"}
-                              </Badge>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
                             </TableCell>
                           </TableRow>
                         );
@@ -466,7 +548,7 @@ export default function AdminProjectDetail() {
               </CardContent>
             </Card>
 
-            {/* Section 5: Project Activity Timeline */}
+            {/* Section 6: Project Activity Timeline */}
             <Card>
               <CardHeader>
                 <CardTitle>Recent Activity</CardTitle>
