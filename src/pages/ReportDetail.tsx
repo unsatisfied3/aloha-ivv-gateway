@@ -518,7 +518,7 @@ export default function ReportDetail() {
                         <span className="text-muted-foreground">Submission → In Review → Approved → Published</span>
                         <span className="font-medium">{mockReport.progress}%</span>
                       </div>
-                      <Progress value={mockReport.progress} className="h-2" />
+                      <Progress value={mockReport.progress} className="h-2 bg-muted [&>div]:bg-primary" />
                     </div>
                     <div className="grid grid-cols-4 gap-2 text-xs text-center">
                       <div>
