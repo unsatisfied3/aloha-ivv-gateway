@@ -387,21 +387,21 @@ const VendorReportForm = () => {
                       <CardDescription>Select the overall status of the project</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="flex gap-3">
                         {["green", "yellow", "red"].map((rating) => (
                           <button
                             key={rating}
                             type="button"
                             onClick={() => setValue("overallRating", rating as "green" | "yellow" | "red")}
-                            className={`p-6 rounded-lg border-2 transition-all ${
+                            className={`flex-1 p-4 rounded-lg border-2 transition-all ${
                               overallRating === rating
                                 ? getRatingColor(rating)
                                 : "border-border hover:border-primary/50"
                             }`}
                           >
-                            <div className="text-center">
+                            <div className="flex items-center justify-center gap-3">
                               <div
-                                className={`w-12 h-12 rounded-full mx-auto mb-3 ${
+                                className={`w-6 h-6 rounded-full flex-shrink-0 ${
                                   rating === "green"
                                     ? "bg-accent"
                                     : rating === "yellow"
@@ -409,7 +409,7 @@ const VendorReportForm = () => {
                                     : "bg-destructive"
                                 }`}
                               />
-                              <p className="font-semibold">{getRatingLabel(rating)}</p>
+                              <p className="font-medium text-sm">{getRatingLabel(rating)}</p>
                             </div>
                           </button>
                         ))}
