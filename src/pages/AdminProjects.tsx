@@ -200,9 +200,6 @@ export default function AdminProjects() {
                 <h1 className="text-base font-semibold text-foreground">
                   Projects
                 </h1>
-                <p className="text-xs text-muted-foreground">
-                  View all active IT projects under IV&V oversight.
-                </p>
               </div>
 
               <div className="flex items-center gap-3">
@@ -250,7 +247,7 @@ export default function AdminProjects() {
                   {/* Agency Filter */}
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
                     <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="All Agencies" />
+                      <SelectValue placeholder="Agency" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
                       <SelectItem value="all">All Agencies</SelectItem>
@@ -265,7 +262,7 @@ export default function AdminProjects() {
                   {/* Vendor Filter */}
                   <Select value={vendorFilter} onValueChange={setVendorFilter}>
                     <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="All Vendors" />
+                      <SelectValue placeholder="Vendor" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
                       <SelectItem value="all">All Vendors</SelectItem>
@@ -280,7 +277,7 @@ export default function AdminProjects() {
                   {/* Status Filter */}
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="All Statuses" />
+                      <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
                       <SelectItem value="all">All Statuses</SelectItem>
@@ -298,7 +295,7 @@ export default function AdminProjects() {
                   {/* Active/Archived Toggle */}
                   <Select value={activeFilter} onValueChange={setActiveFilter}>
                     <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Active/Archived" />
+                      <SelectValue placeholder="Active Status" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
                       <SelectItem value="all">All Projects</SelectItem>
@@ -308,8 +305,20 @@ export default function AdminProjects() {
                   </Select>
 
                   {/* Clear Filters */}
-                  <Button variant="outline" onClick={clearFilters} className="bg-background">
-                    Clear Filters
+                  <Button 
+                    variant="ghost" 
+                    onClick={clearFilters} 
+                    className={
+                      searchQuery || 
+                      agencyFilter !== "all" || 
+                      vendorFilter !== "all" || 
+                      statusFilter !== "all" || 
+                      activeFilter !== "active"
+                        ? "underline"
+                        : ""
+                    }
+                  >
+                    Clear
                   </Button>
                 </div>
               </CardContent>
