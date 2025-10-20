@@ -281,32 +281,32 @@ const VendorReportForm = () => {
                       <CardTitle>Project & Reporting Period</CardTitle>
                       <CardDescription>Select the project and reporting period for this report</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="project">Project</Label>
-                        <Select onValueChange={(value) => setValue("projectId", value)}>
-                          <SelectTrigger id="project">
-                            <SelectValue placeholder="Select a project" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background">
-                            {mockProjects.map((project) => (
-                              <SelectItem key={project.id} value={project.id}>
-                                {project.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        {errors.projectId && (
-                          <p className="text-sm text-destructive">{errors.projectId.message}</p>
-                        )}
-                      </div>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-2 md:col-span-1">
+                          <Label htmlFor="project">Project</Label>
+                          <Select onValueChange={(value) => setValue("projectId", value)}>
+                            <SelectTrigger id="project">
+                              <SelectValue placeholder="Select project" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background">
+                              {mockProjects.map((project) => (
+                                <SelectItem key={project.id} value={project.id}>
+                                  {project.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          {errors.projectId && (
+                            <p className="text-sm text-destructive">{errors.projectId.message}</p>
+                          )}
+                        </div>
 
-                      <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="month">Month</Label>
                           <Select onValueChange={(value) => setValue("reportingMonth", value)}>
                             <SelectTrigger id="month">
-                              <SelectValue placeholder="Select month" />
+                              <SelectValue placeholder="Month" />
                             </SelectTrigger>
                             <SelectContent className="bg-background">
                               {months.map((month) => (
@@ -325,7 +325,7 @@ const VendorReportForm = () => {
                           <Label htmlFor="year">Year</Label>
                           <Select onValueChange={(value) => setValue("reportingYear", value)}>
                             <SelectTrigger id="year">
-                              <SelectValue placeholder="Select year" />
+                              <SelectValue placeholder="Year" />
                             </SelectTrigger>
                             <SelectContent className="bg-background">
                               {years.map((year) => (
