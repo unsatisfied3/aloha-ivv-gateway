@@ -105,12 +105,17 @@ const mockReports = [
   { id: "r4", projectId: "2", reportingPeriod: "April 2025", vendorContact: "John Smith", status: "Approved", overallRating: "green", submittedOn: "2025-04-30" },
 ];
 
-// Mock findings summary
-const mockFindings = {
-  open: 3,
-  inProgress: 5,
-  closed: 12,
-};
+// Mock findings/tasks data
+const mockTasks = [
+  { id: 1, task: "Security vulnerability in authentication module", riskFactor: "red", assignee: "Security Team", dueDate: "2025-05-15", status: "open" },
+  { id: 2, task: "Performance degradation in database queries", riskFactor: "yellow", assignee: "Backend Team", dueDate: "2025-05-20", status: "open" },
+  { id: 3, task: "Integration testing incomplete for Phase 2", riskFactor: "yellow", assignee: "QA Team", dueDate: "2025-05-18", status: "open" },
+  { id: 4, task: "API documentation needs update", riskFactor: "green", assignee: "Dev Team", dueDate: "2025-05-25", status: "in-progress" },
+  { id: 5, task: "User acceptance testing pending approval", riskFactor: "red", assignee: "Project Manager", dueDate: "2025-05-12", status: "open" },
+  { id: 6, task: "Third-party service migration delayed", riskFactor: "red", assignee: "DevOps Team", dueDate: "2025-05-10", status: "in-progress" },
+  { id: 7, task: "Code review backlog accumulating", riskFactor: "yellow", assignee: "Lead Developer", dueDate: "2025-05-22", status: "in-progress" },
+  { id: 8, task: "Accessibility compliance review needed", riskFactor: "yellow", assignee: "UX Team", dueDate: "2025-05-28", status: "open" },
+];
 
 // Mock activity timeline
 const mockActivity = [
@@ -269,11 +274,12 @@ export default function AdminProjectDetail() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <FileText className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <Badge className={cn("border mt-1", project.isActive ? "bg-primary/10 text-primary border-primary/30" : "bg-muted text-muted-foreground border-muted-foreground/30")}>
-                        {project.isActive ? "Active" : "Inactive"}
+                      <p className="text-sm text-muted-foreground">Risk Status</p>
+                      <Badge className={cn("border mt-1", statusBadge.className)}>
+                        <statusBadge.icon className="h-3 w-3 mr-1" />
+                        {statusBadge.label}
                       </Badge>
                     </div>
                   </div>
@@ -413,47 +419,49 @@ export default function AdminProjectDetail() {
               </CardContent>
             </Card>
 
-            {/* Section 4: Findings Summary */}
+            {/* Section 4: Risk Findings - Tasks Table */}
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Risk Findings Summary</CardTitle>
-                <CardDescription>Current risk issues identified in this project</CardDescription>
+                <CardTitle>Risk Findings & Tasks</CardTitle>
+                <CardDescription>Action items and issues requiring attention</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 cursor-pointer hover:bg-red-500/20 transition-colors" onClick={() => navigate(`/admin/reports?status=open&project=${id}`)}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-red-700">Open</span>
-                      <AlertCircle className="h-5 w-5 text-red-600" />
-                    </div>
-                    <p className="text-3xl font-bold text-red-700">{mockFindings.open}</p>
-                    <p className="text-xs text-red-600 mt-1">Requires immediate attention</p>
-                    <Button variant="ghost" size="sm" className="mt-3 w-full text-red-700 hover:text-red-800 hover:bg-red-500/20">
-                      View Open Issues
-                    </Button>
-                  </div>
-                  <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 cursor-pointer hover:bg-yellow-500/20 transition-colors" onClick={() => navigate(`/admin/reports?status=in-progress&project=${id}`)}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-yellow-700">In Progress</span>
-                      <Clock className="h-5 w-5 text-yellow-600" />
-                    </div>
-                    <p className="text-3xl font-bold text-yellow-700">{mockFindings.inProgress}</p>
-                    <p className="text-xs text-yellow-600 mt-1">Being addressed by team</p>
-                    <Button variant="ghost" size="sm" className="mt-3 w-full text-yellow-700 hover:text-yellow-800 hover:bg-yellow-500/20">
-                      View In Progress
-                    </Button>
-                  </div>
-                  <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 cursor-pointer hover:bg-green-500/20 transition-colors" onClick={() => navigate(`/admin/reports?status=closed&project=${id}`)}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-green-700">Closed</span>
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                    </div>
-                    <p className="text-3xl font-bold text-green-700">{mockFindings.closed}</p>
-                    <p className="text-xs text-green-600 mt-1">Successfully resolved</p>
-                    <Button variant="ghost" size="sm" className="mt-3 w-full text-green-700 hover:text-green-800 hover:bg-green-500/20">
-                      View Closed Issues
-                    </Button>
-                  </div>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[50%]">Task / Issue</TableHead>
+                        <TableHead>Risk Factor</TableHead>
+                        <TableHead>Assignee</TableHead>
+                        <TableHead>Due Date</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {mockTasks.map((task) => {
+                        const riskBadge = getStatusBadge(task.riskFactor);
+                        return (
+                          <TableRow key={task.id}>
+                            <TableCell className="font-medium">{task.task}</TableCell>
+                            <TableCell>
+                              <Badge className={cn("border", riskBadge.className)}>
+                                {riskBadge.label}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">{task.assignee}</TableCell>
+                            <TableCell className="text-muted-foreground">{format(new Date(task.dueDate), "MMM dd, yyyy")}</TableCell>
+                            <TableCell>
+                              <Badge variant="outline" className={cn(
+                                task.status === "open" ? "bg-red-500/10 text-red-700 border-red-500/30" : "bg-yellow-500/10 text-yellow-700 border-yellow-500/30"
+                              )}>
+                                {task.status === "open" ? "Open" : "In Progress"}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
                 </div>
               </CardContent>
             </Card>
