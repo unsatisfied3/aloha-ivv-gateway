@@ -405,7 +405,7 @@ export default function ReportDetail() {
                               )}
                             </div>
                             <div className="flex items-center gap-2">
-                              <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                              <Badge className="bg-green-500/20 text-green-700 border-green-500/30">Low</Badge>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
@@ -442,7 +442,7 @@ export default function ReportDetail() {
                               )}
                             </div>
                             <div className="flex items-center gap-2">
-                              <Badge className="bg-chart-2/10 text-chart-2 border-chart-2/20">Medium</Badge>
+                              <Badge className="bg-yellow-500/20 text-yellow-700 border-yellow-500/30">Medium</Badge>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
@@ -479,7 +479,7 @@ export default function ReportDetail() {
                               )}
                             </div>
                             <div className="flex items-center gap-2">
-                              <Badge className="bg-accent/10 text-accent border-accent/20">Low</Badge>
+                              <Badge className="bg-green-500/20 text-green-700 border-green-500/30">Low</Badge>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                   <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
@@ -551,7 +551,11 @@ export default function ReportDetail() {
                               )}
                             </div>
                             <div className="flex items-center gap-2">
-                              <Badge variant={item.status === "Complete" ? "default" : "secondary"}>
+                              <Badge className={
+                                item.status === "Complete" 
+                                  ? "bg-green-500/20 text-green-700 border-green-500/30" 
+                                  : "bg-yellow-500/20 text-yellow-700 border-yellow-500/30"
+                              }>
                                 {item.status}
                               </Badge>
                               <DropdownMenu>
