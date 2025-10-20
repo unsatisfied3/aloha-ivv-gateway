@@ -237,7 +237,7 @@ const PublicCatalog = () => {
               {/* Horizontal Filters */}
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-medium text-white/90 mr-1">Filters:</span>
+                  <span className="text-sm font-medium text-foreground bg-white/90 px-2 py-1 rounded mr-1">Filters:</span>
                   
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
                     <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by agency">
@@ -343,7 +343,7 @@ const PublicCatalog = () => {
                               <TableCell className="text-right">
                                 <div className="flex items-center justify-end gap-2">
                                   <Button 
-                                    variant="ghost" 
+                                    variant="default"
                                     size="sm"
                                     onClick={() => navigate(`/public/report/${report.id}`)}
                                     className="gap-1.5"
@@ -352,7 +352,7 @@ const PublicCatalog = () => {
                                     View
                                   </Button>
                                   <Button 
-                                    variant="ghost" 
+                                    variant="outline" 
                                     size="sm"
                                     onClick={() => {
                                       // Simulate download
@@ -399,7 +399,7 @@ const PublicCatalog = () => {
                             </div>
                             <div className="flex gap-2">
                               <Button 
-                                variant="outline" 
+                                variant="default"
                                 size="sm"
                                 onClick={() => navigate(`/public/report/${report.id}`)}
                                 className="gap-1.5"
