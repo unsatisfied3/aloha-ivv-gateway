@@ -54,12 +54,23 @@ import {
 import { useState } from "react";
 
 const months = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
 const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
+const currentMonth = new Date().getMonth();
+
+// Generate month-year options (current month and 23 months back = 2 years)
+const monthYearOptions = Array.from({ length: 24 }, (_, i) => {
+  const date = new Date(currentYear, currentMonth - i, 1);
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+  return {
+    label: `${months[monthIndex]} ${year}`,
+    value: `${year}-${String(monthIndex + 1).padStart(2, '0')}`
+  };
+});
 
 const summaryStats = [
   { 
@@ -236,8 +247,7 @@ const getStatusLabel = (status: string) => {
 };
 
 const AdminDashboard = () => {
-  const [selectedMonth, setSelectedMonth] = useState<string>("");
-  const [selectedYear, setSelectedYear] = useState<string>("");
+  const [selectedPeriod, setSelectedPeriod] = useState<string>("");
 
   return (
     <SidebarProvider>
@@ -273,44 +283,24 @@ const AdminDashboard = () => {
                   <PopoverTrigger asChild>
                     <Button variant="outline" className="gap-2 bg-background">
                       <CalendarIcon className="h-4 w-4" />
-                      {selectedMonth && selectedYear 
-                        ? `${selectedMonth} ${selectedYear}` 
-                        : "Select Month & Year"}
+                      {selectedPeriod 
+                        ? monthYearOptions.find(opt => opt.value === selectedPeriod)?.label
+                        : "Select Period"}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-4 bg-background" align="end">
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Month</label>
-                        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                          <SelectTrigger className="bg-background">
-                            <SelectValue placeholder="Select month" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background">
-                            {months.map((month) => (
-                              <SelectItem key={month} value={month}>
-                                {month}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Year</label>
-                        <Select value={selectedYear} onValueChange={setSelectedYear}>
-                          <SelectTrigger className="bg-background">
-                            <SelectValue placeholder="Select year" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-background">
-                            {years.map((year) => (
-                              <SelectItem key={year} value={year.toString()}>
-                                {year}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
+                  <PopoverContent className="w-auto p-2 bg-background" align="end">
+                    <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                      <SelectTrigger className="w-[180px] bg-background">
+                        <SelectValue placeholder="Select period" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background">
+                        {monthYearOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </PopoverContent>
                 </Popover>
               </div>
