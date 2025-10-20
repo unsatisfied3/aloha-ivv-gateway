@@ -389,86 +389,140 @@ const AdminDashboard = () => {
               </Card>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-3">
-              {/* Active Projects Table */}
-              <div className="lg:col-span-2">
-                <Card className="bg-background">
-                  <CardHeader>
-                    <CardTitle>Active Projects</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="rounded-md border">
-                      <Table>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Agency</TableHead>
-                            <TableHead className="hidden md:table-cell">Vendor</TableHead>
-                            <TableHead className="whitespace-nowrap">Status</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {currentProjects.map((project) => (
-                            <TableRow 
-                              key={project.id} 
-                              className="cursor-pointer hover:bg-muted/50"
-                              onClick={() => window.location.href = `/admin/report/${project.id}`}
-                            >
-                              <TableCell className="font-medium">{project.projectName}</TableCell>
-                              <TableCell className="text-sm">
-                                <div className="flex items-center gap-2">
-                                  <Building2 className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
-                                  <span className="hidden sm:inline">{project.sponsoringAgency}</span>
-                                </div>
-                              </TableCell>
-                              <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                                {project.ivvVendorName}
-                              </TableCell>
-                              <TableCell className="whitespace-nowrap">
-                                <Badge variant="outline" className={getStatusColor(project.overallProjectStatus)}>
-                                  {getStatusLabel(project.overallProjectStatus)}
-                                </Badge>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                    <div className="mt-4">
-                      <Link to="/admin/reports">
-                        <Button variant="ghost" className="w-full sm:w-auto text-primary">
-                          View All Reports
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+            {/* Active Projects Table - Full Width */}
+            <Card className="bg-background mb-8">
+              <CardHeader>
+                <CardTitle>Active Projects</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Agency</TableHead>
+                        <TableHead className="hidden md:table-cell">Vendor</TableHead>
+                        <TableHead className="whitespace-nowrap">Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {currentProjects.map((project) => (
+                        <TableRow 
+                          key={project.id} 
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => window.location.href = `/admin/report/${project.id}`}
+                        >
+                          <TableCell className="font-medium">{project.projectName}</TableCell>
+                          <TableCell className="text-sm">
+                            <div className="flex items-center gap-2">
+                              <Building2 className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
+                              <span className="hidden sm:inline">{project.sponsoringAgency}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
+                            {project.ivvVendorName}
+                          </TableCell>
+                          <TableCell className="whitespace-nowrap">
+                            <Badge variant="outline" className={getStatusColor(project.overallProjectStatus)}>
+                              {getStatusLabel(project.overallProjectStatus)}
+                            </Badge>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <div className="mt-4">
+                  <Link to="/admin/reports">
+                    <Button variant="ghost" className="w-full sm:w-auto text-primary">
+                      View All Reports
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
 
-              {/* Right Column - Assignments & Activity */}
-              <div className="space-y-6">
-                {/* Assigned to Me Panel */}
-                <Card className="bg-background">
-                  <CardHeader className="pb-3">
-                    <CardTitle>Assigned to Me</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4 pb-5">
-                    {myAssignments.map((assignment) => (
-                      <div key={assignment.id} className="space-y-2 pb-4 border-b last:border-0 last:pb-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <h4 className="text-sm font-medium leading-tight">{assignment.name}</h4>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-6 w-6 p-0 flex-shrink-0"
-                              >
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-32 bg-background">
+            {/* Assignments & Activity - Side by Side */}
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Assigned to Me Panel */}
+              <Card className="bg-background">
+                <CardHeader className="pb-3">
+                  <CardTitle>Assigned to Me</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 pb-5">
+                  {myAssignments.map((assignment) => (
+                    <div key={assignment.id} className="space-y-2 pb-4 border-b last:border-0 last:pb-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="text-sm font-medium leading-tight">{assignment.name}</h4>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0 flex-shrink-0"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-32 bg-background">
+                            <DropdownMenuItem>
+                              <Eye className="h-4 w-4 mr-2" />
+                              View
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Check className="h-4 w-4 mr-2" />
+                              Complete
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <X className="h-4 w-4 mr-2" />
+                              Remove
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {assignment.dueDate}
+                      </div>
+                      <Progress value={assignment.progress} className="h-2 [&>div]:bg-primary" />
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
+                        <Badge variant="outline" className="text-xs">
+                          {assignment.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Recent Activity Panel */}
+              <Card className="bg-background">
+                <CardHeader className="pb-3">
+                  <CardTitle>Recent Activity</CardTitle>
+                  <CardDescription>Latest updates and events</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 pb-5">
+                  {recentActivity.map((activity) => (
+                    <div key={activity.id} className={`flex gap-3 pb-3 border-b last:border-0 last:pb-0 border-l-4 pl-3 -ml-3 ${getUrgencyBorderColor(activity.urgency)}`}>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm leading-tight">{activity.event}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
+                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 w-7 p-0 flex-shrink-0"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-32">
+                          {activity.actionable && (
+                            <>
                               <DropdownMenuItem>
                                 <Eye className="h-4 w-4 mr-2" />
                                 View
@@ -477,76 +531,18 @@ const AdminDashboard = () => {
                                 <Check className="h-4 w-4 mr-2" />
                                 Complete
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <X className="h-4 w-4 mr-2" />
-                                Remove
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Clock className="h-3 w-3" />
-                          {assignment.dueDate}
-                        </div>
-                        <Progress value={assignment.progress} className="h-2 [&>div]:bg-primary" />
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
-                          <Badge variant="outline" className="text-xs">
-                            {assignment.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-
-                {/* Recent Activity Panel */}
-                <Card className="bg-background">
-                  <CardHeader className="pb-3">
-                    <CardTitle>Recent Activity</CardTitle>
-                    <CardDescription>Latest updates and events</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3 pb-5">
-                    {recentActivity.map((activity) => (
-                      <div key={activity.id} className={`flex gap-3 pb-3 border-b last:border-0 last:pb-0 border-l-4 pl-3 -ml-3 ${getUrgencyBorderColor(activity.urgency)}`}>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm leading-tight">{activity.event}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
-                        </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-7 w-7 p-0 flex-shrink-0"
-                            >
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-32">
-                            {activity.actionable && (
-                              <>
-                                <DropdownMenuItem>
-                                  <Eye className="h-4 w-4 mr-2" />
-                                  View
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                  <Check className="h-4 w-4 mr-2" />
-                                  Complete
-                                </DropdownMenuItem>
-                              </>
-                            )}
-                            <DropdownMenuItem>
-                              <X className="h-4 w-4 mr-2" />
-                              Clear
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </div>
+                            </>
+                          )}
+                          <DropdownMenuItem>
+                            <X className="h-4 w-4 mr-2" />
+                            Clear
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             </div>
           </main>
         </div>
