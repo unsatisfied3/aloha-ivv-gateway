@@ -61,8 +61,19 @@ export function VendorSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
+        <div className="px-3 mb-4">
+          <Button 
+            asChild 
+            className="w-full justify-start gap-2 bg-primary hover:bg-primary/90"
+          >
+            <NavLink to="/vendor/report/new">
+              <Plus className="h-4 w-4" />
+              {open && <span>New Report</span>}
+            </NavLink>
+          </Button>
+        </div>
+
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
@@ -85,18 +96,6 @@ export function VendorSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        <div className="px-3 mt-4">
-          <Button 
-            asChild 
-            className="w-full justify-start gap-2 bg-primary hover:bg-primary/90"
-          >
-            <NavLink to="/vendor/report/new">
-              <Plus className="h-4 w-4" />
-              {open && <span>New Report</span>}
-            </NavLink>
-          </Button>
-        </div>
       </SidebarContent>
 
       <SidebarFooter>
