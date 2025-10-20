@@ -204,7 +204,7 @@ const AdminDashboard = () => {
               <SidebarTrigger />
               
               <h1 className="text-base font-semibold text-foreground flex-1">
-                Admin Dashboard — State Project Oversight
+                Dashboard Overview
               </h1>
               
               <Link to="/admin/project/new">
@@ -218,29 +218,6 @@ const AdminDashboard = () => {
 
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
-            {/* Dashboard Header */}
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">Dashboard Overview</h2>
-              <p className="text-muted-foreground mb-6">
-                Monitor active projects, report progress, and upcoming reviews.
-              </p>
-              
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search projects, vendors, or agencies..."
-                    className="pl-9 bg-background"
-                  />
-                </div>
-                <Button variant="outline" className="gap-2 bg-background">
-                  <Calendar className="h-4 w-4" />
-                  Date Range
-                </Button>
-              </div>
-            </div>
-
             {/* Summary Stats */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {summaryStats.map((stat, index) => (
