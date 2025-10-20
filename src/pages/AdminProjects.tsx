@@ -28,7 +28,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Plus, Eye, Pencil, FolderKanban, MoreVertical } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Search, Plus, Eye, Pencil, FolderKanban, MoreVertical, Filter } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -225,9 +230,9 @@ export default function AdminProjects() {
             {/* Filter Bar */}
             <Card className="mb-6">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                <div className="flex items-center gap-4">
                   {/* Search */}
-                  <div className="lg:col-span-2 relative">
+                  <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Search project or agency..."
@@ -237,80 +242,101 @@ export default function AdminProjects() {
                     />
                   </div>
 
-                  {/* Agency Filter */}
-                  <Select value={agencyFilter} onValueChange={setAgencyFilter}>
-                    <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Agency" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">Agency</SelectItem>
-                      {agencies.map((agency) => (
-                        <SelectItem key={agency} value={agency}>
-                          {agency}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  {/* Filter Popover Button */}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" size="icon">
+                        <Filter className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 bg-background z-50" align="end">
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-semibold text-sm">Filters</h4>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={clearFilters}
+                            className="h-8 px-2 text-xs"
+                          >
+                            Reset All
+                          </Button>
+                        </div>
 
-                  {/* Vendor Filter */}
-                  <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                    <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Vendor" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">Vendor</SelectItem>
-                      {vendors.map((vendor) => (
-                        <SelectItem key={vendor} value={vendor}>
-                          {vendor}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                        {/* Agency Filter */}
+                        <div className="space-y-2">
+                          <label className="text-xs font-medium text-muted-foreground">Agency</label>
+                          <Select value={agencyFilter} onValueChange={setAgencyFilter}>
+                            <SelectTrigger className="bg-background">
+                              <SelectValue placeholder="Agency" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background z-50">
+                              <SelectItem value="all">All Agencies</SelectItem>
+                              {agencies.map((agency) => (
+                                <SelectItem key={agency} value={agency}>
+                                  {agency}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
 
-                  {/* Status Filter */}
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">Status</SelectItem>
-                      {statuses.map((status) => {
-                        const badge = getStatusBadge(status);
-                        return (
-                          <SelectItem key={status} value={status}>
-                            {badge.label}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
+                        {/* Vendor Filter */}
+                        <div className="space-y-2">
+                          <label className="text-xs font-medium text-muted-foreground">Vendor</label>
+                          <Select value={vendorFilter} onValueChange={setVendorFilter}>
+                            <SelectTrigger className="bg-background">
+                              <SelectValue placeholder="Vendor" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background z-50">
+                              <SelectItem value="all">All Vendors</SelectItem>
+                              {vendors.map((vendor) => (
+                                <SelectItem key={vendor} value={vendor}>
+                                  {vendor}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
 
-                  {/* Active/Archived Toggle */}
-                  <Select value={activeFilter} onValueChange={setActiveFilter}>
-                    <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Active Status" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">Active Status</SelectItem>
-                      <SelectItem value="active">Active Only</SelectItem>
-                      <SelectItem value="archived">Archived Only</SelectItem>
-                    </SelectContent>
-                  </Select>
+                        {/* Status Filter */}
+                        <div className="space-y-2">
+                          <label className="text-xs font-medium text-muted-foreground">Status</label>
+                          <Select value={statusFilter} onValueChange={setStatusFilter}>
+                            <SelectTrigger className="bg-background">
+                              <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background z-50">
+                              <SelectItem value="all">All Statuses</SelectItem>
+                              {statuses.map((status) => {
+                                const badge = getStatusBadge(status);
+                                return (
+                                  <SelectItem key={status} value={status}>
+                                    {badge.label}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </div>
 
-                  {/* Clear Filters - Only show when filters are applied */}
-                  {(searchQuery || 
-                    agencyFilter !== "all" || 
-                    vendorFilter !== "all" || 
-                    statusFilter !== "all" || 
-                    activeFilter !== "active") && (
-                    <Button 
-                      variant="ghost" 
-                      onClick={clearFilters} 
-                      className="underline px-2"
-                    >
-                      Clear
-                    </Button>
-                  )}
+                        {/* Active/Archived Toggle */}
+                        <div className="space-y-2">
+                          <label className="text-xs font-medium text-muted-foreground">Active Status</label>
+                          <Select value={activeFilter} onValueChange={setActiveFilter}>
+                            <SelectTrigger className="bg-background">
+                              <SelectValue placeholder="Active Status" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background z-50">
+                              <SelectItem value="all">All Projects</SelectItem>
+                              <SelectItem value="active">Active Only</SelectItem>
+                              <SelectItem value="archived">Archived Only</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </CardContent>
             </Card>
