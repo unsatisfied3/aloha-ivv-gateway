@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Search, FileText, X, Circle, Download, Eye, CheckSquare, Square, MoreVertical } from "lucide-react";
+import { Search, FileText, X, Download, Eye, CheckSquare, Square, MoreVertical } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -121,14 +121,15 @@ const sampleReports: Report[] = [
   },
 ];
 
-const getRatingIcon = (rating: OverallRating) => {
-  const colors = {
-    green: "text-green-600",
-    yellow: "text-yellow-500",
-    red: "text-red-600",
+const getRatingBadge = (rating: OverallRating) => {
+  const config = {
+    green: { label: "On Track", className: "bg-green-100 text-green-800 border-green-200" },
+    yellow: { label: "At Risk", className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
+    red: { label: "Critical", className: "bg-red-100 text-red-800 border-red-200" },
   };
   
-  return <Circle className={`h-4 w-4 fill-current ${colors[rating]}`} aria-label={`${rating} rating`} />;
+  const { label, className } = config[rating];
+  return <Badge variant="outline" className={className}>{label}</Badge>;
 };
 
 const PublicCatalog = () => {
@@ -311,9 +312,9 @@ const PublicCatalog = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Ratings</SelectItem>
-                      <SelectItem value="green">🟢 On Track</SelectItem>
-                      <SelectItem value="yellow">🟡 At Risk</SelectItem>
-                      <SelectItem value="red">🔴 Critical</SelectItem>
+                      <SelectItem value="green">On Track</SelectItem>
+                      <SelectItem value="yellow">At Risk</SelectItem>
+                      <SelectItem value="red">Critical</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -403,7 +404,7 @@ const PublicCatalog = () => {
                               <TableCell>{report.sponsoringAgency}</TableCell>
                               <TableCell>{report.ivvVendorName}</TableCell>
                               <TableCell>{report.reportingMonth} {report.reportingYear}</TableCell>
-                              <TableCell>{getRatingIcon(report.overallRating)}</TableCell>
+                              <TableCell>{getRatingBadge(report.overallRating)}</TableCell>
                               <TableCell className="text-right">
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -463,7 +464,7 @@ const PublicCatalog = () => {
 
                           <div className="flex items-center justify-between pt-2">
                             <div className="flex items-center gap-2">
-                              {getRatingIcon(report.overallRating)}
+                              {getRatingBadge(report.overallRating)}
                             </div>
                             <div className="flex gap-2">
                               <Button 
