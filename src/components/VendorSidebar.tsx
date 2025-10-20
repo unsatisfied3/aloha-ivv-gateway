@@ -29,7 +29,6 @@ import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 const menuItems = [
   { title: "Dashboard", url: "/vendor/dashboard", icon: LayoutDashboard },
   { title: "My Reports", url: "/vendor/reports", icon: FileText },
-  { title: "Settings", url: "/vendor/settings", icon: Settings },
 ];
 
 export function VendorSidebar() {
