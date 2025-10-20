@@ -28,9 +28,6 @@ import lokahiLogo from "@/assets/lokahi-logo.png";
 const menuItems = [
   { title: "Dashboard", url: "/admin/dashboard", icon: Home },
   { title: "Reports", url: "/admin/reports", icon: FileText },
-  { title: "Assignments", url: "/admin/assignments", icon: ClipboardList },
-  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
-  { title: "Settings", url: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
