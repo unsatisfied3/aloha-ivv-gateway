@@ -326,21 +326,21 @@ const AdminProjectNew = () => {
                           <RadioGroupItem value="green" id="status-green" />
                           <Label htmlFor="status-green" className="flex items-center gap-2 font-normal cursor-pointer">
                             <div className="h-3 w-3 rounded-full bg-accent" />
-                            Green - On Track
+                            On Track
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="yellow" id="status-yellow" />
                           <Label htmlFor="status-yellow" className="flex items-center gap-2 font-normal cursor-pointer">
                             <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                            Yellow - At Risk
+                            At Risk
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="red" id="status-red" />
                           <Label htmlFor="status-red" className="flex items-center gap-2 font-normal cursor-pointer">
                             <div className="h-3 w-3 rounded-full bg-destructive" />
-                            Red - Critical
+                            Critical
                           </Label>
                         </div>
                       </RadioGroup>
