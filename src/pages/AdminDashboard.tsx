@@ -430,6 +430,14 @@ const AdminDashboard = () => {
                     </TableBody>
                   </Table>
                 </div>
+                <div className="mt-4 flex justify-end">
+                  <Link to="/admin/reports">
+                    <Button variant="ghost" className="text-primary">
+                      View All Reports
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
 
@@ -531,14 +539,6 @@ const AdminDashboard = () => {
                       </DropdownMenu>
                     </div>
                   ))}
-                  <div className="pt-2 flex justify-end">
-                    <Link to="/admin/reports">
-                      <Button variant="ghost" className="text-primary">
-                        View All Reports
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
                 </CardContent>
               </Card>
             </div>
