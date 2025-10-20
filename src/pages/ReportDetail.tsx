@@ -219,7 +219,7 @@ export default function ReportDetail() {
                       <div>
                         <p className="text-xs text-muted-foreground mb-0.5">Review Progress</p>
                         <div className="flex items-center gap-2">
-                          <Progress value={mockReport.progress} className="h-2 w-20" />
+                          <Progress value={mockReport.progress} className="h-2 w-20 bg-muted [&>div]:bg-primary" />
                           <span className="text-sm font-medium">{mockReport.progress}%</span>
                         </div>
                       </div>
