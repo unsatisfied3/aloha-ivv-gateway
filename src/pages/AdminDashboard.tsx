@@ -25,7 +25,13 @@ import {
   FileSearch,
   FileCheck,
   AlertTriangle,
-  Plus
+  Plus,
+  AlertCircle,
+  CheckCircle,
+  FileText,
+  Eye,
+  X,
+  Check
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -121,11 +127,39 @@ const currentProjects = [
 ];
 
 const recentActivity = [
-  { id: 1, event: "Report submitted for DOH Health Connect", timestamp: "2 hours ago", type: "submission" },
-  { id: 2, event: "Student Info System marked approved", timestamp: "5 hours ago", type: "approval" },
-  { id: 3, event: "Tax Portal report revision requested", timestamp: "1 day ago", type: "revision" },
-  { id: 4, event: "New project added: Judicial Case Mgmt", timestamp: "2 days ago", type: "project" },
+  { id: 1, event: "Report submitted for DOH Health Connect", timestamp: "2 hours ago", type: "submission", urgency: "medium", actionable: true },
+  { id: 2, event: "Student Info System marked approved", timestamp: "5 hours ago", type: "approval", urgency: "low", actionable: false },
+  { id: 3, event: "Tax Portal report revision requested", timestamp: "1 day ago", type: "revision", urgency: "high", actionable: true },
+  { id: 4, event: "New project added: Judicial Case Mgmt", timestamp: "2 days ago", type: "project", urgency: "medium", actionable: true },
 ];
+
+const getActivityIcon = (type: string) => {
+  switch (type) {
+    case 'approval':
+      return CheckCircle;
+    case 'revision':
+      return AlertCircle;
+    case 'submission':
+      return FileText;
+    case 'project':
+      return Plus;
+    default:
+      return FileText;
+  }
+};
+
+const getUrgencyColor = (urgency: string) => {
+  switch (urgency) {
+    case 'high':
+      return 'text-red-600';
+    case 'medium':
+      return 'text-blue-600';
+    case 'low':
+      return 'text-green-600';
+    default:
+      return 'text-muted-foreground';
+  }
+};
 
 const myAssignments = [
   { id: 1, name: "Student Records System", dueDate: "Dec 15, 2024", progress: 65, status: "In Progress" },
@@ -395,20 +429,46 @@ const AdminDashboard = () => {
                     <CardDescription>Latest updates and events</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 pb-5">
-                    {recentActivity.map((activity) => (
-                      <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
-                        <div className={`h-2 w-2 rounded-full mt-1.5 flex-shrink-0 ${
-                          activity.type === 'approval' ? 'bg-accent' :
-                          activity.type === 'revision' ? 'bg-destructive' :
-                          activity.type === 'submission' ? 'bg-primary' :
-                          'bg-muted-foreground'
-                        }`} />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm leading-tight">{activity.event}</p>
-                          <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
+                    {recentActivity.map((activity) => {
+                      const ActivityIcon = getActivityIcon(activity.type);
+                      return (
+                        <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
+                          <ActivityIcon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${getUrgencyColor(activity.urgency)}`} />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm leading-tight">{activity.event}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
+                          </div>
+                          {activity.actionable && (
+                            <div className="flex gap-1 flex-shrink-0">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                title="View"
+                              >
+                                <Eye className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                title="Complete"
+                              >
+                                <Check className="h-3.5 w-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 w-7 p-0"
+                                title="Clear"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </CardContent>
                 </Card>
               </div>
