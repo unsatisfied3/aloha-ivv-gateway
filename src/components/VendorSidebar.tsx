@@ -1,5 +1,6 @@
 import { LayoutDashboard, FileText, Plus, Settings, LogOut } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import {
   Sidebar,
   SidebarContent,
@@ -28,7 +29,6 @@ import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 const menuItems = [
   { title: "Dashboard", url: "/vendor/dashboard", icon: LayoutDashboard },
   { title: "My Reports", url: "/vendor/reports", icon: FileText },
-  { title: "New Report", url: "/vendor/report/new", icon: Plus },
   { title: "Settings", url: "/vendor/settings", icon: Settings },
 ];
 
@@ -85,6 +85,18 @@ export function VendorSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <div className="px-3 mt-4">
+          <Button 
+            asChild 
+            className="w-full justify-start gap-2 bg-primary hover:bg-primary/90"
+          >
+            <NavLink to="/vendor/report/new">
+              <Plus className="h-4 w-4" />
+              {open && <span>New Report</span>}
+            </NavLink>
+          </Button>
+        </div>
       </SidebarContent>
 
       <SidebarFooter>
