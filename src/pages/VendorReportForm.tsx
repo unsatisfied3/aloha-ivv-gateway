@@ -108,8 +108,7 @@ const VendorReportForm = () => {
   });
 
   const sections = [
-    { id: "project", label: "Project" },
-    { id: "period", label: "Period" },
+    { id: "period", label: "Project & Period" },
     { id: "summary", label: "Summary" },
     { id: "rating", label: "Rating" },
     { id: "highlights", label: "Highlights" },
@@ -276,13 +275,13 @@ const VendorReportForm = () => {
                     </p>
                   </div>
 
-                  {/* Project Selection */}
-                  <Card id="project" className="bg-background scroll-mt-24">
+                  {/* Project Selection & Reporting Period */}
+                  <Card id="period" className="bg-background scroll-mt-24">
                     <CardHeader>
-                      <CardTitle>Project Selection</CardTitle>
-                      <CardDescription>Select the project for this report</CardDescription>
+                      <CardTitle>Project & Reporting Period</CardTitle>
+                      <CardDescription>Select the project and reporting period for this report</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-6">
                       <div className="space-y-2">
                         <Label htmlFor="project">Project</Label>
                         <Select onValueChange={(value) => setValue("projectId", value)}>
@@ -301,16 +300,7 @@ const VendorReportForm = () => {
                           <p className="text-sm text-destructive">{errors.projectId.message}</p>
                         )}
                       </div>
-                    </CardContent>
-                  </Card>
 
-                  {/* Reporting Period */}
-                  <Card id="period" className="bg-background scroll-mt-24">
-                    <CardHeader>
-                      <CardTitle>Reporting Period</CardTitle>
-                      <CardDescription>Select the month and year for this report</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="month">Month</Label>
