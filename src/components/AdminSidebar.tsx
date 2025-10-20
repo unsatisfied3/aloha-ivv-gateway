@@ -58,9 +58,6 @@ export function AdminSidebar() {
       
       <SidebarContent className="px-3 py-4">
         <SidebarGroup>
-          <SidebarGroupLabel className="px-3 text-xs font-medium text-muted-foreground">
-            Navigation
-          </SidebarGroupLabel>
           <SidebarGroupContent className="mt-2">
             <SidebarMenu>
               {menuItems.map((item) => (
