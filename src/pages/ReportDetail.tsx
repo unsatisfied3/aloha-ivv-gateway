@@ -27,7 +27,14 @@ import {
   Building2,
   Users,
   Clock,
+  MoreVertical,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Mock data
 const mockReport = {
@@ -278,55 +285,54 @@ export default function ReportDetail() {
                         {comments.map((comment) => (
                           <div key={comment.id} className="border-l-2 border-primary pl-3 py-2">
                             <div className="flex items-center justify-between mb-1">
-                              <p className="text-xs font-medium">{comment.author}</p>
-                              <div className="flex items-center gap-1">
+                              <div className="flex items-center gap-2">
+                                <p className="text-xs font-medium">{comment.author}</p>
                                 {comment.resolved && (
                                   <Badge variant="secondary" className="text-xs">Resolved</Badge>
                                 )}
                               </div>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                                    <MoreVertical className="h-3 w-3" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="bg-background">
+                                  {!comment.resolved && (
+                                    <DropdownMenuItem
+                                      onClick={() => {
+                                        const updatedComments = comments.map(c => 
+                                          c.id === comment.id ? { ...c, resolved: true } : c
+                                        );
+                                        setComments(updatedComments);
+                                        toast({ title: "Comment resolved" });
+                                      }}
+                                    >
+                                      Resolve
+                                    </DropdownMenuItem>
+                                  )}
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      toast({ title: "Reply feature coming soon" });
+                                    }}
+                                  >
+                                    Reply
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    className="text-destructive focus:text-destructive"
+                                    onClick={() => {
+                                      const updatedComments = comments.filter(c => c.id !== comment.id);
+                                      setComments(updatedComments);
+                                      toast({ title: "Comment deleted" });
+                                    }}
+                                  >
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
                             <p className="text-xs text-muted-foreground mb-1">{comment.timestamp}</p>
-                            <p className="text-sm mb-2">{comment.text}</p>
-                            <div className="flex items-center gap-2">
-                              {!comment.resolved && (
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="h-6 px-2 text-xs"
-                                  onClick={() => {
-                                    const updatedComments = comments.map(c => 
-                                      c.id === comment.id ? { ...c, resolved: true } : c
-                                    );
-                                    setComments(updatedComments);
-                                    toast({ title: "Comment resolved" });
-                                  }}
-                                >
-                                  Resolve
-                                </Button>
-                              )}
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-6 px-2 text-xs"
-                                onClick={() => {
-                                  toast({ title: "Reply feature coming soon" });
-                                }}
-                              >
-                                Reply
-                              </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="sm" 
-                                className="h-6 px-2 text-xs text-destructive hover:text-destructive"
-                                onClick={() => {
-                                  const updatedComments = comments.filter(c => c.id !== comment.id);
-                                  setComments(updatedComments);
-                                  toast({ title: "Comment deleted" });
-                                }}
-                              >
-                                Delete
-                              </Button>
-                            </div>
+                            <p className="text-sm">{comment.text}</p>
                           </div>
                         ))}
                       </div>
