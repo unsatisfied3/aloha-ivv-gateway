@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { format } from "date-fns";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import {
@@ -39,6 +40,12 @@ const mockReport = {
   status: "In Review",
   lastUpdated: "2024-01-20",
   progress: 60,
+  timeline: {
+    submitted: { date: "2024-01-15", completed: true },
+    inReview: { date: "2024-01-19", completed: true },
+    approved: { date: null, completed: false },
+    published: { date: null, completed: false },
+  },
 };
 
 const mockComments = [
@@ -518,24 +525,61 @@ export default function ReportDetail() {
                         <span className="text-muted-foreground">Submission → In Review → Approved → Published</span>
                         <span className="font-medium">{mockReport.progress}%</span>
                       </div>
-                      <Progress value={mockReport.progress} className="h-2 bg-muted [&>div]:bg-primary" />
+                      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
+                        <div 
+                          className="h-full transition-all bg-gradient-to-r from-blue-500 via-yellow-500 to-green-500"
+                          style={{ width: `${mockReport.progress}%` }}
+                        />
+                      </div>
                     </div>
                     <div className="grid grid-cols-4 gap-2 text-xs text-center">
                       <div>
                         <div className="w-2 h-2 rounded-full bg-blue-500 mx-auto mb-1"></div>
-                        <p className="font-medium">Submitted</p>
+                        <p className={mockReport.timeline.submitted.completed ? "font-medium" : "text-muted-foreground"}>
+                          Submitted
+                        </p>
+                        {mockReport.timeline.submitted.date && (
+                          <p className="text-muted-foreground text-[10px] mt-0.5">
+                            {format(new Date(mockReport.timeline.submitted.date), "MMM dd")}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <div className="w-2 h-2 rounded-full bg-yellow-500 mx-auto mb-1"></div>
-                        <p className="font-medium">In Review</p>
+                        <p className={mockReport.timeline.inReview.completed ? "font-medium" : "text-muted-foreground"}>
+                          In Review
+                        </p>
+                        {mockReport.timeline.inReview.date && (
+                          <p className="text-muted-foreground text-[10px] mt-0.5">
+                            {format(new Date(mockReport.timeline.inReview.date), "MMM dd")}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <div className="w-2 h-2 rounded-full bg-green-500 mx-auto mb-1"></div>
-                        <p className="text-muted-foreground">Approved</p>
+                        <p className={mockReport.timeline.approved.completed ? "font-medium" : "text-muted-foreground"}>
+                          Approved
+                        </p>
+                        {mockReport.timeline.approved.date ? (
+                          <p className="text-muted-foreground text-[10px] mt-0.5">
+                            {format(new Date(mockReport.timeline.approved.date), "MMM dd")}
+                          </p>
+                        ) : (
+                          <p className="text-muted-foreground text-[10px] mt-0.5">Pending</p>
+                        )}
                       </div>
                       <div>
                         <div className="w-2 h-2 rounded-full bg-purple-500 mx-auto mb-1"></div>
-                        <p className="text-muted-foreground">Published</p>
+                        <p className={mockReport.timeline.published.completed ? "font-medium" : "text-muted-foreground"}>
+                          Published
+                        </p>
+                        {mockReport.timeline.published.date ? (
+                          <p className="text-muted-foreground text-[10px] mt-0.5">
+                            {format(new Date(mockReport.timeline.published.date), "MMM dd")}
+                          </p>
+                        ) : (
+                          <p className="text-muted-foreground text-[10px] mt-0.5">Pending</p>
+                        )}
                       </div>
                     </div>
                   </div>
