@@ -8,6 +8,7 @@ import PublicCatalog from "./pages/PublicCatalog";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProjects from "./pages/AdminProjects";
 import AdminProjectNew from "./pages/AdminProjectNew";
+import AdminProjectDetail from "./pages/AdminProjectDetail";
 import ReportsTable from "./pages/ReportsTable";
 import ReportDetail from "./pages/ReportDetail";
 import Login from "./pages/Login";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/projects" element={<AdminProjects />} />
           <Route path="/admin/project/new" element={<AdminProjectNew />} />
+          <Route path="/admin/project/:id" element={<AdminProjectDetail />} />
           <Route path="/admin/reports" element={<ReportsTable />} />
           <Route path="/admin/report/:id" element={<ReportDetail />} />
           <Route path="/public/report/:id" element={<ReportDetail />} />
