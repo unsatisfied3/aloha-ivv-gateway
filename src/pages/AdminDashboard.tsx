@@ -74,12 +74,14 @@ const monthYearOptions = Array.from({ length: 24 }, (_, i) => {
 
 const summaryStats = [
   { 
-    title: "Total Active Projects", 
+    title: "Total Active Reports", 
     value: 127, 
     trend: "+12%",
     trendLabel: "from last month",
     isPositive: true,
     icon: FolderKanban,
+    linkText: "View projects",
+    linkTo: "/admin/projects"
   },
   { 
     title: "Reports in Review", 
@@ -88,6 +90,8 @@ const summaryStats = [
     trendLabel: "from last month",
     isPositive: true,
     icon: FileSearch,
+    linkText: "View reports",
+    linkTo: "/admin/reports"
   },
   { 
     title: "Published Reports", 
@@ -96,6 +100,8 @@ const summaryStats = [
     trendLabel: "from last month",
     isPositive: true,
     icon: FileCheck,
+    linkText: "View reports",
+    linkTo: "/admin/reports"
   },
   { 
     title: "High-Risk Projects", 
@@ -104,6 +110,8 @@ const summaryStats = [
     trendLabel: "from last month",
     isPositive: false,
     icon: AlertTriangle,
+    linkText: "View projects",
+    linkTo: "/admin/projects"
   },
 ];
 
@@ -327,6 +335,10 @@ const AdminDashboard = () => {
                       </div>
                       <stat.icon className="h-5 w-5 text-muted-foreground" />
                     </div>
+                    <Link to={stat.linkTo} className="flex items-center gap-1 text-sm text-foreground hover:text-primary transition-colors">
+                      {stat.linkText}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
                   </CardContent>
                 </Card>
               ))}
