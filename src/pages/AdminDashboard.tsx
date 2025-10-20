@@ -218,6 +218,24 @@ const AdminDashboard = () => {
 
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
+            {/* Search and Filters */}
+            <div className="mb-8">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search projects, vendors, or agencies..."
+                    className="pl-9 bg-background"
+                  />
+                </div>
+                <Button variant="outline" className="gap-2 bg-background">
+                  <Calendar className="h-4 w-4" />
+                  Date Range
+                </Button>
+              </div>
+            </div>
+
             {/* Summary Stats */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
               {summaryStats.map((stat, index) => (
