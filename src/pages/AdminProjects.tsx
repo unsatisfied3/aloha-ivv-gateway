@@ -155,7 +155,7 @@ export default function AdminProjects() {
   const [agencyFilter, setAgencyFilter] = useState("all");
   const [vendorFilter, setVendorFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [activeFilter, setActiveFilter] = useState("active");
+  const [stateFilter, setStateFilter] = useState("open");
 
   const agencies = Array.from(new Set(mockProjects.map((p) => p.sponsoringAgency)));
   const vendors = Array.from(new Set(mockProjects.map((p) => p.ivvVendorName)));
@@ -169,11 +169,11 @@ export default function AdminProjects() {
       const matchesAgency = agencyFilter === "all" || project.sponsoringAgency === agencyFilter;
       const matchesVendor = vendorFilter === "all" || project.ivvVendorName === vendorFilter;
       const matchesStatus = statusFilter === "all" || project.overallProjectStatus === statusFilter;
-      const matchesActive = 
-        activeFilter === "all" || 
-        (activeFilter === "active" && project.isActive) ||
-        (activeFilter === "archived" && !project.isActive);
-      return matchesSearch && matchesAgency && matchesVendor && matchesStatus && matchesActive;
+      const matchesState = 
+        stateFilter === "all" || 
+        (stateFilter === "open" && project.isActive) ||
+        (stateFilter === "closed" && !project.isActive);
+      return matchesSearch && matchesAgency && matchesVendor && matchesStatus && matchesState;
     })
     .sort((a, b) => {
       // Sort by isActive first (active projects first)
@@ -193,7 +193,7 @@ export default function AdminProjects() {
     setAgencyFilter("all");
     setVendorFilter("all");
     setStatusFilter("all");
-    setActiveFilter("active");
+    setStateFilter("open");
   };
 
   return (
@@ -290,15 +290,15 @@ export default function AdminProjects() {
                     </SelectContent>
                   </Select>
 
-                  {/* Active/Archived Toggle */}
-                  <Select value={activeFilter} onValueChange={setActiveFilter}>
+                  {/* Project State Filter */}
+                  <Select value={stateFilter} onValueChange={setStateFilter}>
                     <SelectTrigger className="bg-background">
-                      <SelectValue placeholder="Active Status" />
+                      <SelectValue placeholder="Project State" />
                     </SelectTrigger>
                     <SelectContent className="bg-background z-50">
-                      <SelectItem value="all">Active Status</SelectItem>
-                      <SelectItem value="active">Active Only</SelectItem>
-                      <SelectItem value="archived">Archived Only</SelectItem>
+                      <SelectItem value="all">All Projects</SelectItem>
+                      <SelectItem value="open">Open Only</SelectItem>
+                      <SelectItem value="closed">Closed Only</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -380,17 +380,17 @@ export default function AdminProjects() {
                           </Select>
                         </div>
 
-                        {/* Active/Archived Toggle */}
+                        {/* Project State Filter */}
                         <div className="space-y-2">
-                          <label className="text-xs font-medium text-muted-foreground">Active Status</label>
-                          <Select value={activeFilter} onValueChange={setActiveFilter}>
+                          <label className="text-xs font-medium text-muted-foreground">Project State</label>
+                          <Select value={stateFilter} onValueChange={setStateFilter}>
                             <SelectTrigger className="bg-background">
-                              <SelectValue placeholder="Active Status" />
+                              <SelectValue placeholder="Project State" />
                             </SelectTrigger>
                             <SelectContent className="bg-background z-50">
                               <SelectItem value="all">All Projects</SelectItem>
-                              <SelectItem value="active">Active Only</SelectItem>
-                              <SelectItem value="archived">Archived Only</SelectItem>
+                              <SelectItem value="open">Open Only</SelectItem>
+                              <SelectItem value="closed">Closed Only</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -437,7 +437,7 @@ export default function AdminProjects() {
                                   <span>{project.projectName}</span>
                                   {!project.isActive && (
                                     <Badge variant="outline" className="mt-1 w-fit text-xs bg-muted text-muted-foreground border-muted-foreground/30 whitespace-nowrap pointer-events-none">
-                                      Archived
+                                      Closed
                                     </Badge>
                                   )}
                                 </div>
