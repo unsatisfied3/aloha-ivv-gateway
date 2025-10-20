@@ -104,13 +104,6 @@ const AdminProjectNew = () => {
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
             <div className="max-w-4xl mx-auto">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold text-foreground mb-2">Add New Project</h2>
-                <p className="text-muted-foreground">
-                  Create a new record for an ETS-monitored IT project.
-                </p>
-              </div>
-
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Card className="bg-background">
                   <CardHeader>
