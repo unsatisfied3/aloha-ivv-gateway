@@ -136,6 +136,19 @@ const recentActivity = [
   { id: 4, event: "New project added: Judicial Case Mgmt", timestamp: "2 days ago", type: "project", urgency: "medium", actionable: true },
 ];
 
+const getUrgencyBorderColor = (urgency: string) => {
+  switch (urgency) {
+    case 'high':
+      return 'border-l-destructive';
+    case 'medium':
+      return 'border-l-primary';
+    case 'low':
+      return 'border-l-accent';
+    default:
+      return 'border-l-muted';
+  }
+};
+
 const myAssignments = [
   { id: 1, name: "Student Records System", dueDate: "Dec 15, 2024", progress: 65, status: "In Progress" },
   { id: 2, name: "Public Health Portal", dueDate: "Dec 20, 2024", progress: 40, status: "Under Review" },
@@ -338,7 +351,7 @@ const AdminDashboard = () => {
                               <TableCell className="font-medium">{project.projectName}</TableCell>
                               <TableCell className="text-sm">
                                 <div className="flex items-center gap-2">
-                                  <Building2 className="h-4 w-4 text-muted-foreground" />
+                                  <Building2 className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                                   <span className="hidden sm:inline">{project.sponsoringAgency}</span>
                                 </div>
                               </TableCell>
@@ -385,7 +398,7 @@ const AdminDashboard = () => {
                           <Clock className="h-3 w-3" />
                           {assignment.dueDate}
                         </div>
-                        <Progress value={assignment.progress} className="h-2" />
+                        <Progress value={assignment.progress} className="h-2 [&>div]:bg-primary" />
                         <div className="flex items-center justify-between">
                           <p className="text-xs text-muted-foreground">{assignment.progress}% complete</p>
                           <Badge variant="outline" className="text-xs">
@@ -405,7 +418,7 @@ const AdminDashboard = () => {
                   </CardHeader>
                   <CardContent className="space-y-3 pb-5">
                     {recentActivity.map((activity) => (
-                      <div key={activity.id} className="flex gap-3 pb-3 border-b last:border-0 last:pb-0">
+                      <div key={activity.id} className={`flex gap-3 pb-3 border-b last:border-0 last:pb-0 border-l-4 pl-3 -ml-3 ${getUrgencyBorderColor(activity.urgency)}`}>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm leading-tight">{activity.event}</p>
                           <p className="text-xs text-muted-foreground mt-1">{activity.timestamp}</p>
