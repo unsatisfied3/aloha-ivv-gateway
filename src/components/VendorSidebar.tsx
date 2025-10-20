@@ -65,7 +65,7 @@ export function VendorSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="bg-primary/10 text-primary hover:bg-primary/20 font-medium">
+                <SidebarMenuButton asChild className="bg-primary text-primary-foreground hover:bg-primary/90 font-medium">
                   <NavLink to="/vendor/report/new">
                     <Plus className="h-4 w-4" />
                     <span>New Report</span>
