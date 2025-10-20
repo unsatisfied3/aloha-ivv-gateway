@@ -271,48 +271,36 @@ const AdminDashboard = () => {
               <h1 className="text-base font-semibold text-foreground flex-1">
                 Dashboard Overview
               </h1>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="gap-2 bg-background">
+                    <CalendarIcon className="h-4 w-4" />
+                    {selectedPeriod 
+                      ? monthYearOptions.find(opt => opt.value === selectedPeriod)?.label
+                      : "Select Period"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-2 bg-background" align="end">
+                  <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                    <SelectTrigger className="w-[180px] bg-background">
+                      <SelectValue placeholder="Select period" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background">
+                      {monthYearOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </PopoverContent>
+              </Popover>
             </div>
           </header>
 
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
-            {/* Search and Filters */}
-            <div className="mb-8">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    type="search"
-                    placeholder="Search projects, vendors, or agencies..."
-                    className="pl-9 bg-background"
-                  />
-                </div>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button variant="outline" className="gap-2 bg-background">
-                      <CalendarIcon className="h-4 w-4" />
-                      {selectedPeriod 
-                        ? monthYearOptions.find(opt => opt.value === selectedPeriod)?.label
-                        : "Select Period"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-2 bg-background" align="end">
-                    <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-                      <SelectTrigger className="w-[180px] bg-background">
-                        <SelectValue placeholder="Select period" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background">
-                        {monthYearOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
 
             {/* Summary Stats */}
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -392,7 +380,17 @@ const AdminDashboard = () => {
             {/* Active Projects Table - Full Width */}
             <Card className="bg-background mb-8">
               <CardHeader>
-                <CardTitle>Active Projects</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Active Projects</CardTitle>
+                  <div className="relative w-full max-w-sm">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      type="search"
+                      placeholder="Search projects, vendors, or agencies..."
+                      className="pl-9 bg-background"
+                    />
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="rounded-md border">
@@ -431,14 +429,6 @@ const AdminDashboard = () => {
                       ))}
                     </TableBody>
                   </Table>
-                </div>
-                <div className="mt-4">
-                  <Link to="/admin/reports">
-                    <Button variant="ghost" className="w-full sm:w-auto text-primary">
-                      View All Reports
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
                 </div>
               </CardContent>
             </Card>
@@ -541,6 +531,14 @@ const AdminDashboard = () => {
                       </DropdownMenu>
                     </div>
                   ))}
+                  <div className="pt-2 flex justify-end">
+                    <Link to="/admin/reports">
+                      <Button variant="ghost" className="text-primary">
+                        View All Reports
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             </div>
