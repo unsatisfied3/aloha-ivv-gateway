@@ -348,15 +348,15 @@ const VendorReportForm = () => {
                               key={rating}
                               type="button"
                               onClick={() => setValue("overallRating", rating as "green" | "yellow" | "red")}
-                              className={`flex-1 p-4 rounded-lg border-2 transition-all ${
+                              className={`flex-1 p-3 rounded-lg border-2 transition-all ${
                                 overallRating === rating
                                   ? getRatingColor(rating)
                                   : "border-border hover:border-primary/50"
                               }`}
                             >
-                              <div className="flex items-center justify-center gap-3">
+                              <div className="flex items-center justify-center gap-2">
                                 <div
-                                  className={`w-6 h-6 rounded-full flex-shrink-0 ${
+                                  className={`w-4 h-4 rounded-full flex-shrink-0 ${
                                     rating === "green"
                                       ? "bg-accent"
                                       : rating === "yellow"
@@ -364,7 +364,7 @@ const VendorReportForm = () => {
                                       : "bg-destructive"
                                   }`}
                                 />
-                                <p className="font-medium text-sm">{getRatingLabel(rating)}</p>
+                                <p className="font-medium text-xs">{getRatingLabel(rating)}</p>
                               </div>
                             </button>
                           ))}
