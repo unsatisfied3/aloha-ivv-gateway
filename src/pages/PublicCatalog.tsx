@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, FileText, X, Circle, Download, Eye } from "lucide-react";
+import { Search, FileText, X, Circle, Download, Eye, CheckSquare, Square } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -133,6 +133,7 @@ const PublicCatalog = () => {
   const [vendorFilter, setVendorFilter] = useState<string>("all");
   const [periodFilter, setPeriodFilter] = useState<string>("all");
   const [ratingFilter, setRatingFilter] = useState<string>("all");
+  const [selectedReports, setSelectedReports] = useState<Set<number>>(new Set());
 
   // Extract unique values for filters
   const agencies = useMemo(() => 
@@ -206,6 +207,31 @@ const PublicCatalog = () => {
     projectFilter !== "all" || vendorFilter !== "all" || 
     periodFilter !== "all" || ratingFilter !== "all";
 
+  const toggleReportSelection = (reportId: number) => {
+    const newSelected = new Set(selectedReports);
+    if (newSelected.has(reportId)) {
+      newSelected.delete(reportId);
+    } else {
+      newSelected.add(reportId);
+    }
+    setSelectedReports(newSelected);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedReports.size === filteredReports.length) {
+      setSelectedReports(new Set());
+    } else {
+      setSelectedReports(new Set(filteredReports.map(r => r.id)));
+    }
+  };
+
+  const downloadSelected = () => {
+    if (selectedReports.size === 0) return;
+    console.log(`Downloading ${selectedReports.size} reports:`, Array.from(selectedReports));
+    // Simulate bulk download
+    setSelectedReports(new Set());
+  };
+
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAF9' }}>
       <Header />
@@ -237,10 +263,8 @@ const PublicCatalog = () => {
               {/* Horizontal Filters */}
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-sm font-medium text-foreground bg-white/90 px-2 py-1 rounded mr-1">Filters:</span>
-                  
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
-                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by agency">
+                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by agency">
                       <SelectValue placeholder="All Agencies" />
                     </SelectTrigger>
                     <SelectContent>
@@ -252,7 +276,7 @@ const PublicCatalog = () => {
                   </Select>
 
                   <Select value={vendorFilter} onValueChange={setVendorFilter}>
-                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by vendor">
+                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by vendor">
                       <SelectValue placeholder="All Vendors" />
                     </SelectTrigger>
                     <SelectContent>
@@ -264,7 +288,7 @@ const PublicCatalog = () => {
                   </Select>
 
                   <Select value={periodFilter} onValueChange={setPeriodFilter}>
-                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white/95 border-0" aria-label="Filter by reporting period">
+                    <SelectTrigger className="h-9 w-auto min-w-[140px] bg-white border-0 text-foreground" aria-label="Filter by reporting period">
                       <SelectValue placeholder="All Periods" />
                     </SelectTrigger>
                     <SelectContent>
@@ -276,7 +300,7 @@ const PublicCatalog = () => {
                   </Select>
 
                   <Select value={ratingFilter} onValueChange={setRatingFilter}>
-                    <SelectTrigger className="h-9 w-auto min-w-[130px] bg-white/95 border-0" aria-label="Filter by overall rating">
+                    <SelectTrigger className="h-9 w-auto min-w-[130px] bg-white border-0 text-foreground" aria-label="Filter by overall rating">
                       <SelectValue placeholder="All Ratings" />
                     </SelectTrigger>
                     <SelectContent>
@@ -292,7 +316,7 @@ const PublicCatalog = () => {
                       variant="secondary"
                       size="sm" 
                       onClick={clearFilters}
-                      className="h-9 gap-1.5 bg-white/95 text-foreground hover:bg-white ml-auto"
+                      className="h-9 gap-1.5 bg-white text-foreground hover:bg-white/90 ml-auto"
                     >
                       <X className="h-3.5 w-3.5" />
                       Clear
@@ -309,10 +333,19 @@ const PublicCatalog = () => {
           <div className="container">
             <div className="max-w-6xl mx-auto">
               {/* Results Count */}
-              <div className="mb-4">
+              <div className="mb-4 flex items-center justify-between">
                 <p className="text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">{filteredReports.length}</span> approved report{filteredReports.length !== 1 ? 's' : ''} found
                 </p>
+                {selectedReports.size > 0 && (
+                  <Button 
+                    onClick={downloadSelected}
+                    className="gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Download Selected ({selectedReports.size})
+                  </Button>
+                )}
               </div>
 
               {/* Results Table */}
@@ -324,6 +357,19 @@ const PublicCatalog = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
+                            <TableHead className="w-12">
+                              <button
+                                onClick={toggleSelectAll}
+                                className="flex items-center justify-center w-full"
+                                aria-label="Select all reports"
+                              >
+                                {selectedReports.size === filteredReports.length && filteredReports.length > 0 ? (
+                                  <CheckSquare className="h-5 w-5 text-primary" />
+                                ) : (
+                                  <Square className="h-5 w-5 text-muted-foreground" />
+                                )}
+                              </button>
+                            </TableHead>
                             <TableHead>Project</TableHead>
                             <TableHead>Agency</TableHead>
                             <TableHead>Vendor</TableHead>
@@ -335,6 +381,19 @@ const PublicCatalog = () => {
                         <TableBody>
                           {filteredReports.map((report) => (
                             <TableRow key={report.id} className="cursor-pointer hover:bg-muted/50">
+                              <TableCell>
+                                <button
+                                  onClick={() => toggleReportSelection(report.id)}
+                                  className="flex items-center justify-center w-full"
+                                  aria-label={`Select report ${report.projectName}`}
+                                >
+                                  {selectedReports.has(report.id) ? (
+                                    <CheckSquare className="h-5 w-5 text-primary" />
+                                  ) : (
+                                    <Square className="h-5 w-5 text-muted-foreground" />
+                                  )}
+                                </button>
+                              </TableCell>
                               <TableCell className="font-medium">{report.projectName}</TableCell>
                               <TableCell>{report.sponsoringAgency}</TableCell>
                               <TableCell>{report.ivvVendorName}</TableCell>
