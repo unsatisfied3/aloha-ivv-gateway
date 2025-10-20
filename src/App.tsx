@@ -8,6 +8,9 @@ import PublicCatalog from "./pages/PublicCatalog";
 import AdminDashboard from "./pages/AdminDashboard";
 import ReportsTable from "./pages/ReportsTable";
 import ReportDetail from "./pages/ReportDetail";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import VendorDashboard from "./pages/VendorDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,9 +25,12 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/public" element={<PublicCatalog />} />
           <Route path="/public/catalog" element={<PublicCatalog />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/reports" element={<ReportsTable />} />
           <Route path="/admin/report/:id" element={<ReportDetail />} />
+          <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
