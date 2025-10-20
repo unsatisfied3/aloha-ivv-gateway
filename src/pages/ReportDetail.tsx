@@ -570,7 +570,7 @@ export default function ReportDetail() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Project Timeline</CardTitle>
+                  <CardTitle>Report Progress</CardTitle>
                   <CardDescription>Review workflow progress</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -640,43 +640,6 @@ export default function ReportDetail() {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Risk Summary</CardTitle>
-                  <CardDescription>Risk level distribution</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Low Risk</span>
-                        <span className="font-medium">5 items</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-accent" style={{ width: '62%' }}></div>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Medium Risk</span>
-                        <span className="font-medium">2 items</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-chart-2" style={{ width: '25%' }}></div>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">High Risk</span>
-                        <span className="font-medium">1 item</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-destructive" style={{ width: '13%' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Activity Log */}
