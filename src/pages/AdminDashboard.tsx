@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/table";
 import { 
   Search,
-  Calendar,
+  Calendar as CalendarIcon,
   Building2,
   Clock,
   TrendingUp,
@@ -39,6 +39,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { useState } from "react";
 
 const summaryStats = [
   { 
@@ -215,6 +222,11 @@ const getStatusLabel = (status: string) => {
 };
 
 const AdminDashboard = () => {
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: undefined,
+    to: undefined,
+  });
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
@@ -245,10 +257,22 @@ const AdminDashboard = () => {
                     className="pl-9 bg-background"
                   />
                 </div>
-                <Button variant="outline" className="gap-2 bg-background">
-                  <Calendar className="h-4 w-4" />
-                  Date Range
-                </Button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline" className="gap-2 bg-background">
+                      <CalendarIcon className="h-4 w-4" />
+                      Date Range
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-background" align="end">
+                    <Calendar
+                      mode="range"
+                      selected={dateRange}
+                      onSelect={(range) => setDateRange(range as any)}
+                      numberOfMonths={2}
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
 
@@ -335,7 +359,7 @@ const AdminDashboard = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Project Name</TableHead>
+                            <TableHead>Name</TableHead>
                             <TableHead>Agency</TableHead>
                             <TableHead className="hidden md:table-cell">Vendor</TableHead>
                             <TableHead className="whitespace-nowrap">Status</TableHead>
@@ -386,13 +410,37 @@ const AdminDashboard = () => {
                 <Card className="bg-background">
                   <CardHeader className="pb-3">
                     <CardTitle>Assigned to Me</CardTitle>
-                    <CardDescription>Your current project assignments</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4 pb-5">
                     {myAssignments.map((assignment) => (
                       <div key={assignment.id} className="space-y-2 pb-4 border-b last:border-0 last:pb-0">
                         <div className="flex items-start justify-between gap-2">
                           <h4 className="text-sm font-medium leading-tight">{assignment.name}</h4>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 flex-shrink-0"
+                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-32 bg-background">
+                              <DropdownMenuItem>
+                                <Eye className="h-4 w-4 mr-2" />
+                                View
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Check className="h-4 w-4 mr-2" />
+                                Complete
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <X className="h-4 w-4 mr-2" />
+                                Remove
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Clock className="h-3 w-3" />
