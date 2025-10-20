@@ -1,5 +1,5 @@
-import { Home, FileText, ClipboardList, BarChart3, Settings, User, LogOut, Bell } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Home, FileText, ClipboardList, BarChart3, Settings, User, LogOut, Bell, Plus } from "lucide-react";
+import { NavLink, Link } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 import lokahiLogo from "@/assets/lokahi-logo.png";
 
@@ -57,6 +58,15 @@ export function AdminSidebar() {
       </SidebarHeader>
       
       <SidebarContent className="px-3 py-4">
+        <div className="mb-4 px-2">
+          <Link to="/admin/project/new">
+            <Button className="w-full bg-secondary hover:bg-secondary/90 gap-2">
+              <Plus className="h-4 w-4" />
+              {!collapsed && <span>New Project</span>}
+            </Button>
+          </Link>
+        </div>
+        
         <SidebarGroup>
           <SidebarGroupContent className="mt-2">
             <SidebarMenu>

@@ -207,13 +207,6 @@ const AdminDashboard = () => {
               <h1 className="text-base font-semibold text-foreground flex-1">
                 Dashboard Overview
               </h1>
-              
-              <Link to="/admin/project/new">
-                <Button className="bg-secondary hover:bg-secondary/90 gap-2">
-                  <Plus className="h-4 w-4" />
-                  New Project
-                </Button>
-              </Link>
             </div>
           </header>
 
