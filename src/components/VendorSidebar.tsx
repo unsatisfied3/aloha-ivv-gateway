@@ -22,6 +22,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import lokahiLogo from "@/assets/lokahi-logo.png";
+import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
 
 const menuItems = [
   { title: "Dashboard", url: "/vendor/dashboard", icon: LayoutDashboard },
@@ -42,16 +44,18 @@ export function VendorSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
-          <img 
-            src="/src/assets/lokahi-logo.png" 
-            alt="Lōkahi" 
-            className="h-8 w-8 object-contain"
-          />
-          {open && (
-            <div className="flex flex-col">
-              <span className="text-sm font-semibold text-foreground">Lōkahi</span>
-              <span className="text-xs text-muted-foreground">Vendor Portal</span>
-            </div>
+          {open ? (
+            <img 
+              src={lokahiFullLogo} 
+              alt="Lōkahi Dashboard" 
+              className="h-6 w-auto"
+            />
+          ) : (
+            <img 
+              src={lokahiLogo} 
+              alt="Lōkahi" 
+              className="h-8 w-8 object-contain"
+            />
           )}
         </div>
       </SidebarHeader>

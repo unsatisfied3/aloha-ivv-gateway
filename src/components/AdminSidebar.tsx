@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import lokahiFullLogo from "@/assets/lokahi-full-logo.png";
+import lokahiLogo from "@/assets/lokahi-logo.png";
 
 const menuItems = [
   { title: "Dashboard", url: "/admin/dashboard", icon: Home },
@@ -47,9 +48,9 @@ export function AdminSidebar() {
             />
           ) : (
             <img 
-              src={lokahiFullLogo} 
+              src={lokahiLogo} 
               alt="Lōkahi" 
-              className="h-5 w-5 object-contain"
+              className="h-8 w-8 object-contain"
             />
           )}
         </div>
