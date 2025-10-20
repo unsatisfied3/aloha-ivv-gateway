@@ -168,7 +168,7 @@ const AdminDashboard = () => {
             <div className="flex h-16 items-center px-8 gap-4">
               <SidebarTrigger />
               
-              <h1 className="text-xl font-semibold text-foreground flex-1">
+              <h1 className="text-base font-semibold text-foreground flex-1">
                 Admin Dashboard — State Project Oversight
               </h1>
             </div>

@@ -161,7 +161,7 @@ const VendorReports = () => {
           <header className="sticky top-0 z-40 border-b bg-background">
             <div className="flex h-16 items-center px-8 gap-4">
               <SidebarTrigger />
-              <h1 className="text-xl font-semibold text-foreground flex-1">My Reports</h1>
+              <h1 className="text-base font-semibold text-foreground flex-1">My Reports</h1>
               <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
                 <Plus className="h-4 w-4" />
                 Submit New Report

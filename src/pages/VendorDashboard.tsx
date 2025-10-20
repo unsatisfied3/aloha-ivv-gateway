@@ -79,7 +79,7 @@ const VendorDashboard = () => {
             <div className="flex h-16 items-center gap-4 px-6">
               <SidebarTrigger />
               <div className="flex-1">
-                <h1 className="text-2xl font-semibold text-foreground">My Projects</h1>
+                <h1 className="text-base font-semibold text-foreground">My Projects</h1>
                 <p className="text-sm text-muted-foreground">View and manage your assigned IV&V projects</p>
               </div>
               <Button onClick={() => navigate("/vendor/report/new")} className="bg-secondary hover:bg-secondary/90">
