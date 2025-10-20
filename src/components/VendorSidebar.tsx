@@ -79,8 +79,8 @@ export function VendorSidebar() {
                       to={item.url}
                       className={({ isActive }) =>
                         isActive
-                          ? "bg-accent/10 text-accent font-medium"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          ? "bg-primary text-primary-foreground font-semibold"
+                          : "text-foreground/70 hover:bg-accent hover:text-accent-foreground"
                       }
                     >
                       <item.icon className="h-4 w-4" />
