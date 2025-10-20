@@ -566,13 +566,11 @@ export default function ReportDetail() {
               </TabsContent>
             </Tabs>
 
-            {/* Supplementary Panels */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Report Progress</CardTitle>
-                  <CardDescription>Review workflow progress</CardDescription>
-                </CardHeader>
+            {/* Report Progress */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle>Report Progress</CardTitle>
+              </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="space-y-2">
@@ -638,15 +636,12 @@ export default function ReportDetail() {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-
-            </div>
+            </Card>
 
             {/* Activity Log */}
             <Card>
               <CardHeader>
                 <CardTitle>Activity Log</CardTitle>
-                <CardDescription>Recent activity on this report</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
