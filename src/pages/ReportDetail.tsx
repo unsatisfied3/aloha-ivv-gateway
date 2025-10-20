@@ -183,16 +183,16 @@ export default function ReportDetail() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline">
                       <Download className="h-4 w-4" />
-                      Download PDF
+                      Download
                       <ChevronDown className="h-4 w-4 ml-1" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="bg-background">
                     <DropdownMenuItem onClick={() => toast({ title: "Downloading PDF..." })}>
-                      Download as PDF
+                      as PDF
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => toast({ title: "Downloading Word document..." })}>
-                      Download as Word
+                      as Word
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
