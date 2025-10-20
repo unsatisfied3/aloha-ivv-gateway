@@ -1,4 +1,4 @@
-import { Home, FileText, ClipboardList, BarChart3, Settings, User, LogOut, Bell, Plus } from "lucide-react";
+import { Home, FileText, ClipboardList, BarChart3, Settings, User, LogOut, Bell, Plus, FolderKanban } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import {
   Sidebar,
@@ -27,6 +27,7 @@ import lokahiLogo from "@/assets/lokahi-logo.png";
 
 const menuItems = [
   { title: "Dashboard", url: "/admin/dashboard", icon: Home },
+  { title: "Projects", url: "/admin/projects", icon: FolderKanban },
   { title: "Reports", url: "/admin/reports", icon: FileText },
 ];
 
