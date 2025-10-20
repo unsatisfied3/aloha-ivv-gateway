@@ -128,13 +128,13 @@ const mockReports = [
 const getStatusColor = (status: string) => {
   switch (status) {
     case "draft":
-      return "bg-muted text-muted-foreground border-muted-foreground/30";
+      return "bg-muted text-muted-foreground border-muted-foreground/30 whitespace-nowrap pointer-events-none";
     case "submitted":
-      return "bg-primary/20 text-primary border-primary/40";
+      return "bg-primary/20 text-primary border-primary/40 whitespace-nowrap pointer-events-none";
     case "approved":
-      return "bg-accent/20 text-accent border-accent/40";
+      return "bg-accent/20 text-accent border-accent/40 whitespace-nowrap pointer-events-none";
     default:
-      return "bg-muted text-muted-foreground";
+      return "bg-muted text-muted-foreground whitespace-nowrap pointer-events-none";
   }
 };
 
@@ -154,13 +154,13 @@ const getStatusLabel = (status: string) => {
 const getRatingBadge = (rating: string) => {
   switch (rating) {
     case "green":
-      return { label: "On Track", className: "bg-green-500/20 text-green-700 border-green-500/30" };
+      return { label: "On Track", className: "bg-green-500/20 text-green-700 border-green-500/30 whitespace-nowrap pointer-events-none" };
     case "yellow":
-      return { label: "At Risk", className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30" };
+      return { label: "At Risk", className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30 whitespace-nowrap pointer-events-none" };
     case "red":
-      return { label: "Critical", className: "bg-red-500/20 text-red-700 border-red-500/30" };
+      return { label: "Critical", className: "bg-red-500/20 text-red-700 border-red-500/30 whitespace-nowrap pointer-events-none" };
     default:
-      return { label: "Unknown", className: "bg-muted text-muted-foreground" };
+      return { label: "Unknown", className: "bg-muted text-muted-foreground whitespace-nowrap pointer-events-none" };
   }
 };
 
