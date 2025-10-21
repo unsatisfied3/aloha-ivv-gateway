@@ -212,16 +212,6 @@ export default function AdminProjects() {
                   Projects
                 </h1>
               </div>
-
-              <div className="flex items-center gap-3">
-                {/* New Project Button */}
-                <Link to="/admin/project/new">
-                  <Button>
-                    <Plus className="h-4 w-4" />
-                    New Project
-                  </Button>
-                </Link>
-              </div>
             </div>
           </header>
 
@@ -230,17 +220,18 @@ export default function AdminProjects() {
             {/* Filter Bar */}
             <Card className="mb-6">
               <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4">
-                  {/* Search */}
-                  <div className="lg:col-span-2 relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Search project or agency..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 bg-background"
-                    />
-                  </div>
+                <div className="flex items-center gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 flex-1">
+                    {/* Search */}
+                    <div className="lg:col-span-2 relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search project or agency..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10 bg-background"
+                      />
+                    </div>
 
                   {/* Agency Filter */}
                   <Select value={agencyFilter} onValueChange={setAgencyFilter}>
@@ -397,6 +388,15 @@ export default function AdminProjects() {
                       </div>
                     </PopoverContent>
                   </Popover>
+                  </div>
+                  
+                  {/* New Project Button */}
+                  <Link to="/admin/project/new">
+                    <Button className="whitespace-nowrap">
+                      <Plus className="h-4 w-4" />
+                      New Project
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
