@@ -187,17 +187,23 @@ const VendorReports = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <Select value={statusFilter} onValueChange={setStatusFilter}>
-                      <SelectTrigger className="w-full sm:w-[180px]">
-                        <SelectValue placeholder="Filter by status" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background">
-                        <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="submitted">Submitted</SelectItem>
-                        <SelectItem value="approved">Approved</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="flex gap-3 items-center w-full sm:w-auto">
+                      <Select value={statusFilter} onValueChange={setStatusFilter}>
+                        <SelectTrigger className="w-full sm:w-[180px]">
+                          <SelectValue placeholder="Filter by status" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background">
+                          <SelectItem value="all">All Statuses</SelectItem>
+                          <SelectItem value="draft">Draft</SelectItem>
+                          <SelectItem value="submitted">Submitted</SelectItem>
+                          <SelectItem value="approved">Approved</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Button onClick={() => navigate("/vendor/report/new")} className="gap-2 shrink-0">
+                        <Plus className="h-4 w-4" />
+                        Submit New Report
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -220,18 +226,11 @@ const VendorReports = () => {
                       </p>
                       <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
                         <Plus className="h-4 w-4" />
-                        New Report
+                        Submit New Report
                       </Button>
                     </div>
                   ) : (
-                    <>
-                      <div className="flex justify-end mb-4">
-                        <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
-                          <Plus className="h-4 w-4" />
-                          New Report
-                        </Button>
-                      </div>
-                      <div className="rounded-md border">
+                    <div className="rounded-md border">
                       <Table>
                         <TableHeader>
                           <TableRow>
@@ -303,7 +302,7 @@ const VendorReports = () => {
                                         View
                                       </DropdownMenuItem>
                                     )}
-                                   </DropdownMenuContent>
+                                  </DropdownMenuContent>
                                 </DropdownMenu>
                               </TableCell>
                             </TableRow>
@@ -311,7 +310,6 @@ const VendorReports = () => {
                         </TableBody>
                       </Table>
                     </div>
-                    </>
                   )}
                 </CardContent>
               </Card>
