@@ -11,7 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, TrendingUp, CheckCircle, FileText, Eye, Edit, MoreVertical } from "lucide-react";
+import { Plus, TrendingUp, CheckCircle, FileText, Eye, Edit, MoreVertical, ArrowRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -216,10 +216,11 @@ const VendorDashboard = () => {
                     </div>
                     <div className="flex justify-end">
                       <Button 
-                        variant="outline" 
                         onClick={() => navigate("/vendor/reports")}
+                        className="gap-2"
                       >
                         View All Reports
+                        <ArrowRight className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
