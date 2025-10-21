@@ -85,7 +85,7 @@ const VendorDashboard = () => {
             <div className="flex h-16 items-center gap-4 px-6">
               <SidebarTrigger />
               <div className="flex-1">
-                <h1 className="text-base font-semibold text-foreground">My Projects</h1>
+                <h1 className="text-base font-semibold text-foreground">Dashboard</h1>
                 <p className="text-sm text-muted-foreground">View and manage your assigned IV&V projects</p>
               </div>
             </div>
