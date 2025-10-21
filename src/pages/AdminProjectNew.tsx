@@ -321,33 +321,33 @@ const AdminProjectNew = () => {
                     </div>
 
                     {/* Overall Project Status */}
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <Label>
                         Overall Project Status <span className="text-destructive">*</span>
                       </Label>
                       <RadioGroup
                         value={overallProjectStatus}
                         onValueChange={(value) => setValue("overallProjectStatus", value as "green" | "yellow" | "red")}
-                        className="flex gap-4"
+                        className="flex flex-col gap-3"
                       >
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-3">
                           <RadioGroupItem value="green" id="status-green" />
                           <Label htmlFor="status-green" className="flex items-center gap-2 font-normal cursor-pointer">
-                            <div className="h-3 w-3 rounded-full bg-accent" />
+                            <div className="h-3 w-3 rounded-full bg-green-500" />
                             On Track
                           </Label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-3">
                           <RadioGroupItem value="yellow" id="status-yellow" />
                           <Label htmlFor="status-yellow" className="flex items-center gap-2 font-normal cursor-pointer">
                             <div className="h-3 w-3 rounded-full bg-yellow-500" />
                             At Risk
                           </Label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-3">
                           <RadioGroupItem value="red" id="status-red" />
                           <Label htmlFor="status-red" className="flex items-center gap-2 font-normal cursor-pointer">
-                            <div className="h-3 w-3 rounded-full bg-destructive" />
+                            <div className="h-3 w-3 rounded-full bg-red-500" />
                             Critical
                           </Label>
                         </div>
