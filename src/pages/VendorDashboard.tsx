@@ -249,14 +249,23 @@ const VendorDashboard = () => {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
                       <span className="text-sm">Tax Modernization System - Sep 2024</span>
-                        <div className="flex items-center gap-2">
-                          <Button variant="secondary" size="sm" onClick={() => navigate("/vendor/report/3")}>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="bg-background">
+                          <DropdownMenuItem onClick={() => navigate("/vendor/report/3")}>
+                            <Edit className="mr-2 h-4 w-4" />
                             Edit
-                          </Button>
-                          <Button variant="destructive" size="sm">
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive">
+                            <FileText className="mr-2 h-4 w-4" />
                             Delete
-                          </Button>
-                        </div>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
                 </CardContent>
