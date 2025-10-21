@@ -88,10 +88,6 @@ const VendorDashboard = () => {
                 <h1 className="text-base font-semibold text-foreground">My Projects</h1>
                 <p className="text-sm text-muted-foreground">View and manage your assigned IV&V projects</p>
               </div>
-              <Button onClick={() => navigate("/vendor/report/new")} className="bg-secondary hover:bg-secondary/90">
-                <Plus className="mr-2 h-4 w-4" />
-                Submit New Report
-              </Button>
             </div>
           </header>
 
@@ -153,7 +149,15 @@ const VendorDashboard = () => {
               </CardHeader>
               <CardContent className="pb-5">
                 {mockReports.length > 0 ? (
-                  <Table>
+                  <div className="space-y-4">
+                    <div className="flex justify-end">
+                      <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
+                        <Plus className="h-4 w-4" />
+                        New Report
+                      </Button>
+                    </div>
+                    <div className="rounded-md border">
+                      <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead>Name</TableHead>
@@ -207,8 +211,10 @@ const VendorDashboard = () => {
                           </TableCell>
                         </TableRow>
                       ))}
-                    </TableBody>
-                  </Table>
+                     </TableBody>
+                      </Table>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
                     <FileText className="h-12 w-12 text-muted-foreground mb-4" />
