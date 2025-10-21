@@ -11,7 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, TrendingUp, CheckCircle, FileText, Eye, Edit } from "lucide-react";
+import { Plus, TrendingUp, CheckCircle, FileText, Eye, Edit, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 
 // Mock data for vendor dashboard
@@ -155,7 +161,7 @@ const VendorDashboard = () => {
                         <TableHead>Overall Rating</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Last Updated</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
+                        <TableHead className="text-right"></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -172,23 +178,28 @@ const VendorDashboard = () => {
                           <TableCell>{getStatusBadge(report.reportStatus)}</TableCell>
                           <TableCell>{new Date(report.submittedAt).toLocaleDateString()}</TableCell>
                           <TableCell className="text-right">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => navigate(`/vendor/report/${report.id}`)}
-                            >
-                              {report.reportStatus === "Draft" ? (
-                                <>
-                                  <Edit className="mr-1 h-3 w-3" />
-                                  Edit
-                                </>
-                              ) : (
-                                <>
-                                  <Eye className="mr-1 h-3 w-3" />
-                                  View
-                                </>
-                              )}
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="bg-background">
+                                <DropdownMenuItem onClick={() => navigate(`/vendor/report/${report.id}`)}>
+                                  {report.reportStatus === "Draft" ? (
+                                    <>
+                                      <Edit className="mr-2 h-4 w-4" />
+                                      Edit
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Eye className="mr-2 h-4 w-4" />
+                                      View
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                           </TableCell>
                         </TableRow>
                       ))}

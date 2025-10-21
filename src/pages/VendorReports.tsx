@@ -21,7 +21,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Plus, FileText } from "lucide-react";
+import { Search, Plus, FileText, MoreVertical, Eye, Edit } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Report {
   id: string;
@@ -243,7 +249,7 @@ const VendorReports = () => {
                             <TableHead>Overall Rating</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Submitted At</TableHead>
-                            <TableHead className="text-right">Action</TableHead>
+                            <TableHead className="text-right"></TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -266,16 +272,33 @@ const VendorReports = () => {
                                 {formatDate(report.submittedAt)}
                               </TableCell>
                               <TableCell className="text-right">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate(`/vendor/report/${report.id}`);
-                                  }}
-                                >
-                                  {report.reportStatus === "draft" ? "Edit" : "View"}
-                                </Button>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                      <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end" className="bg-background">
+                                    <DropdownMenuItem
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        navigate(`/vendor/report/${report.id}`);
+                                      }}
+                                    >
+                                      {report.reportStatus === "draft" ? (
+                                        <>
+                                          <Edit className="mr-2 h-4 w-4" />
+                                          Edit
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Eye className="mr-2 h-4 w-4" />
+                                          View
+                                        </>
+                                      )}
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
                               </TableCell>
                             </TableRow>
                           ))}
