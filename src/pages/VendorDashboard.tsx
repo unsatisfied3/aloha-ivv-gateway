@@ -84,10 +84,7 @@ const VendorDashboard = () => {
           <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="flex h-16 items-center gap-4 px-6">
               <SidebarTrigger />
-              <div className="flex-1">
-                <h1 className="text-base font-semibold text-foreground">Dashboard</h1>
-                <p className="text-sm text-muted-foreground">View and manage your assigned IV&V projects</p>
-              </div>
+              <h1 className="text-base font-semibold text-foreground">Dashboard</h1>
             </div>
           </header>
 
