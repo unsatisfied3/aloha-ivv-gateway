@@ -216,8 +216,9 @@ const VendorDashboard = () => {
                     </div>
                     <div className="flex justify-end">
                       <Button 
+                        variant="ghost"
                         onClick={() => navigate("/vendor/reports")}
-                        className="gap-2"
+                        className="gap-2 text-primary hover:text-primary/80"
                       >
                         View All Reports
                         <ArrowRight className="h-4 w-4" />
