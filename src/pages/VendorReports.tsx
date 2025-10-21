@@ -117,30 +117,16 @@ const VendorReports = () => {
     }
   };
 
-  const getRatingDot = (rating: string) => {
-    const baseClasses = "w-3 h-3 rounded-full inline-block";
+  const getRatingBadge = (rating: string) => {
     switch (rating) {
       case "green":
-        return <span className={`${baseClasses} bg-accent`} />;
+        return <Badge className="bg-accent/20 text-accent border-accent/30">On Track</Badge>;
       case "yellow":
-        return <span className={`${baseClasses} bg-yellow-500`} />;
+        return <Badge className="bg-yellow-500/20 text-yellow-700 border-yellow-500/30">At Risk</Badge>;
       case "red":
-        return <span className={`${baseClasses} bg-destructive`} />;
+        return <Badge className="bg-destructive/20 text-destructive border-destructive/30">Critical</Badge>;
       default:
-        return null;
-    }
-  };
-
-  const getRatingLabel = (rating: string) => {
-    switch (rating) {
-      case "green":
-        return "On Track";
-      case "yellow":
-        return "At Risk";
-      case "red":
-        return "Critical";
-      default:
-        return "";
+        return <Badge variant="outline">{rating}</Badge>;
     }
   };
 
@@ -252,10 +238,7 @@ const VendorReports = () => {
                               <TableCell className="font-medium">{report.projectName}</TableCell>
                               <TableCell>{report.reportingPeriod}</TableCell>
                               <TableCell>
-                                <div className="flex items-center gap-2">
-                                  {getRatingDot(report.overallRating)}
-                                  <span className="text-sm">{getRatingLabel(report.overallRating)}</span>
-                                </div>
+                                {getRatingBadge(report.overallRating)}
                               </TableCell>
                               <TableCell>{getStatusBadge(report.reportStatus)}</TableCell>
                               <TableCell className="text-muted-foreground">
