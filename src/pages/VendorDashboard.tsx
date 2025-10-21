@@ -225,52 +225,6 @@ const VendorDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Quick Access Section */}
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card className="border-accent/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Projects Needing a New Report</CardTitle>
-                </CardHeader>
-                <CardContent className="pb-5">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                      <span className="text-sm">Tax Modernization System</span>
-                      <Badge variant="outline" className="text-xs">November Due</Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-accent/20">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Reports Draft</CardTitle>
-                </CardHeader>
-                <CardContent className="pb-5">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                      <span className="text-sm">Tax Modernization System - Sep 2024</span>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-background">
-                          <DropdownMenuItem onClick={() => navigate("/vendor/report/3")}>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
-                            <FileText className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </main>
       </div>
