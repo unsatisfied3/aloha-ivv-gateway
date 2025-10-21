@@ -249,9 +249,14 @@ const VendorDashboard = () => {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
                       <span className="text-sm">Tax Modernization System - Sep 2024</span>
-                      <Button variant="ghost" size="sm" onClick={() => navigate("/vendor/report/3")}>
-                        Continue
-                      </Button>
+                        <div className="flex items-center gap-2">
+                          <Button variant="secondary" size="sm" onClick={() => navigate("/vendor/report/3")}>
+                            Edit
+                          </Button>
+                          <Button variant="destructive" size="sm">
+                            Delete
+                          </Button>
+                        </div>
                     </div>
                   </div>
                 </CardContent>
