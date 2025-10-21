@@ -176,26 +176,18 @@ const VendorReports = () => {
 
               <Card className="bg-background">
                 <CardHeader>
-                  <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-                    <div>
-                      <CardTitle>Submitted Reports</CardTitle>
-                      <CardDescription>Track all your monthly IV&V submissions</CardDescription>
+                  <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <Input
+                        type="search"
+                        placeholder="Search by project or month..."
+                        className="pl-9 w-full sm:w-[300px]"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-end">
-                      <Button onClick={() => navigate("/vendor/report/new")} className="gap-2 shrink-0">
-                        <Plus className="h-4 w-4" />
-                        Submit New Report
-                      </Button>
-                      <div className="relative flex-1 sm:flex-initial">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                          type="search"
-                          placeholder="Search by project or month..."
-                          className="pl-9 w-full sm:w-[300px]"
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                      </div>
+                    <div className="flex gap-3 items-center">
                       <Select value={statusFilter} onValueChange={setStatusFilter}>
                         <SelectTrigger className="w-full sm:w-[180px]">
                           <SelectValue placeholder="Filter by status" />
@@ -207,6 +199,10 @@ const VendorReports = () => {
                           <SelectItem value="approved">Approved</SelectItem>
                         </SelectContent>
                       </Select>
+                      <Button onClick={() => navigate("/vendor/report/new")} className="gap-2 shrink-0">
+                        <Plus className="h-4 w-4" />
+                        Submit New Report
+                      </Button>
                     </div>
                   </div>
                 </CardHeader>
