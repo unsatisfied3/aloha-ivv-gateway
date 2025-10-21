@@ -185,7 +185,7 @@ const VendorDashboard = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="bg-background">
-                                {report.reportStatus === "Draft" ? (
+                                {report.reportStatus.toLowerCase() === "draft" ? (
                                   <>
                                     <DropdownMenuItem onClick={() => navigate(`/vendor/report/${report.id}`)}>
                                       <Edit className="mr-2 h-4 w-4" />
