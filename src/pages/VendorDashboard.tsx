@@ -145,7 +145,15 @@ const VendorDashboard = () => {
             {/* Recent Reports Table */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle>Recent Reports</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Recent Reports</CardTitle>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigate("/vendor/reports")}
+                  >
+                    View All Reports
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="pb-5">
                 {mockReports.length > 0 ? (
