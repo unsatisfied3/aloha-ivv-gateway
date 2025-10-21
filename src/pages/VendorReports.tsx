@@ -244,9 +244,9 @@ const VendorReports = () => {
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>Project Name</TableHead>
-                            <TableHead>Reporting Period</TableHead>
-                            <TableHead>Overall Rating</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Period</TableHead>
+                            <TableHead>Rating</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Submitted At</TableHead>
                             <TableHead className="text-right"></TableHead>

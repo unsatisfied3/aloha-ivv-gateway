@@ -156,11 +156,11 @@ const VendorDashboard = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Project Name</TableHead>
-                        <TableHead>Reporting Period</TableHead>
-                        <TableHead>Overall Rating</TableHead>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Period</TableHead>
+                        <TableHead>Rating</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead>Last Updated</TableHead>
+                        <TableHead>Last Update</TableHead>
                         <TableHead className="text-right"></TableHead>
                       </TableRow>
                     </TableHeader>
