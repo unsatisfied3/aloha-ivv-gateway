@@ -168,21 +168,11 @@ const VendorReports = () => {
             <div className="flex h-16 items-center px-8 gap-4">
               <SidebarTrigger />
               <h1 className="text-base font-semibold text-foreground flex-1">My Reports</h1>
-              <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
-                <Plus className="h-4 w-4" />
-                Submit New Report
-              </Button>
             </div>
           </header>
 
           <main className="flex-1 p-8 bg-muted/30">
             <div className="max-w-7xl mx-auto">
-              <div className="mb-6">
-                <h2 className="text-3xl font-bold text-foreground mb-2">My Reports</h2>
-                <p className="text-muted-foreground">
-                  View all your project submissions and their review statuses.
-                </p>
-              </div>
 
               <Card className="bg-background">
                 <CardHeader>
@@ -191,7 +181,11 @@ const VendorReports = () => {
                       <CardTitle>Submitted Reports</CardTitle>
                       <CardDescription>Track all your monthly IV&V submissions</CardDescription>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-end">
+                      <Button onClick={() => navigate("/vendor/report/new")} className="gap-2 shrink-0">
+                        <Plus className="h-4 w-4" />
+                        Submit New Report
+                      </Button>
                       <div className="relative flex-1 sm:flex-initial">
                         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
