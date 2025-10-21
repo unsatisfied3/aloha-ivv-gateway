@@ -176,18 +176,18 @@ const VendorReports = () => {
 
               <Card className="bg-background">
                 <CardHeader>
-                  <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-                    <div className="relative flex-1">
+                  <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                    <div className="relative flex-1 w-full">
                       <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       <Input
                         type="search"
                         placeholder="Search by project or month..."
-                        className="pl-9 w-full sm:w-[300px]"
+                        className="pl-9 w-full"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <div className="flex gap-3 items-center">
+                    <div className="flex gap-3 items-center w-full sm:w-auto">
                       <Select value={statusFilter} onValueChange={setStatusFilter}>
                         <SelectTrigger className="w-full sm:w-[180px]">
                           <SelectValue placeholder="Filter by status" />
