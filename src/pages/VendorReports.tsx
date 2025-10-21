@@ -279,24 +279,39 @@ const VendorReports = () => {
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end" className="bg-background">
-                                    <DropdownMenuItem
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        navigate(`/vendor/report/${report.id}`);
-                                      }}
-                                    >
-                                      {report.reportStatus === "draft" ? (
-                                        <>
+                                    {report.reportStatus === "draft" ? (
+                                      <>
+                                        <DropdownMenuItem
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            navigate(`/vendor/report/${report.id}`);
+                                          }}
+                                        >
                                           <Edit className="mr-2 h-4 w-4" />
                                           Edit
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Eye className="mr-2 h-4 w-4" />
-                                          View
-                                        </>
-                                      )}
-                                    </DropdownMenuItem>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                          className="text-destructive"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            // Delete placeholder
+                                          }}
+                                        >
+                                          <FileText className="mr-2 h-4 w-4" />
+                                          Delete
+                                        </DropdownMenuItem>
+                                      </>
+                                    ) : (
+                                      <DropdownMenuItem
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          navigate(`/vendor/report/${report.id}`);
+                                        }}
+                                      >
+                                        <Eye className="mr-2 h-4 w-4" />
+                                        View
+                                      </DropdownMenuItem>
+                                    )}
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </TableCell>

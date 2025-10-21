@@ -185,19 +185,23 @@ const VendorDashboard = () => {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end" className="bg-background">
-                                <DropdownMenuItem onClick={() => navigate(`/vendor/report/${report.id}`)}>
-                                  {report.reportStatus === "Draft" ? (
-                                    <>
+                                {report.reportStatus === "Draft" ? (
+                                  <>
+                                    <DropdownMenuItem onClick={() => navigate(`/vendor/report/${report.id}`)}>
                                       <Edit className="mr-2 h-4 w-4" />
                                       Edit
-                                    </>
-                                  ) : (
-                                    <>
-                                      <Eye className="mr-2 h-4 w-4" />
-                                      View
-                                    </>
-                                  )}
-                                </DropdownMenuItem>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem className="text-destructive">
+                                      <FileText className="mr-2 h-4 w-4" />
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </>
+                                ) : (
+                                  <DropdownMenuItem onClick={() => navigate(`/vendor/report/${report.id}`)}>
+                                    <Eye className="mr-2 h-4 w-4" />
+                                    View
+                                  </DropdownMenuItem>
+                                )}
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>
@@ -239,7 +243,7 @@ const VendorDashboard = () => {
 
               <Card className="border-accent/20">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Draft Reports</CardTitle>
+                  <CardTitle className="text-base">Reports Draft</CardTitle>
                 </CardHeader>
                 <CardContent className="pb-5">
                   <div className="space-y-2">
