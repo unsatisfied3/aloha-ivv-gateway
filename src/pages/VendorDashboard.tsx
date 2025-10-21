@@ -147,23 +147,15 @@ const VendorDashboard = () => {
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle>Recent Reports</CardTitle>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => navigate("/vendor/reports")}
-                  >
-                    View All Reports
+                  <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    New Report
                   </Button>
                 </div>
               </CardHeader>
               <CardContent className="pb-5">
                 {mockReports.length > 0 ? (
                   <div className="space-y-4">
-                    <div className="flex justify-end">
-                      <Button onClick={() => navigate("/vendor/report/new")} className="gap-2">
-                        <Plus className="h-4 w-4" />
-                        New Report
-                      </Button>
-                    </div>
                     <div className="rounded-md border">
                       <Table>
                     <TableHeader>
@@ -221,6 +213,14 @@ const VendorDashboard = () => {
                       ))}
                      </TableBody>
                       </Table>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => navigate("/vendor/reports")}
+                      >
+                        View All Reports
+                      </Button>
                     </div>
                   </div>
                 ) : (
