@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { format } from "date-fns";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/AdminSidebar";
 import {
   Breadcrumb,
@@ -159,7 +159,9 @@ export default function ReportDetail() {
           {/* Header */}
           <header className="border-b bg-card">
             <div className="flex items-center justify-between px-8 py-4">
-              <Breadcrumb>
+              <div className="flex items-center gap-4">
+                <SidebarTrigger />
+                <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink asChild>
@@ -172,6 +174,7 @@ export default function ReportDetail() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
+              </div>
               
               <div className="flex gap-2">
                 <Button variant="outline" onClick={handleApprove}>
