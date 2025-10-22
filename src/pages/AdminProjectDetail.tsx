@@ -282,7 +282,7 @@ export default function AdminProjectDetail() {
                       </p>
                       {scheduleDelayDays > 0 && (
                         <div className="mt-1">
-                          <Badge variant="outline" className="text-xs text-red-600 border-red-600">
+                          <Badge className="text-xs bg-red-500/20 text-red-700 border-red-500/30">
                             Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
                           </Badge>
                         </div>
