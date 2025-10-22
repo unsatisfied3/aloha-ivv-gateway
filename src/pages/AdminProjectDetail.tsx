@@ -349,37 +349,11 @@ export default function AdminProjectDetail() {
 
                         {/* Timeline with dates and month markers */}
                         <div className="space-y-2">
-                          <div className="relative pt-6 pb-20">
-                            {/* Month grid lines */}
-                            {(() => {
-                              const startDate = new Date(project.startDate);
-                              const endDate = new Date(project.currentProjectedEndDate);
-                              const totalDuration = endDate.getTime() - startDate.getTime();
-                              const monthMarkers = [];
-                              
-                              let currentDate = new Date(startDate);
-                              currentDate.setDate(1); // First of the month
-                              
-                              while (currentDate <= endDate) {
-                                const percentage = ((currentDate.getTime() - startDate.getTime()) / totalDuration) * 100;
-                                if (percentage >= 0 && percentage <= 100) {
-                                  monthMarkers.push(
-                                    <div key={currentDate.toISOString()} className="absolute top-0 h-16 border-l border-muted-foreground/20" style={{ left: `${percentage}%` }}>
-                                      <span className="absolute -top-5 left-1 text-[10px] text-muted-foreground whitespace-nowrap">
-                                        {format(currentDate, "MMM yyyy")}
-                                      </span>
-                                    </div>
-                                  );
-                                }
-                                currentDate.setMonth(currentDate.getMonth() + 1);
-                              }
-                              return monthMarkers;
-                            })()}
-
+                          <div className="relative pt-8 pb-8">
                             {/* Timeline bars */}
-                            <div className="absolute top-6 left-0 right-0 space-y-3">
+                            <div className="relative space-y-3">
                               {/* Current bar */}
-                              <div className="relative h-6">
+                              <div className="relative h-6 group">
                                 <div 
                                   className="absolute h-full bg-primary rounded"
                                   style={{ 
@@ -387,43 +361,81 @@ export default function AdminProjectDetail() {
                                     width: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%` 
                                   }}
                                 />
-                                {/* Current end marker */}
+                                {/* Current end marker with hover */}
                                 <div 
-                                  className="absolute -bottom-8"
+                                  className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity"
                                   style={{ 
                                     left: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%`,
                                     transform: 'translateX(-50%)'
                                   }}
                                 >
-                                  <div className="w-px h-4 bg-primary mx-auto" />
-                                  <span className="text-xs font-medium whitespace-nowrap block text-center">
-                                    {format(new Date(project.plannedEndDate), "MMM dd, yyyy")}
-                                  </span>
+                                  <div className="bg-popover border rounded px-2 py-1 shadow-sm">
+                                    <span className="text-xs font-medium whitespace-nowrap">
+                                      {format(new Date(project.plannedEndDate), "MMM dd, yyyy")}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
 
                               {/* Projected bar */}
-                              <div className="relative h-6">
+                              <div className="relative h-6 group">
                                 <div 
                                   className="absolute h-full bg-primary/50 rounded"
                                   style={{ left: '0%', width: '100%' }}
                                 />
-                                {/* Projected end marker */}
-                                <div className="absolute -bottom-8 -right-1">
-                                  <div className="w-px h-4 bg-primary/50 mx-auto" />
-                                  <span className={cn("text-xs font-semibold whitespace-nowrap block text-center", scheduleDelayDays > 0 ? "text-red-600" : "")}>
-                                    {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
-                                  </span>
+                                {/* Projected end marker with hover */}
+                                <div className="absolute -top-10 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className={cn("bg-popover border rounded px-2 py-1 shadow-sm", scheduleDelayDays > 0 && "border-red-600")}>
+                                    <span className={cn("text-xs font-semibold whitespace-nowrap", scheduleDelayDays > 0 ? "text-red-600" : "")}>
+                                      {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
 
-                            {/* Start date marker */}
-                            <div className="absolute top-0 -left-1">
-                              <div className="w-px h-4 bg-muted-foreground/50 mx-auto" />
-                              <span className="text-xs text-muted-foreground whitespace-nowrap block">
-                                {format(new Date(project.startDate), "MMM dd, yyyy")}
-                              </span>
+                            {/* Month grid lines at bottom */}
+                            {(() => {
+                              const startDate = new Date(project.startDate);
+                              const endDate = new Date(project.currentProjectedEndDate);
+                              const totalDuration = endDate.getTime() - startDate.getTime();
+                              const monthMarkers = [];
+                              
+                              let currentDate = new Date(startDate);
+                              let lastYear = currentDate.getFullYear();
+                              currentDate.setDate(1);
+                              
+                              while (currentDate <= endDate) {
+                                const percentage = ((currentDate.getTime() - startDate.getTime()) / totalDuration) * 100;
+                                const currentYear = currentDate.getFullYear();
+                                const showYear = currentYear !== lastYear;
+                                
+                                if (percentage >= 0 && percentage <= 100) {
+                                  monthMarkers.push(
+                                    <div key={currentDate.toISOString()} className="absolute top-0 bottom-0 border-l border-muted-foreground/20" style={{ left: `${percentage}%` }}>
+                                      <span className="absolute top-full mt-1 left-0 text-[10px] text-muted-foreground whitespace-nowrap">
+                                        {format(currentDate, showYear ? "MMM yyyy" : "MMM")}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                                
+                                lastYear = currentYear;
+                                currentDate.setMonth(currentDate.getMonth() + 1);
+                              }
+                              return monthMarkers;
+                            })()}
+
+                            {/* Start date marker with hover */}
+                            <div className="absolute top-0 -left-1 h-full group">
+                              <div className="w-px h-full bg-muted-foreground/30" />
+                              <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="bg-popover border rounded px-2 py-1 shadow-sm">
+                                  <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                    {format(new Date(project.startDate), "MMM dd, yyyy")}
+                                  </span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
