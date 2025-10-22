@@ -17,6 +17,7 @@ import Register from "./pages/Register";
 import VendorDashboard from "./pages/VendorDashboard";
 import VendorReports from "./pages/VendorReports";
 import VendorReportForm from "./pages/VendorReportForm";
+import PublicApiInfo from "./pages/PublicApiInfo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/public" element={<PublicCatalog />} />
           <Route path="/public/catalog" element={<PublicCatalog />} />
+          <Route path="/public/api-info" element={<PublicApiInfo />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />

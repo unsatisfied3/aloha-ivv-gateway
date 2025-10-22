@@ -41,7 +41,16 @@ export const Footer = () => {
             </ul>
           </div>
 
-          <div></div>
+          <div>
+            <h4 className="mb-4 text-sm font-semibold text-foreground">Developers</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/public/api-info" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Open Data API
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div className="mt-8 border-t border-border pt-8 text-center">
