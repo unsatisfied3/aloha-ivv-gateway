@@ -236,7 +236,19 @@ export default function AdminProjectDetail() {
           {/* Main Content */}
           <main className="flex-1 p-8 bg-muted/30">
 
-            {/* Section 1: Project Snapshot */}
+            {/* Section 1: Project Overview */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Project Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm leading-relaxed">
+                  {project.description || "No description available."}
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Section 2: Project Snapshot */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* Details Card */}
               <Card>
@@ -285,19 +297,6 @@ export default function AdminProjectDetail() {
                         <statusBadge.icon className="h-3 w-3 mr-1" />
                         {statusBadge.label}
                       </Badge>
-                    </div>
-                  </div>
-                  
-                  {/* Project Overview */}
-                  <div className="pt-4 border-t">
-                    <div className="flex items-start gap-3">
-                      <FileText className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-2">Project Overview</p>
-                        <p className="text-sm leading-relaxed">
-                          {project.description || "No description available."}
-                        </p>
-                      </div>
                     </div>
                   </div>
                 </CardContent>
