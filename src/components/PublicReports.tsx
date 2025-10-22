@@ -54,7 +54,7 @@ export const PublicReports = () => {
         </div>
 
         {/* Recent Reports */}
-        <div className="mb-6">
+        <div className="mb-8">
           <h3 className="text-xl font-semibold text-foreground mb-4">Recent Reports</h3>
           <div className="space-y-3">
             {sampleReports.map((report) => (
@@ -86,6 +86,15 @@ export const PublicReports = () => {
               </Link>
             ))}
           </div>
+        </div>
+
+        {/* View All Button */}
+        <div className="text-center">
+          <Link to="/public/catalog">
+            <Button size="lg" className="bg-[hsl(178,100%,24%)] hover:bg-[hsl(178,100%,20%)] text-white">
+              View All Reports
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
