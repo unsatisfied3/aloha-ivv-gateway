@@ -324,35 +324,33 @@ export default function AdminProjectDetail() {
                       
                       {/* Timeline visualization */}
                       <div className="space-y-3 mt-4 pt-3 border-t">
-                        {/* Baseline bar */}
-                        <div className="space-y-2">
+                        {/* Legend */}
+                        <div className="flex items-center gap-4 text-xs">
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-primary" />
-                            <span className="text-xs font-medium">Baseline Schedule</span>
+                            <span className="font-medium">Baseline</span>
                           </div>
-                          <div className="relative h-6 bg-muted rounded-md overflow-hidden">
-                            <div 
-                              className="absolute h-full bg-primary rounded-md"
-                              style={{ 
-                                left: '0%', 
-                                width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
-                              }}
-                            />
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-primary/50" />
+                            <span className="font-medium">Current</span>
                           </div>
                         </div>
 
-                        {/* Current projection bar */}
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-primary/50" />
-                            <span className="text-xs font-medium">Current Projection</span>
-                          </div>
-                          <div className="relative h-6 bg-muted rounded-md overflow-hidden">
-                            <div 
-                              className="absolute h-full bg-primary/50 rounded-md"
-                              style={{ left: '0%', width: '100%' }}
-                            />
-                          </div>
+                        {/* Combined timeline bar */}
+                        <div className="relative h-8 bg-muted rounded-md overflow-hidden">
+                          {/* Current projection (background) */}
+                          <div 
+                            className="absolute h-full bg-primary/50 rounded-md"
+                            style={{ left: '0%', width: '100%' }}
+                          />
+                          {/* Baseline schedule (overlay) */}
+                          <div 
+                            className="absolute h-full bg-primary rounded-md"
+                            style={{ 
+                              left: '0%', 
+                              width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
+                            }}
+                          />
                         </div>
                       </div>
 
