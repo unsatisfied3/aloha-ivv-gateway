@@ -248,217 +248,203 @@ export default function AdminProjectDetail() {
               </CardContent>
             </Card>
 
-            {/* Section 2: Project Details - Condensed Metadata Table */}
-            <Card className="mb-8">
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4 mb-6">
+            {/* Section 2: Project Snapshot */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {/* Details Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Project Details</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <Building2 className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <Building2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Sponsoring Agency</p>
-                      <p className="text-sm font-medium">{project.sponsoringAgency}</p>
+                      <p className="text-sm text-muted-foreground">Sponsoring Agency</p>
+                      <p className="font-medium">{project.sponsoringAgency}</p>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-3">
-                    <User className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <User className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">IV&V Vendor</p>
-                      <p className="text-sm font-medium">{project.ivvVendorName}</p>
+                      <p className="text-sm text-muted-foreground">IV&V Vendor</p>
+                      <p className="font-medium">{project.ivvVendorName}</p>
                     </div>
                   </div>
-
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                    <Calendar className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Project Dates</p>
+                      <p className="font-medium">
+                        Start: {format(new Date(project.startDate), "MMM dd, yyyy")}
+                      </p>
+                      <p className={cn("font-medium", scheduleDelayDays > 0 && "text-red-600")}>
+                        Current End: {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                      </p>
+                      {scheduleDelayDays > 0 && (
+                        <div className="mt-1">
+                          <Badge className="text-xs bg-red-500/20 text-red-700 border-red-500/30">
+                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Status</p>
+                      <p className="text-sm text-muted-foreground">Status</p>
                       <Badge className={cn("border mt-1", statusBadge.className)}>
                         <statusBadge.icon className="h-3 w-3 mr-1" />
                         {statusBadge.label}
                       </Badge>
                     </div>
                   </div>
+                </CardContent>
+              </Card>
 
-                  <div className="flex items-start gap-3">
-                    <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Start Date</p>
-                      <p className="text-sm font-medium">{format(new Date(project.startDate), "MMM dd, yyyy")}</p>
+              {/* Budget & Schedule Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Budget & Schedule</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Budget Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <DollarSign className="h-5 w-5 text-primary" />
+                      <h3 className="font-semibold">Budget Progress</h3>
                     </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Planned End Date</p>
-                      <p className="text-sm font-medium">{format(new Date(project.plannedEndDate), "MMM dd, yyyy")}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Current Projected End</p>
-                      <div className="flex items-center gap-2">
-                        <p className={cn("text-sm font-medium", scheduleDelayDays > 0 && "text-red-600")}>
-                          {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
-                        </p>
-                        {scheduleDelayDays > 0 && (
-                          <Badge className="text-xs bg-red-500/20 text-red-700 border-red-500/30">
-                            +{Math.floor(scheduleDelayDays / 7)}w
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Budget Progress</p>
-                      <div className="flex items-center gap-2">
-                        <Progress value={budgetUsed} className="h-2 w-20 bg-muted [&>div]:bg-primary" />
-                        <span className="text-sm font-medium">{budgetUsed}%</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Contract Amount</p>
-                      <p className="text-sm font-medium">
-                        ${(project.originalContractAmount / 1000000).toFixed(2)}M
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <DollarSign className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">Total Paid to Date</p>
-                      <p className="text-sm font-medium">
-                        ${(project.totalPaidToDate / 1000000).toFixed(2)}M
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Schedule Timeline Visualization */}
-                <div className="border-t pt-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Clock className="h-5 w-5 text-primary" />
-                    <h3 className="font-semibold">Schedule Timeline</h3>
-                  </div>
-                  <div className="space-y-3">
-                    {/* Legend */}
-                    <div className="flex items-center gap-4 text-xs">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-primary" />
-                        <span className="font-medium">Planned</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-primary/50" />
-                        <span className="font-medium">Projected</span>
-                      </div>
-                    </div>
-
-                    {/* Timeline with dates and month markers */}
                     <div className="space-y-2">
-                      <div className="relative pt-8 pb-8">
-                        {/* Timeline bars */}
-                        <div className="relative space-y-3">
-                          {/* Planned bar */}
-                          <div className="relative h-6 group">
-                            <div 
-                              className="absolute h-full bg-primary rounded"
-                              style={{ 
-                                left: '0%', 
-                                width: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%` 
-                              }}
-                            />
-                            {/* Planned end marker with hover */}
-                            <div 
-                              className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity"
-                              style={{ 
-                                left: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%`,
-                                transform: 'translateX(-50%)'
-                              }}
-                            >
-                              <div className="bg-popover rounded px-2 py-1 shadow-sm">
-                                <span className="text-xs font-medium whitespace-nowrap">
-                                  {format(new Date(project.plannedEndDate), "MMM dd, yyyy")}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Budget used {budgetUsed}%</span>
+                        <span className="font-medium">
+                          ${(project.totalPaidToDate / 1000000).toFixed(2)}M of ${(project.originalContractAmount / 1000000).toFixed(2)}M
+                        </span>
+                      </div>
+                      <Progress value={budgetUsed} className="h-3 bg-muted [&>div]:bg-primary" />
+                    </div>
+                  </div>
 
-                          {/* Projected bar */}
-                          <div className="relative h-6 group">
-                            <div 
-                              className="absolute h-full bg-primary/50 rounded"
-                              style={{ left: '0%', width: '100%' }}
-                            />
-                            {/* Projected end marker with hover */}
-                            <div className="absolute -top-10 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <div className="bg-popover rounded px-2 py-1 shadow-sm">
-                                <span className={cn("text-xs font-semibold whitespace-nowrap", scheduleDelayDays > 0 ? "text-red-600" : "")}>
-                                  {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
-                                </span>
-                              </div>
-                            </div>
+                  {/* Schedule Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Clock className="h-5 w-5 text-primary" />
+                      <h3 className="font-semibold">Schedule Comparison</h3>
+                    </div>
+                    <div className="space-y-3">
+                      {/* Timeline visualization */}
+                      <div className="space-y-3 pt-3">
+                        {/* Legend */}
+                        <div className="flex items-center gap-4 text-xs">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-primary" />
+                            <span className="font-medium">Current</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full bg-primary/50" />
+                            <span className="font-medium">Projected</span>
                           </div>
                         </div>
 
-                        {/* Month grid lines at bottom */}
-                        {(() => {
-                          const startDate = new Date(project.startDate);
-                          const endDate = new Date(project.currentProjectedEndDate);
-                          const totalDuration = endDate.getTime() - startDate.getTime();
-                          const monthMarkers = [];
-                          
-                          let currentDate = new Date(startDate);
-                          let lastYear = currentDate.getFullYear();
-                          currentDate.setDate(1);
-                          
-                          while (currentDate <= endDate) {
-                            const percentage = ((currentDate.getTime() - startDate.getTime()) / totalDuration) * 100;
-                            const currentYear = currentDate.getFullYear();
-                            const showYear = currentYear !== lastYear;
-                            
-                            if (percentage >= 0 && percentage <= 100) {
-                              monthMarkers.push(
-                                <div key={currentDate.toISOString()} className="absolute top-0 bottom-0" style={{ left: `${percentage}%` }}>
-                                  <span className="absolute top-full mt-1 -translate-x-1/2 text-[10px] text-muted-foreground whitespace-nowrap">
-                                    {format(currentDate, showYear ? "MMM yyyy" : "MMM")}
+                        {/* Timeline with dates and month markers */}
+                        <div className="space-y-2">
+                          <div className="relative pt-8 pb-8">
+                            {/* Timeline bars */}
+                            <div className="relative space-y-3">
+                              {/* Current bar */}
+                              <div className="relative h-6 group">
+                                <div 
+                                  className="absolute h-full bg-primary rounded"
+                                  style={{ 
+                                    left: '0%', 
+                                    width: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%` 
+                                  }}
+                                />
+                                {/* Current end marker with hover */}
+                                <div 
+                                  className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  style={{ 
+                                    left: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%`,
+                                    transform: 'translateX(-50%)'
+                                  }}
+                                >
+                                  <div className="bg-popover rounded px-2 py-1 shadow-sm">
+                                    <span className="text-xs font-medium whitespace-nowrap">
+                                      {format(new Date(project.plannedEndDate), "MMM dd, yyyy")}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Projected bar */}
+                              <div className="relative h-6 group">
+                                <div 
+                                  className="absolute h-full bg-primary/50 rounded"
+                                  style={{ left: '0%', width: '100%' }}
+                                />
+                                {/* Projected end marker with hover */}
+                                <div className="absolute -top-10 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="bg-popover rounded px-2 py-1 shadow-sm">
+                                    <span className={cn("text-xs font-semibold whitespace-nowrap", scheduleDelayDays > 0 ? "text-red-600" : "")}>
+                                      {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Month grid lines at bottom */}
+                            {(() => {
+                              const startDate = new Date(project.startDate);
+                              const endDate = new Date(project.currentProjectedEndDate);
+                              const totalDuration = endDate.getTime() - startDate.getTime();
+                              const monthMarkers = [];
+                              
+                              let currentDate = new Date(startDate);
+                              let lastYear = currentDate.getFullYear();
+                              currentDate.setDate(1);
+                              
+                              while (currentDate <= endDate) {
+                                const percentage = ((currentDate.getTime() - startDate.getTime()) / totalDuration) * 100;
+                                const currentYear = currentDate.getFullYear();
+                                const showYear = currentYear !== lastYear;
+                                
+                                if (percentage >= 0 && percentage <= 100) {
+                                  monthMarkers.push(
+                                    <div key={currentDate.toISOString()} className="absolute top-0 bottom-0" style={{ left: `${percentage}%` }}>
+                                      <span className="absolute top-full mt-1 -translate-x-1/2 text-[10px] text-muted-foreground whitespace-nowrap">
+                                        {format(currentDate, showYear ? "MMM yyyy" : "MMM")}
+                                      </span>
+                                    </div>
+                                  );
+                                }
+                                
+                                lastYear = currentYear;
+                                currentDate.setMonth(currentDate.getMonth() + 1);
+                              }
+                              return monthMarkers;
+                            })()}
+
+                            {/* Start date marker with hover */}
+                            <div className="absolute top-0 -left-1 h-full group">
+                              <div className="w-px h-full bg-muted-foreground/30" />
+                              <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="bg-popover rounded px-2 py-1 shadow-sm">
+                                  <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                    {format(new Date(project.startDate), "MMM dd, yyyy")}
                                   </span>
                                 </div>
-                              );
-                            }
-                            
-                            lastYear = currentYear;
-                            currentDate.setMonth(currentDate.getMonth() + 1);
-                          }
-                          return monthMarkers;
-                        })()}
-
-                        {/* Start date marker with hover */}
-                        <div className="absolute top-0 -left-1 h-full group">
-                          <div className="w-px h-full bg-muted-foreground/30" />
-                          <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="bg-popover rounded px-2 py-1 shadow-sm">
-                              <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                {format(new Date(project.startDate), "MMM dd, yyyy")}
-                              </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
