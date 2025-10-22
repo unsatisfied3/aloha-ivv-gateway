@@ -245,7 +245,7 @@ const PublicCatalog = () => {
       
       <main className="flex-1">
         {/* Compact Hero + Search + Filters Section */}
-        <section className="text-white py-6" style={{ background: 'linear-gradient(to bottom, #007C77, #3CC5C0)' }}>
+        <section className="bg-primary text-primary-foreground py-6">
           <div className="container">
             <div className="max-w-6xl mx-auto">
               <h1 className="text-2xl md:text-3xl font-bold mb-3 text-center">
