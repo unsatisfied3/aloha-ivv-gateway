@@ -1,101 +1,91 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileText } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { FileText, Calendar, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const sampleReports = [
   {
     id: "1",
-    projectName: "Health Insurance Exchange Modernization",
-    sponsoringAgency: "Department of Human Services",
-    reportingPeriod: "Q2 2024",
-    overallRating: "green" as const,
-    executiveSummary: "The project continues to meet key milestones with strong vendor collaboration and stakeholder engagement.",
+    projectName: "Student Information System",
+    sponsoringAgency: "Department of Education",
+    date: "2025-10-15",
   },
   {
     id: "2",
-    projectName: "Statewide Education Portal",
-    sponsoringAgency: "Department of Education",
-    reportingPeriod: "Q1 2024",
-    overallRating: "yellow" as const,
-    executiveSummary: "Progress is steady with some minor technical challenges identified and mitigation plans in place.",
+    projectName: "Healthcare Data Platform",
+    sponsoringAgency: "Department of Health",
+    date: "2025-10-12",
   },
   {
     id: "3",
-    projectName: "Tax Modernization Initiative",
-    sponsoringAgency: "Department of Taxation",
-    reportingPeriod: "Q4 2023",
-    overallRating: "green" as const,
-    executiveSummary: "Successful completion of Phase 1 with all deliverables met on time and within budget.",
+    projectName: "Fleet Management System",
+    sponsoringAgency: "Department of Transportation",
+    date: "2025-10-08",
   },
 ];
 
-const getRatingColor = (rating: string) => {
-  switch (rating) {
-    case "green":
-      return "bg-[hsl(142,76%,36%)] text-white hover:bg-[hsl(142,76%,30%)]";
-    case "yellow":
-      return "bg-[hsl(45,93%,47%)] text-foreground hover:bg-[hsl(45,93%,40%)]";
-    case "red":
-      return "bg-[hsl(0,84%,60%)] text-white hover:bg-[hsl(0,84%,50%)]";
-    default:
-      return "bg-muted text-muted-foreground";
-  }
-};
 
 export const PublicReports = () => {
   return (
     <section className="py-16 md:py-20 bg-background">
-      <div className="container">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">
-            Recently Published Reports
+      <div className="container max-w-4xl">
+        <div className="mb-8 text-center">
+          <h2 className="mb-3 text-3xl font-bold text-foreground md:text-4xl">
+            Search Public Reports
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Browse the latest approved IV&V reports from state agencies and programs.
+          <p className="text-base text-muted-foreground">
+            Explore validated IV&V reports across all state agencies
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
-          {sampleReports.map((report) => (
-            <Card key={report.id} className="group hover:shadow-lg transition-all duration-300 border-border/50">
-              <CardHeader>
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <FileText className="h-5 w-5 text-[hsl(178,100%,24%)] flex-shrink-0 mt-1" />
-                  <Badge className={getRatingColor(report.overallRating)}>
-                    {report.overallRating.toUpperCase()}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl line-clamp-2">
-                  {report.projectName}
-                </CardTitle>
-                <CardDescription className="text-sm">
-                  {report.sponsoringAgency} • {report.reportingPeriod}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
-                  {report.executiveSummary}
-                </p>
-                <Link to={`/public/report/${report.id}`}>
-                  <Button variant="ghost" className="w-full group-hover:bg-accent">
-                    View Report
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
+        {/* Search Bar */}
+        <div className="mb-12 flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Search health, education, or technology projects..."
+              className="pl-10 h-12 bg-background border-border"
+            />
+          </div>
+          <Button size="lg" className="bg-[hsl(178,100%,24%)] hover:bg-[hsl(178,100%,20%)] text-white px-8">
+            Search
+          </Button>
         </div>
 
-        <div className="text-center">
-          <Link to="/public/catalog">
-            <Button size="lg" className="bg-[hsl(178,100%,24%)] hover:bg-[hsl(178,100%,20%)] text-white">
-              View All Reports
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+        {/* Recent Reports */}
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold text-foreground mb-4">Recent Reports</h3>
+          <div className="space-y-3">
+            {sampleReports.map((report) => (
+              <Link
+                key={report.id}
+                to={`/public/report/${report.id}`}
+                className="block"
+              >
+                <div className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors group">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(178,100%,24%)]/10 flex-shrink-0">
+                    <FileText className="h-5 w-5 text-[hsl(178,100%,24%)]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-foreground group-hover:text-[hsl(178,100%,24%)] transition-colors">
+                      {report.sponsoringAgency} - {report.projectName}
+                    </h4>
+                    <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>{report.date}</span>
+                      </div>
+                      <span>•</span>
+                      <Badge variant="secondary" className="bg-[hsl(142,76%,36%)]/10 text-[hsl(142,76%,36%)] hover:bg-[hsl(142,76%,36%)]/20 border-0">
+                        Approved
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
