@@ -326,7 +326,7 @@ export default function AdminProjectDetail() {
                         </div>
                         {scheduleDelayDays > 0 && (
                           <div className="flex justify-end mt-1">
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className="text-xs text-red-600 border-red-600">
                               Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
                             </Badge>
                           </div>
