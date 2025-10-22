@@ -323,60 +323,59 @@ export default function AdminProjectDetail() {
                       </div>
                       
                       {/* Timeline visualization */}
-                      <div className="space-y-4 mt-4 pt-3 border-t">
+                      <div className="space-y-3 mt-4 pt-3 border-t">
                         {/* Legend */}
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-4 text-xs">
                           <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-primary/30" />
-                            <span className="text-sm font-medium">Planned</span>
+                            <div className="w-3 h-3 rounded-full bg-primary" />
+                            <span className="font-medium">Baseline</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-primary" />
-                            <span className="text-sm font-medium">Current</span>
+                            <div className="w-3 h-3 rounded-full bg-primary/50" />
+                            <span className="font-medium">Current</span>
                           </div>
                         </div>
 
-                        {/* Timeline bars */}
-                        <div className="relative space-y-3 py-4">
-                          {/* Planned bar */}
-                          <div className="relative h-8 flex items-center">
-                            <div 
-                              className="h-6 bg-primary/30 rounded-full"
-                              style={{ 
-                                width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
-                              }}
-                            />
-                          </div>
-
-                          {/* Current bar */}
-                          <div className="relative h-8 flex items-center">
-                            <div 
-                              className="h-6 bg-primary rounded-full"
-                              style={{ width: '100%' }}
-                            />
-                          </div>
-
-                          {/* Date labels below bars */}
-                          <div className="flex justify-between pt-2 border-t border-border/50">
-                            <div className="text-xs text-muted-foreground">
-                              <div className="font-medium">Planned End Date</div>
-                              <div className="mt-1">{format(new Date(project.plannedEndDate), "MMM dd, yyyy")}</div>
-                            </div>
-                            <div className="text-xs text-right">
-                              <div className="font-medium">Current Projected End</div>
-                              <div className="mt-1 flex items-center gap-2 justify-end">
-                                <span>{format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}</span>
-                                {scheduleDelayDays > 0 && (
-                                  <Badge variant="outline" className="bg-yellow-500/10 text-yellow-700 border-yellow-500/30 text-xs">
-                                    Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          </div>
+                        {/* Combined timeline bar */}
+                        <div className="relative h-8 bg-muted rounded-md overflow-hidden">
+                          {/* Current projection (background) */}
+                          <div 
+                            className="absolute h-full bg-primary/50 rounded-md"
+                            style={{ left: '0%', width: '100%' }}
+                          />
+                          {/* Baseline schedule (overlay) */}
+                          <div 
+                            className="absolute h-full bg-primary rounded-md"
+                            style={{ 
+                              left: '0%', 
+                              width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
+                            }}
+                          />
                         </div>
                       </div>
 
+                      {/* Schedule variance summary */}
+                      {scheduleDelayDays > 0 && (
+                        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-3 mt-3">
+                          <p className="text-sm font-medium text-yellow-700">
+                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks ({scheduleDelayDays} days)
+                          </p>
+                        </div>
+                      )}
+                      {scheduleDelayDays < 0 && (
+                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-3 mt-3">
+                          <p className="text-sm font-medium text-green-700">
+                            Ahead {Math.floor(Math.abs(scheduleDelayDays) / 7)} weeks ({Math.abs(scheduleDelayDays)} days)
+                          </p>
+                        </div>
+                      )}
+                      {scheduleDelayDays === 0 && (
+                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-3 mt-3">
+                          <p className="text-sm font-medium text-green-700">
+                            On schedule
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>
