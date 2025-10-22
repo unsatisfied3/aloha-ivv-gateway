@@ -280,56 +280,133 @@ export default function AdminProjectDetail() {
                       </Badge>
                     </div>
                   </div>
+                  
+                  {/* Budget & Schedule inline */}
+                  <div className="pt-4 border-t space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <DollarSign className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold">Budget Progress</h3>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Budget used {budgetUsed}%</span>
+                          <span className="font-medium">
+                            ${(project.totalPaidToDate / 1000000).toFixed(2)}M of ${(project.originalContractAmount / 1000000).toFixed(2)}M
+                          </span>
+                        </div>
+                        <Progress value={budgetUsed} className="h-3 bg-muted [&>div]:bg-primary" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Clock className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold">Schedule</h3>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Planned End</span>
+                          <span className="font-medium">{format(new Date(project.plannedEndDate), "MMM dd, yyyy")}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Current Projection</span>
+                          <span className="font-medium">{format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}</span>
+                        </div>
+                        {scheduleDelayDays > 0 && (
+                          <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-2 mt-2">
+                            <p className="text-xs font-medium text-yellow-700">
+                              {scheduleDelayDays} days behind
+                            </p>
+                          </div>
+                        )}
+                        {scheduleDelayDays === 0 && (
+                          <div className="bg-green-500/10 border border-green-500/30 rounded-md p-2 mt-2">
+                            <p className="text-xs font-medium text-green-700">
+                              On schedule
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* Budget & Schedule Card */}
+              {/* Project Schedule Timeline */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Budget & Schedule</CardTitle>
+                  <CardTitle>Project Schedule Timeline</CardTitle>
+                  <CardDescription>Baseline vs current schedule comparison</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Budget Section */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <DollarSign className="h-5 w-5 text-primary" />
-                      <h3 className="font-semibold">Budget Progress</h3>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Budget used {budgetUsed}%</span>
-                        <span className="font-medium">
-                          ${(project.totalPaidToDate / 1000000).toFixed(2)}M of ${(project.originalContractAmount / 1000000).toFixed(2)}M
-                        </span>
+                <CardContent>
+                  <div className="space-y-6" role="region" aria-label="Project schedule timeline chart showing baseline and current dates">
+                    {/* Timeline visualization */}
+                    <div className="space-y-4">
+                      {/* Dates row */}
+                      <div className="flex justify-between text-sm font-medium">
+                        <div>
+                          <span className="text-muted-foreground">Start: </span>
+                          <span>{format(new Date(project.startDate), "MMM yyyy")}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Planned End: </span>
+                          <span>{format(new Date(project.plannedEndDate), "MMM yyyy")}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Current Projection: </span>
+                          <span>{format(new Date(project.currentProjectedEndDate), "MMM yyyy")}</span>
+                        </div>
                       </div>
-                      <Progress value={budgetUsed} className="h-3 bg-muted [&>div]:bg-primary" />
-                    </div>
-                  </div>
 
-                  {/* Schedule Section */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Clock className="h-5 w-5 text-primary" />
-                      <h3 className="font-semibold">Schedule Comparison</h3>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Planned End Date</span>
-                        <span className="font-medium">{format(new Date(project.plannedEndDate), "MMM dd, yyyy")}</span>
+                      {/* Baseline bar */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full bg-primary" />
+                          <span className="text-sm font-medium">Baseline Schedule</span>
+                        </div>
+                        <div className="relative h-8 bg-muted rounded-md overflow-hidden">
+                          <div 
+                            className="absolute h-full bg-primary rounded-md"
+                            style={{ 
+                              left: '0%', 
+                              width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Current Projected End</span>
-                        <span className="font-medium">{format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}</span>
+
+                      {/* Current projection bar */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full bg-primary/50" />
+                          <span className="text-sm font-medium">Current Projection</span>
+                        </div>
+                        <div className="relative h-8 bg-muted rounded-md overflow-hidden">
+                          <div 
+                            className="absolute h-full bg-primary/50 rounded-md"
+                            style={{ left: '0%', width: '100%' }}
+                          />
+                        </div>
                       </div>
+
+                      {/* Schedule variance summary */}
                       {scheduleDelayDays > 0 && (
-                        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-3">
+                        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-4 mt-4">
                           <p className="text-sm font-medium text-yellow-700">
-                            Schedule variance: {scheduleDelayDays} days behind
+                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks ({scheduleDelayDays} days)
+                          </p>
+                        </div>
+                      )}
+                      {scheduleDelayDays < 0 && (
+                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-4 mt-4">
+                          <p className="text-sm font-medium text-green-700">
+                            Ahead {Math.floor(Math.abs(scheduleDelayDays) / 7)} weeks ({Math.abs(scheduleDelayDays)} days)
                           </p>
                         </div>
                       )}
                       {scheduleDelayDays === 0 && (
-                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-3">
+                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-4 mt-4">
                           <p className="text-sm font-medium text-green-700">
                             On schedule
                           </p>
@@ -340,90 +417,6 @@ export default function AdminProjectDetail() {
                 </CardContent>
               </Card>
             </div>
-
-            {/* Section 2: Project Schedule Timeline */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Project Schedule Timeline</CardTitle>
-                <CardDescription>Baseline vs current schedule comparison</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6" role="region" aria-label="Project schedule timeline chart showing baseline and current dates">
-                  {/* Timeline visualization */}
-                  <div className="space-y-4">
-                    {/* Dates row */}
-                    <div className="flex justify-between text-sm font-medium">
-                      <div>
-                        <span className="text-muted-foreground">Start: </span>
-                        <span>{format(new Date(project.startDate), "MMM yyyy")}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Planned End: </span>
-                        <span>{format(new Date(project.plannedEndDate), "MMM yyyy")}</span>
-                      </div>
-                      <div>
-                        <span className="text-muted-foreground">Current Projection: </span>
-                        <span>{format(new Date(project.currentProjectedEndDate), "MMM yyyy")}</span>
-                      </div>
-                    </div>
-
-                    {/* Baseline bar */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-primary" />
-                        <span className="text-sm font-medium">Baseline Schedule</span>
-                      </div>
-                      <div className="relative h-8 bg-muted rounded-md overflow-hidden">
-                        <div 
-                          className="absolute h-full bg-primary rounded-md"
-                          style={{ 
-                            left: '0%', 
-                            width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Current projection bar */}
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-primary/50" />
-                        <span className="text-sm font-medium">Current Projection</span>
-                      </div>
-                      <div className="relative h-8 bg-muted rounded-md overflow-hidden">
-                        <div 
-                          className="absolute h-full bg-primary/50 rounded-md"
-                          style={{ left: '0%', width: '100%' }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Schedule variance summary */}
-                    {scheduleDelayDays > 0 && (
-                      <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-4 mt-4">
-                        <p className="text-sm font-medium text-yellow-700">
-                          Delayed +{Math.floor(scheduleDelayDays / 7)} weeks ({scheduleDelayDays} days)
-                        </p>
-                      </div>
-                    )}
-                    {scheduleDelayDays < 0 && (
-                      <div className="bg-green-500/10 border border-green-500/30 rounded-md p-4 mt-4">
-                        <p className="text-sm font-medium text-green-700">
-                          Ahead {Math.floor(Math.abs(scheduleDelayDays) / 7)} weeks ({Math.abs(scheduleDelayDays)} days)
-                        </p>
-                      </div>
-                    )}
-                    {scheduleDelayDays === 0 && (
-                      <div className="bg-green-500/10 border border-green-500/30 rounded-md p-4 mt-4">
-                        <p className="text-sm font-medium text-green-700">
-                          On schedule
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Section 3: Description */}
             <Card className="mb-8">
