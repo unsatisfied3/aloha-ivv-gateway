@@ -339,43 +339,46 @@ export default function AdminProjectDetail() {
                         <div className="flex items-center gap-4 text-xs">
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-primary" />
-                            <span className="font-medium">Baseline</span>
+                            <span className="font-medium">Current</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full bg-primary/50" />
-                            <span className="font-medium">Current</span>
+                            <span className="font-medium">Projected</span>
                           </div>
                         </div>
 
-                        {/* Timeline with dates and week markers */}
+                        {/* Timeline with dates and month markers */}
                         <div className="space-y-2">
-                          {/* Date markers */}
                           <div className="relative pt-6 pb-20">
-                            {/* Week grid lines */}
+                            {/* Month grid lines */}
                             {(() => {
-                              const startTime = new Date(project.startDate).getTime();
-                              const endTime = new Date(project.currentProjectedEndDate).getTime();
-                              const totalWeeks = Math.ceil((endTime - startTime) / (7 * 24 * 60 * 60 * 1000));
-                              const weekMarkers = [];
+                              const startDate = new Date(project.startDate);
+                              const endDate = new Date(project.currentProjectedEndDate);
+                              const totalDuration = endDate.getTime() - startDate.getTime();
+                              const monthMarkers = [];
                               
-                              for (let i = 0; i <= totalWeeks; i += 8) {
-                                const percentage = (i / totalWeeks) * 100;
-                                if (percentage <= 100) {
-                                  weekMarkers.push(
-                                    <div key={i} className="absolute top-0 h-16 border-l border-muted-foreground/20" style={{ left: `${percentage}%` }}>
+                              let currentDate = new Date(startDate);
+                              currentDate.setDate(1); // First of the month
+                              
+                              while (currentDate <= endDate) {
+                                const percentage = ((currentDate.getTime() - startDate.getTime()) / totalDuration) * 100;
+                                if (percentage >= 0 && percentage <= 100) {
+                                  monthMarkers.push(
+                                    <div key={currentDate.toISOString()} className="absolute top-0 h-16 border-l border-muted-foreground/20" style={{ left: `${percentage}%` }}>
                                       <span className="absolute -top-5 left-1 text-[10px] text-muted-foreground whitespace-nowrap">
-                                        W{i}
+                                        {format(currentDate, "MMM yyyy")}
                                       </span>
                                     </div>
                                   );
                                 }
+                                currentDate.setMonth(currentDate.getMonth() + 1);
                               }
-                              return weekMarkers;
+                              return monthMarkers;
                             })()}
 
                             {/* Timeline bars */}
                             <div className="absolute top-6 left-0 right-0 space-y-3">
-                              {/* Baseline bar */}
+                              {/* Current bar */}
                               <div className="relative h-6">
                                 <div 
                                   className="absolute h-full bg-primary rounded"
@@ -384,7 +387,7 @@ export default function AdminProjectDetail() {
                                     width: `${((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100}%` 
                                   }}
                                 />
-                                {/* Baseline end marker */}
+                                {/* Current end marker */}
                                 <div 
                                   className="absolute -bottom-8"
                                   style={{ 
@@ -393,23 +396,23 @@ export default function AdminProjectDetail() {
                                   }}
                                 >
                                   <div className="w-px h-4 bg-primary mx-auto" />
-                                  <span className="text-[11px] font-medium whitespace-nowrap block text-center">
-                                    {format(new Date(project.plannedEndDate), "MMM dd")}
+                                  <span className="text-xs font-medium whitespace-nowrap block text-center">
+                                    {format(new Date(project.plannedEndDate), "MMM dd, yyyy")}
                                   </span>
                                 </div>
                               </div>
 
-                              {/* Current projection bar */}
+                              {/* Projected bar */}
                               <div className="relative h-6">
                                 <div 
                                   className="absolute h-full bg-primary/50 rounded"
                                   style={{ left: '0%', width: '100%' }}
                                 />
-                                {/* Current end marker */}
+                                {/* Projected end marker */}
                                 <div className="absolute -bottom-8 -right-1">
                                   <div className="w-px h-4 bg-primary/50 mx-auto" />
-                                  <span className={cn("text-[11px] font-semibold whitespace-nowrap block text-center", scheduleDelayDays > 0 ? "text-red-600" : "")}>
-                                    {format(new Date(project.currentProjectedEndDate), "MMM dd")}
+                                  <span className={cn("text-xs font-semibold whitespace-nowrap block text-center", scheduleDelayDays > 0 ? "text-red-600" : "")}>
+                                    {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
                                   </span>
                                 </div>
                               </div>
@@ -418,8 +421,8 @@ export default function AdminProjectDetail() {
                             {/* Start date marker */}
                             <div className="absolute top-0 -left-1">
                               <div className="w-px h-4 bg-muted-foreground/50 mx-auto" />
-                              <span className="text-[11px] text-muted-foreground whitespace-nowrap block text-center">
-                                {format(new Date(project.startDate), "MMM dd")}
+                              <span className="text-xs text-muted-foreground whitespace-nowrap block">
+                                {format(new Date(project.startDate), "MMM dd, yyyy")}
                               </span>
                             </div>
                           </div>
