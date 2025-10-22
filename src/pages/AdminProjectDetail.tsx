@@ -331,26 +331,43 @@ export default function AdminProjectDetail() {
                             <span className="font-medium">Baseline</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-primary/50" />
-                            <span className="font-medium">Current</span>
+                            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                            <span className="font-medium">Current (Delayed)</span>
                           </div>
                         </div>
 
                         {/* Combined timeline bar */}
-                        <div className="relative h-8 bg-muted rounded-md overflow-hidden">
-                          {/* Current projection (background) */}
-                          <div 
-                            className="absolute h-full bg-primary/50 rounded-md"
-                            style={{ left: '0%', width: '100%' }}
-                          />
-                          {/* Baseline schedule (overlay) */}
-                          <div 
-                            className="absolute h-full bg-primary rounded-md"
-                            style={{ 
-                              left: '0%', 
-                              width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
-                            }}
-                          />
+                        <div className="relative">
+                          <div className="relative h-4 bg-muted rounded-sm overflow-hidden">
+                            {/* Current projection (background) - yellow for delayed */}
+                            <div 
+                              className="absolute h-full bg-yellow-500 rounded-sm"
+                              style={{ left: '0%', width: '100%' }}
+                            />
+                            {/* Baseline schedule (overlay) - primary color */}
+                            <div 
+                              className="absolute h-full bg-primary rounded-sm"
+                              style={{ 
+                                left: '0%', 
+                                width: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%` 
+                              }}
+                            />
+                          </div>
+                          {/* End dates below bars */}
+                          <div className="flex justify-between mt-2">
+                            <div 
+                              className="text-xs text-muted-foreground"
+                              style={{ 
+                                marginLeft: `${Math.min(100, ((new Date(project.plannedEndDate).getTime() - new Date(project.startDate).getTime()) / (new Date(project.currentProjectedEndDate).getTime() - new Date(project.startDate).getTime())) * 100)}%`,
+                                transform: 'translateX(-50%)'
+                              }}
+                            >
+                              {format(new Date(project.plannedEndDate), "MMM dd")}
+                            </div>
+                            <div className="text-xs text-yellow-700 font-medium">
+                              {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                            </div>
+                          </div>
                         </div>
                       </div>
 
