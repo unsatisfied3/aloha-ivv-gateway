@@ -317,9 +317,18 @@ export default function AdminProjectDetail() {
                         <span className="text-sm text-muted-foreground">Planned End Date</span>
                         <span className="font-medium">{format(new Date(project.plannedEndDate), "MMM dd, yyyy")}</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Current Projected End</span>
-                        <span className="font-medium">{format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}</span>
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-muted-foreground">Current Projected End</span>
+                          <span className="font-medium">{format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}</span>
+                        </div>
+                        {scheduleDelayDays > 0 && (
+                          <div className="flex justify-end mt-1">
+                            <Badge variant="destructive" className="text-xs font-semibold bg-red-500/90 hover:bg-red-500">
+                              Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
+                            </Badge>
+                          </div>
+                        )}
                       </div>
                       
                       {/* Timeline visualization */}
@@ -354,28 +363,6 @@ export default function AdminProjectDetail() {
                         </div>
                       </div>
 
-                      {/* Schedule variance summary */}
-                      {scheduleDelayDays > 0 && (
-                        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-md p-3 mt-3">
-                          <p className="text-sm font-medium text-yellow-700">
-                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks ({scheduleDelayDays} days)
-                          </p>
-                        </div>
-                      )}
-                      {scheduleDelayDays < 0 && (
-                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-3 mt-3">
-                          <p className="text-sm font-medium text-green-700">
-                            Ahead {Math.floor(Math.abs(scheduleDelayDays) / 7)} weeks ({Math.abs(scheduleDelayDays)} days)
-                          </p>
-                        </div>
-                      )}
-                      {scheduleDelayDays === 0 && (
-                        <div className="bg-green-500/10 border border-green-500/30 rounded-md p-3 mt-3">
-                          <p className="text-sm font-medium text-green-700">
-                            On schedule
-                          </p>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </CardContent>
