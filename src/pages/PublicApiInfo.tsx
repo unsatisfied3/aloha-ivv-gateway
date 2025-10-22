@@ -30,105 +30,99 @@ export default function PublicApiInfo() {
         <div className="container max-w-4xl py-4 px-4 space-y-4">
           {/* Section 1 - Quick Overview */}
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-2 border-l-4 border-primary pl-3">
+            <h2 className="text-xl font-bold text-foreground mb-2">
               Quick Overview
             </h2>
-            <Card>
-              <CardContent className="pt-3 pb-3">
-                <div className="flex items-center justify-between gap-4 text-xs">
-                  <div className="flex items-center gap-2">
-                    <Database className="h-5 w-5 text-primary" />
-                    <div>
-                      <span className="font-semibold">Datasets:</span> Projects • Reports • Findings
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FileCode className="h-5 w-5 text-primary" />
-                    <div>
-                      <span className="font-semibold">Format:</span> JSON REST API
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-primary" />
-                    <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+            <div className="pt-3 pb-3">
+              <div className="flex items-center justify-between gap-4 text-xs">
+                <div className="flex items-center gap-2">
+                  <Database className="h-5 w-5 text-primary" />
+                  <div>
+                    <span className="font-semibold">Datasets:</span> Projects • Reports • Findings
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+                <div className="flex items-center gap-2">
+                  <FileCode className="h-5 w-5 text-primary" />
+                  <div>
+                    <span className="font-semibold">Format:</span> JSON REST API
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary" />
+                  <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+                </div>
+              </div>
+            </div>
           </section>
 
           {/* Section 2 - Usage Guidelines */}
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-2 border-l-4 border-primary pl-3">
+            <h2 className="text-xl font-bold text-foreground mb-2">
               Usage Guidelines
             </h2>
-            <Card>
-              <CardContent className="pt-3 pb-3 space-y-2">
-                <div className="flex gap-2">
-                  <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
-                  <p className="text-xs text-muted-foreground">
-                    Access limited to approved data under Hawai'i's transparency framework.
-                  </p>
+            <div className="pt-3 pb-3 space-y-2">
+              <div className="flex gap-2">
+                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-xs text-muted-foreground">
+                  Access limited to approved data under Hawai'i's transparency framework.
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
+                <p className="text-xs text-muted-foreground">
+                  ETS retains source ownership; all data released read‑only for public consumption.
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
+                <div>
+                  <Button variant="link" className="p-0 h-auto text-primary text-xs" asChild>
+                    <a 
+                      href="https://opendata.hawaii.gov" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >
+                      Read the State of Hawai'i Open Data Policy →
+                    </a>
+                  </Button>
                 </div>
-                <div className="flex gap-2">
-                  <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
-                  <p className="text-xs text-muted-foreground">
-                    ETS retains source ownership; all data released read‑only for public consumption.
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary mt-1.5"></div>
-                  <div>
-                    <Button variant="link" className="p-0 h-auto text-primary text-xs" asChild>
-                      <a 
-                        href="https://opendata.hawaii.gov" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                      >
-                        Read the State of Hawai'i Open Data Policy →
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </section>
 
           {/* Section 3 - Contact */}
           <section>
-            <h2 className="text-xl font-bold text-foreground mb-2 border-l-4 border-primary pl-3">
+            <h2 className="text-xl font-bold text-foreground mb-2">
               Contact & Updates
             </h2>
-            <Card className="bg-primary/5 border-primary/20">
-              <CardContent className="pt-3 pb-3">
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
-                  <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                  <div className="flex-1">
-                    <p className="text-foreground font-medium text-xs mb-0.5">
-                      Interested in integrating Lōkahi data?
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Contact ETS at{" "}
-                      <a 
-                        href="mailto:ets@hawaii.gov" 
-                        className="text-primary hover:underline font-medium"
-                      >
-                        ets@hawaii.gov
-                      </a>
-                    </p>
-                  </div>
-                  <Button variant="default" size="sm" asChild>
-                    <a href="mailto:ets@hawaii.gov">Contact ETS</a>
-                  </Button>
+            <div className="pt-3 pb-3">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
+                <Mail className="h-5 w-5 text-primary flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-foreground font-medium text-xs mb-0.5">
+                    Interested in integrating Lōkahi data?
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Contact ETS at{" "}
+                    <a 
+                      href="mailto:ets@hawaii.gov" 
+                      className="text-primary hover:underline font-medium"
+                    >
+                      ets@hawaii.gov
+                    </a>
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
+                <Button variant="default" size="sm" asChild>
+                  <a href="mailto:ets@hawaii.gov">Contact ETS</a>
+                </Button>
+              </div>
+            </div>
           </section>
 
           {/* Section 4 - Example Endpoint */}
           <section>
             <div className="flex items-center gap-2 mb-2">
-              <h2 className="text-xl font-bold text-foreground border-l-4 border-primary pl-3">
+              <h2 className="text-xl font-bold text-foreground">
                 Example Endpoint
               </h2>
               <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
