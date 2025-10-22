@@ -320,11 +320,13 @@ export default function AdminProjectDetail() {
                       <div>
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-muted-foreground">Current Projected End</span>
-                          <span className="font-medium">{format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}</span>
+                          <span className={cn("font-semibold", scheduleDelayDays > 0 ? "text-red-600" : "font-medium")}>
+                            {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                          </span>
                         </div>
                         {scheduleDelayDays > 0 && (
                           <div className="flex justify-end mt-1">
-                            <Badge variant="destructive" className="text-xs font-semibold bg-red-500/90 hover:bg-red-500">
+                            <Badge variant="outline" className="text-xs">
                               Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
                             </Badge>
                           </div>
