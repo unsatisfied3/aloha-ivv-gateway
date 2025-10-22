@@ -280,6 +280,19 @@ export default function AdminProjectDetail() {
                       </Badge>
                     </div>
                   </div>
+                  
+                  {/* Project Overview */}
+                  <div className="pt-4 border-t">
+                    <div className="flex items-start gap-3">
+                      <FileText className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-2">Project Overview</p>
+                        <p className="text-sm leading-relaxed">
+                          {project.description || "No description available."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -446,19 +459,6 @@ export default function AdminProjectDetail() {
                 </CardContent>
               </Card>
             </div>
-
-            {/* Section 2: Description */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Project Overview</CardTitle>
-                <CardDescription>Detailed description and scope of work</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm leading-relaxed text-foreground">
-                  {project.description || "No description available."}
-                </p>
-              </CardContent>
-            </Card>
 
             {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
