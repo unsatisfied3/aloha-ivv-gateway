@@ -248,68 +248,68 @@ export default function AdminProjectDetail() {
               </CardContent>
             </Card>
 
-            {/* Section 2: Project Snapshot */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              {/* Details Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Project Details</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <Building2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">Sponsoring Agency</p>
-                      <p className="font-medium">{project.sponsoringAgency}</p>
+            {/* Section 2: Project Details & Budget */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Project Details & Budget</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Project Details Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <Building2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Sponsoring Agency</p>
+                        <p className="font-medium">{project.sponsoringAgency}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <User className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">IV&V Vendor</p>
+                        <p className="font-medium">{project.ivvVendorName}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm text-muted-foreground">Status</p>
+                        <Badge className={cn("border mt-1", statusBadge.className)}>
+                          <statusBadge.icon className="h-3 w-3 mr-1" />
+                          {statusBadge.label}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <User className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">IV&V Vendor</p>
-                      <p className="font-medium">{project.ivvVendorName}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Calendar className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <div className="space-y-1">
-                      <p className="text-sm text-muted-foreground">Project Dates</p>
-                      <p className="font-medium">
-                        Start: {format(new Date(project.startDate), "MMM dd, yyyy")}
-                      </p>
-                      <p className={cn("font-medium", scheduleDelayDays > 0 && "text-red-600")}>
-                        Current End: {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
-                      </p>
-                      {scheduleDelayDays > 0 && (
-                        <div className="mt-1">
-                          <Badge className="text-xs bg-red-500/20 text-red-700 border-red-500/30">
-                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
-                          </Badge>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm text-muted-foreground">Status</p>
-                      <Badge className={cn("border mt-1", statusBadge.className)}>
-                        <statusBadge.icon className="h-3 w-3 mr-1" />
-                        {statusBadge.label}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
 
-              {/* Budget & Schedule Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Budget & Schedule</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <Calendar className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground">Project Dates</p>
+                        <p className="font-medium">
+                          Start: {format(new Date(project.startDate), "MMM dd, yyyy")}
+                        </p>
+                        <p className={cn("font-medium", scheduleDelayDays > 0 && "text-red-600")}>
+                          Current End: {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                        </p>
+                        {scheduleDelayDays > 0 && (
+                          <div className="mt-1">
+                            <Badge className="text-xs bg-red-500/20 text-red-700 border-red-500/30">
+                              Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
+                            </Badge>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Separator */}
+                <div className="border-t pt-6">
                   {/* Budget Section */}
-                  <div>
+                  <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
                       <DollarSign className="h-5 w-5 text-primary" />
                       <h3 className="font-semibold">Budget Progress</h3>
@@ -442,9 +442,9 @@ export default function AdminProjectDetail() {
 
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
