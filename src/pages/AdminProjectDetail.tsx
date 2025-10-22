@@ -50,8 +50,8 @@ const mockProjects = [
     originalContractAmount: 2450000,
     totalPaidToDate: 1592500,
     startDate: "2024-10-01",
-    plannedEndDate: "2025-11-30",
-    currentProjectedEndDate: "2025-11-30",
+    plannedEndDate: "2025-07-31",
+    currentProjectedEndDate: "2025-10-15",
     description: "Comprehensive modernization of the state's health information systems to improve patient care coordination, enable real-time data sharing between healthcare providers, and streamline administrative processes. This multi-phase project includes system integration, data migration, and staff training components.",
   },
   {
