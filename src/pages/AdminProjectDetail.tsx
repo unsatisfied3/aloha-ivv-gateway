@@ -260,14 +260,21 @@ export default function AdminProjectDetail() {
                   </div>
                   <div className="flex items-start gap-3">
                     <Calendar className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                    <div>
+                    <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">Project Dates</p>
                       <p className="font-medium">
                         Start: {format(new Date(project.startDate), "MMM dd, yyyy")}
                       </p>
-                      <p className="font-medium">
+                      <p className={cn("font-medium", scheduleDelayDays > 0 && "text-red-600")}>
                         Current End: {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
                       </p>
+                      {scheduleDelayDays > 0 && (
+                        <div className="mt-1">
+                          <Badge variant="outline" className="text-xs text-red-600 border-red-600">
+                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
+                          </Badge>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -326,28 +333,8 @@ export default function AdminProjectDetail() {
                       <h3 className="font-semibold">Schedule Comparison</h3>
                     </div>
                     <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Planned End Date</span>
-                        <span className="font-medium">{format(new Date(project.plannedEndDate), "MMM dd, yyyy")}</span>
-                      </div>
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">Current Projected End</span>
-                          <span className={cn("font-semibold", scheduleDelayDays > 0 ? "text-red-600" : "font-medium")}>
-                            {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
-                          </span>
-                        </div>
-                        {scheduleDelayDays > 0 && (
-                          <div className="flex justify-end mt-1">
-                            <Badge variant="outline" className="text-xs text-red-600 border-red-600">
-                              Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-                      
                       {/* Timeline visualization */}
-                      <div className="space-y-3 mt-4 pt-3 border-t">
+                      <div className="space-y-3 pt-3">
                         {/* Legend */}
                         <div className="flex items-center gap-4 text-xs">
                           <div className="flex items-center gap-2">
