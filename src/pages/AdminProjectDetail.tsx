@@ -369,7 +369,7 @@ export default function AdminProjectDetail() {
                                     transform: 'translateX(-50%)'
                                   }}
                                 >
-                                  <div className="bg-popover border rounded px-2 py-1 shadow-sm">
+                                  <div className="bg-popover rounded px-2 py-1 shadow-sm">
                                     <span className="text-xs font-medium whitespace-nowrap">
                                       {format(new Date(project.plannedEndDate), "MMM dd, yyyy")}
                                     </span>
@@ -385,7 +385,7 @@ export default function AdminProjectDetail() {
                                 />
                                 {/* Projected end marker with hover */}
                                 <div className="absolute -top-10 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                  <div className={cn("bg-popover border rounded px-2 py-1 shadow-sm", scheduleDelayDays > 0 && "border-red-600")}>
+                                  <div className="bg-popover rounded px-2 py-1 shadow-sm">
                                     <span className={cn("text-xs font-semibold whitespace-nowrap", scheduleDelayDays > 0 ? "text-red-600" : "")}>
                                       {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
                                     </span>
@@ -412,7 +412,7 @@ export default function AdminProjectDetail() {
                                 
                                 if (percentage >= 0 && percentage <= 100) {
                                   monthMarkers.push(
-                                    <div key={currentDate.toISOString()} className="absolute top-0 bottom-0 border-l border-muted-foreground/20" style={{ left: `${percentage}%` }}>
+                                    <div key={currentDate.toISOString()} className="absolute top-0 bottom-0" style={{ left: `${percentage}%` }}>
                                       <span className="absolute top-full mt-1 -translate-x-1/2 text-[10px] text-muted-foreground whitespace-nowrap">
                                         {format(currentDate, showYear ? "MMM yyyy" : "MMM")}
                                       </span>
@@ -430,7 +430,7 @@ export default function AdminProjectDetail() {
                             <div className="absolute top-0 -left-1 h-full group">
                               <div className="w-px h-full bg-muted-foreground/30" />
                               <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <div className="bg-popover border rounded px-2 py-1 shadow-sm">
+                                <div className="bg-popover rounded px-2 py-1 shadow-sm">
                                   <span className="text-xs text-muted-foreground whitespace-nowrap">
                                     {format(new Date(project.startDate), "MMM dd, yyyy")}
                                   </span>
