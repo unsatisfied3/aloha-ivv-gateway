@@ -413,7 +413,7 @@ export default function AdminProjectDetail() {
                                 if (percentage >= 0 && percentage <= 100) {
                                   monthMarkers.push(
                                     <div key={currentDate.toISOString()} className="absolute top-0 bottom-0 border-l border-muted-foreground/20" style={{ left: `${percentage}%` }}>
-                                      <span className="absolute top-full mt-1 left-0 text-[10px] text-muted-foreground whitespace-nowrap">
+                                      <span className="absolute top-full mt-1 -translate-x-1/2 text-[10px] text-muted-foreground whitespace-nowrap">
                                         {format(currentDate, showYear ? "MMM yyyy" : "MMM")}
                                       </span>
                                     </div>
