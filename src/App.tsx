@@ -15,6 +15,7 @@ import ReportsTable from "./pages/ReportsTable";
 import ReportDetail from "./pages/ReportDetail";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Auth from "./pages/Auth";
 import VendorDashboard from "./pages/VendorDashboard";
 import VendorReports from "./pages/VendorReports";
 import VendorReportForm from "./pages/VendorReportForm";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/public" element={<PublicCatalog />} />
           <Route path="/public/catalog" element={<PublicCatalog />} />
           <Route path="/public/api-info" element={<PublicApiInfo />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
