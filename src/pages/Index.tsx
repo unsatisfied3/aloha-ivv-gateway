@@ -46,28 +46,12 @@ const Index = () => {
     );
   }
 
-  // Logged in view
-  if (user) {
-    return (
-      <div className="min-h-screen">
-        <Header />
-        <main className="container py-8">
-          <DashboardHome />
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Public view
+  // Always show logged in view for preview
   return (
     <div className="min-h-screen">
       <Header />
-      <main>
-        <Hero />
-        <Features />
-        <Workflow />
-        <PublicReports />
+      <main className="container py-8">
+        <DashboardHome />
       </main>
       <Footer />
     </div>
