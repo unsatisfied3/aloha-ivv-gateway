@@ -18,17 +18,24 @@ import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<SupabaseUser | null>(null);
+  // Mock logged-in user for preview
+  const [user, setUser] = useState<SupabaseUser | null>({ 
+    email: "user@example.com" 
+  } as SupabaseUser);
   const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+      if (session?.user) {
+        setUser(session.user);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        setUser(session?.user ?? null);
+        if (session?.user) {
+          setUser(session.user);
+        }
       }
     );
 
