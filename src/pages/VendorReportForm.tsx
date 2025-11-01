@@ -334,21 +334,21 @@ const VendorReportForm = () => {
 
                       <div className="space-y-2">
                         <Label>Overall Project Rating</Label>
-                        <div className="flex gap-3">
+                        <div className="flex gap-2">
                           {["green", "yellow", "red"].map((rating) => (
                             <button
                               key={rating}
                               type="button"
                               onClick={() => setValue("overallRating", rating as "green" | "yellow" | "red")}
-                              className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                              className={`flex-1 p-2 rounded-lg border-2 transition-all ${
                                 overallRating === rating
                                   ? getRatingColor(rating)
                                   : "border-border hover:border-primary/50"
                               }`}
                             >
-                              <div className="flex items-center justify-center gap-2">
+                              <div className="flex items-center justify-center gap-1.5">
                                 <div
-                                  className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                  className={`w-3 h-3 rounded-full flex-shrink-0 ${
                                     rating === "green"
                                       ? "bg-accent"
                                       : rating === "yellow"
@@ -385,21 +385,21 @@ const VendorReportForm = () => {
                           <p className="text-xs text-muted-foreground">
                             Evaluate staffing, communication, and skill adequacy
                           </p>
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
                             {["green", "yellow", "red"].map((rating) => (
                               <button
                                 key={rating}
                                 type="button"
                                 onClick={() => setValue("peopleRating", rating as "green" | "yellow" | "red")}
-                                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                                className={`flex-1 p-2 rounded-lg border-2 transition-all ${
                                   watch("peopleRating") === rating
                                     ? getRatingColor(rating)
                                     : "border-border hover:border-primary/50"
                                 }`}
                               >
-                                <div className="flex items-center justify-center gap-2">
+                                <div className="flex items-center justify-center gap-1.5">
                                   <div
-                                    className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                    className={`w-3 h-3 rounded-full flex-shrink-0 ${
                                       rating === "green"
                                         ? "bg-accent"
                                         : rating === "yellow"
@@ -425,21 +425,21 @@ const VendorReportForm = () => {
                           <p className="text-xs text-muted-foreground">
                             Assess organization, communication, and schedule control
                           </p>
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
                             {["green", "yellow", "red"].map((rating) => (
                               <button
                                 key={rating}
                                 type="button"
                                 onClick={() => setValue("processRating", rating as "green" | "yellow" | "red")}
-                                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                                className={`flex-1 p-2 rounded-lg border-2 transition-all ${
                                   watch("processRating") === rating
                                     ? getRatingColor(rating)
                                     : "border-border hover:border-primary/50"
                                 }`}
                               >
-                                <div className="flex items-center justify-center gap-2">
+                                <div className="flex items-center justify-center gap-1.5">
                                   <div
-                                    className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                    className={`w-3 h-3 rounded-full flex-shrink-0 ${
                                       rating === "green"
                                         ? "bg-accent"
                                         : rating === "yellow"
@@ -465,21 +465,21 @@ const VendorReportForm = () => {
                           <p className="text-xs text-muted-foreground">
                             Assess system stability, implementation readiness, and architecture
                           </p>
-                          <div className="flex gap-3">
+                          <div className="flex gap-2">
                             {["green", "yellow", "red"].map((rating) => (
                               <button
                                 key={rating}
                                 type="button"
                                 onClick={() => setValue("technologyRating", rating as "green" | "yellow" | "red")}
-                                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                                className={`flex-1 p-2 rounded-lg border-2 transition-all ${
                                   watch("technologyRating") === rating
                                     ? getRatingColor(rating)
                                     : "border-border hover:border-primary/50"
                                 }`}
                               >
-                                <div className="flex items-center justify-center gap-2">
+                                <div className="flex items-center justify-center gap-1.5">
                                   <div
-                                    className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                    className={`w-3 h-3 rounded-full flex-shrink-0 ${
                                       rating === "green"
                                         ? "bg-accent"
                                         : rating === "yellow"
