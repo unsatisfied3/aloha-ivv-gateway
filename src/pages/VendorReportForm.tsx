@@ -369,9 +369,6 @@ const VendorReportForm = () => {
                       <div className="space-y-4 pt-6 border-t">
                         <div>
                           <Label className="text-base">Detailed Ratings</Label>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Rate each category using Green (On Track), Yellow (Minor Issues), or Red (Critical)
-                          </p>
                         </div>
 
                         {/* Team Performance Rating */}
