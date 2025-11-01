@@ -29,8 +29,6 @@ import {
   Clock,
   MoreVertical,
   ChevronDown,
-  Flag,
-  Check,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -39,24 +37,93 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// Mock data
-const mockReport = {
-  id: "1",
-  projectName: "DOH Health Connect Upgrade IV&V Report",
-  agency: "Department of Health",
-  vendor: "TechSolutions Inc.",
-  submissionDate: "2024-01-15",
-  reviewer: "Sarah Johnson",
-  status: "In Review",
-  lastUpdated: "2024-01-20",
-  progress: 60,
-  timeline: {
-    submitted: { date: "2024-01-15", completed: true },
-    inReview: { date: "2024-01-19", completed: true },
-    approved: { date: null, completed: false },
-    published: { date: null, completed: false },
-  },
+// Mock data matching database schema
+const mockProject = {
+  id: "project-1",
+  projectName: "KEIKI Replatform Off Mainframe (KROM)",
+  sponsoringAgency: "ATG",
+  description: "Modernizing the child support enforcement system",
+  originalContractAmount: 6400000,
+  totalPaidToDate: 4200000,
+  startDate: "2024-01-15",
+  plannedEndDate: "2025-09-22",
+  currentProjectedEndDate: "2025-11-11",
+  overallProjectStatus: "yellow",
+  ivvVendorName: "Accuity LLP",
 };
+
+const mockReport = {
+  id: "report-1",
+  projectId: "project-1",
+  reportingPeriod: "April 2025",
+  reportingMonth: 4,
+  reportingYear: 2025,
+  submittedAt: "2025-04-30T23:45:00Z",
+  reportStatus: "submitted",
+  executiveSummary: "The project achieved strong execution in April with 100% SIT pass rate. However, critical readiness gaps remain with zero schedule float and incomplete D-21 deliverable. Key achievements include completion of SIT Iteration 2 with 100% test pass rate and successful deployment to staging environment. Challenges include UAT training not yet scheduled, D-21 deliverable incomplete, and resource constraints affecting timeline.",
+  overallRating: "yellow",
+  peopleRating: "green",
+  processRating: "yellow",
+  technologyRating: "yellow",
+  keyAchievements: [
+    "Completed SIT Iteration 2 with 100% pass rate",
+    "Successfully deployed to staging environment",
+    "All critical security patches applied"
+  ],
+  keyChallenges: [
+    "UAT training not yet scheduled",
+    "D-21 deliverable incomplete",
+    "Resource constraints affecting timeline"
+  ],
+  submittedByName: "Jane Doe - Accuity LLP"
+};
+
+const mockFindings = [
+  {
+    id: "finding-1",
+    projectId: "project-1",
+    monthlyReportId: "report-1",
+    findingNumber: "Risk-70",
+    findingType: "risk",
+    description: "File sort logic discrepancies identified during batch testing affecting data output reliability",
+    impactRating: 3,
+    likelihoodRating: 3,
+    calculatedRiskRating: 9,
+    vendorRecommendation: "Resolve sort logic or document approved exception; validate against full data extract",
+    currentStatus: "open",
+    dateFirstRaised: "2025-04-15",
+    significance: "Unresolved discrepancies could corrupt child support payment calculations in production"
+  },
+  {
+    id: "finding-2",
+    projectId: "project-1",
+    monthlyReportId: "report-1",
+    findingNumber: "Risk-45",
+    findingType: "risk",
+    description: "UAT training materials not yet developed with UAT phase scheduled to begin in 4 weeks",
+    impactRating: 2,
+    likelihoodRating: 3,
+    calculatedRiskRating: 6,
+    vendorRecommendation: "Expedite training material development and schedule training sessions immediately",
+    currentStatus: "in-progress",
+    dateFirstRaised: "2025-03-20"
+  },
+  {
+    id: "finding-3",
+    projectId: "project-1",
+    monthlyReportId: "report-1",
+    findingNumber: "Issue-12",
+    findingType: "issue",
+    description: "Performance degradation observed in batch processing for files over 50MB",
+    impactRating: 2,
+    likelihoodRating: 2,
+    calculatedRiskRating: 4,
+    vendorRecommendation: "Optimize batch processing algorithm and implement chunking for large files",
+    currentStatus: "closed",
+    dateFirstRaised: "2025-02-10",
+    closureDate: "2025-04-20"
+  }
+];
 
 const mockComments = [
   {
@@ -87,8 +154,8 @@ export default function ReportDetail() {
   const { toast } = useToast();
   const [comments, setComments] = useState(mockComments);
   const [newComment, setNewComment] = useState("");
-  const [riskStatuses, setRiskStatuses] = useState<Record<string, 'pending' | 'resolved' | 'flagged'>>({});
-  const [complianceStatuses, setComplianceStatuses] = useState<Record<string, 'pending' | 'resolved' | 'flagged'>>({});
+  
+  const budgetPercentage = Math.round((mockProject.totalPaidToDate / mockProject.originalContractAmount) * 100);
 
   const handleAddComment = () => {
     if (!newComment.trim()) return;
@@ -130,24 +197,28 @@ export default function ReportDetail() {
     });
   };
 
-  const handleResolveRisk = (riskId: string) => {
-    setRiskStatuses(prev => ({ ...prev, [riskId]: 'resolved' }));
-    toast({ title: "Risk resolved", description: "The risk has been marked as resolved." });
+  const getRatingColor = (rating: string) => {
+    switch (rating) {
+      case "green": return "bg-green-500/10 text-green-700 border-green-500/20";
+      case "yellow": return "bg-yellow-500/10 text-yellow-700 border-yellow-500/20";
+      case "red": return "bg-red-500/10 text-red-700 border-red-500/20";
+      default: return "bg-muted text-muted-foreground";
+    }
   };
 
-  const handleFlagRisk = (riskId: string) => {
-    setRiskStatuses(prev => ({ ...prev, [riskId]: 'flagged' }));
-    toast({ title: "Risk flagged", description: "The risk has been flagged for follow-up." });
+  const getRiskColor = (rating: number) => {
+    if (rating >= 6) return "bg-red-500/10 text-red-700 border-red-500/20";
+    if (rating >= 3) return "bg-yellow-500/10 text-yellow-700 border-yellow-500/20";
+    return "bg-green-500/10 text-green-700 border-green-500/20";
   };
 
-  const handleResolveCompliance = (itemId: string) => {
-    setComplianceStatuses(prev => ({ ...prev, [itemId]: 'resolved' }));
-    toast({ title: "Item resolved", description: "The compliance item has been marked as resolved." });
-  };
-
-  const handleFlagCompliance = (itemId: string) => {
-    setComplianceStatuses(prev => ({ ...prev, [itemId]: 'flagged' }));
-    toast({ title: "Item flagged", description: "The compliance item has been flagged for follow-up." });
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "open": return "bg-red-500/10 text-red-700 border-red-500/20";
+      case "in-progress": return "bg-yellow-500/10 text-yellow-700 border-yellow-500/20";
+      case "closed": return "bg-green-500/10 text-green-700 border-green-500/20";
+      default: return "bg-muted text-muted-foreground";
+    }
   };
 
   return (
@@ -170,7 +241,7 @@ export default function ReportDetail() {
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>{mockReport.projectName}</BreadcrumbPage>
+                    <BreadcrumbPage>{mockProject.projectName}</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
@@ -200,11 +271,16 @@ export default function ReportDetail() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    {mockReport.projectName}
+                    {mockProject.projectName}
                   </h1>
-                  <Badge className="bg-accent/10 text-accent border-accent/20">
-                    {mockReport.status}
-                  </Badge>
+                  <div className="flex gap-2 items-center">
+                    <Badge className={getRatingColor(mockReport.overallRating)}>
+                      Overall: {mockReport.overallRating.toUpperCase()}
+                    </Badge>
+                    <Badge className="bg-accent/10 text-accent border-accent/20">
+                      {mockReport.reportStatus}
+                    </Badge>
+                  </div>
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -225,72 +301,105 @@ export default function ReportDetail() {
                 </DropdownMenu>
               </div>
 
-              {/* Condensed metadata table */}
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-4">
+              {/* Report & Project Metadata */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Report Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <Building2 className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <Calendar className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Agency</p>
-                        <p className="text-sm font-medium">{mockReport.agency}</p>
+                        <p className="text-xs text-muted-foreground">Reporting Period</p>
+                        <p className="text-sm font-medium">{mockReport.reportingPeriod}</p>
                       </div>
                     </div>
-
                     <div className="flex items-start gap-3">
-                      <Users className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <Clock className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Vendor</p>
-                        <p className="text-sm font-medium">{mockReport.vendor}</p>
+                        <p className="text-xs text-muted-foreground">Submitted</p>
+                        <p className="text-sm font-medium">{format(new Date(mockReport.submittedAt), "PPP")}</p>
                       </div>
                     </div>
-
                     <div className="flex items-start gap-3">
-                      <Users className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Reviewer</p>
-                        <p className="text-sm font-medium">{mockReport.reviewer}</p>
+                        <p className="text-xs text-muted-foreground">Submitted By</p>
+                        <p className="text-sm font-medium">{mockReport.submittedByName}</p>
                       </div>
                     </div>
-
-                    <div className="flex items-start gap-3">
-                      <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Submitted</p>
-                        <p className="text-sm font-medium">{mockReport.submissionDate}</p>
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-2">Ratings</p>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge className={getRatingColor(mockReport.peopleRating)}>
+                          People: {mockReport.peopleRating}
+                        </Badge>
+                        <Badge className={getRatingColor(mockReport.processRating)}>
+                          Process: {mockReport.processRating}
+                        </Badge>
+                        <Badge className={getRatingColor(mockReport.technologyRating)}>
+                          Technology: {mockReport.technologyRating}
+                        </Badge>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
 
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <Building2 className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Last Updated</p>
-                        <p className="text-sm font-medium">{mockReport.lastUpdated}</p>
+                        <p className="text-xs text-muted-foreground">Sponsoring Agency</p>
+                        <p className="text-sm font-medium">{mockProject.sponsoringAgency}</p>
                       </div>
                     </div>
-
                     <div className="flex items-start gap-3">
-                      <FileText className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <Users className="h-5 w-5 text-muted-foreground mt-0.5" />
                       <div>
-                        <p className="text-xs text-muted-foreground mb-0.5">Review Progress</p>
-                        <div className="flex items-center gap-2">
-                          <Progress value={mockReport.progress} className="h-2 w-20 bg-muted [&>div]:bg-primary" />
-                          <span className="text-sm font-medium">{mockReport.progress}%</span>
+                        <p className="text-xs text-muted-foreground">IV&V Vendor</p>
+                        <p className="text-sm font-medium">{mockProject.ivvVendorName}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-2">Budget Progress</p>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span>${(mockProject.totalPaidToDate / 1000000).toFixed(1)}M spent</span>
+                          <span>${(mockProject.originalContractAmount / 1000000).toFixed(1)}M total</span>
+                        </div>
+                        <Progress value={budgetPercentage} className="h-2" />
+                        <p className="text-xs text-muted-foreground">{budgetPercentage}% of budget used</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-2">Timeline</p>
+                      <div className="space-y-1 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Planned End:</span>
+                          <span>{format(new Date(mockProject.plannedEndDate), "PP")}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Projected End:</span>
+                          <span className="font-medium">{format(new Date(mockProject.currentProjectedEndDate), "PP")}</span>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
 
             {/* Tabs Content */}
             <Tabs defaultValue="overview" className="mb-6">
               <TabsList>
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="risk">Risk Assessment</TabsTrigger>
-                <TabsTrigger value="compliance">Compliance Checklist</TabsTrigger>
-                <TabsTrigger value="findings">Findings & Recommendations</TabsTrigger>
+                <TabsTrigger value="overview">Executive Summary</TabsTrigger>
+                <TabsTrigger value="highlights">Key Highlights</TabsTrigger>
+                <TabsTrigger value="findings">Findings</TabsTrigger>
                 <TabsTrigger value="attachments">Attachments</TabsTrigger>
               </TabsList>
 
@@ -298,21 +407,12 @@ export default function ReportDetail() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                   <Card className="lg:col-span-2">
                     <CardHeader>
-                      <CardTitle>Project Overview</CardTitle>
-                      <CardDescription>Summary of the IV&V assessment</CardDescription>
+                      <CardTitle>Executive Summary</CardTitle>
+                      <CardDescription>Overall assessment for {mockReport.reportingPeriod}</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        The DOH Health Connect Upgrade project aims to modernize the state's health information exchange system. 
-                        This IV&V assessment covers the planning, design, and initial implementation phases of the project.
-                      </p>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        Key objectives include improving data interoperability, enhancing security protocols, and streamlining 
-                        healthcare provider workflows. The project is currently in Phase 2 of 4 planned phases.
-                      </p>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        Initial assessments indicate strong project management practices and clear stakeholder communication. 
-                        Some areas requiring attention include timeline optimization and resource allocation for the testing phase.
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                        {mockReport.executiveSummary}
                       </p>
                     </CardContent>
                   </Card>
@@ -387,395 +487,125 @@ export default function ReportDetail() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="risk" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <Card className="lg:col-span-2">
-                    <CardHeader>
-                      <CardTitle>Risk Assessment</CardTitle>
-                      <CardDescription>Identified risks and mitigation strategies</CardDescription>
-                    </CardHeader>
-                     <CardContent className="space-y-4">
-                      <div className="space-y-3">
-                        <div className="border rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-medium">Schedule Risk</h4>
-                              {riskStatuses['schedule'] === 'resolved' && (
-                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20">Resolved</Badge>
-                              )}
-                              {riskStatuses['schedule'] === 'flagged' && (
-                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20">Flagged</Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Badge className="bg-green-500/20 text-green-700 border-green-500/30">Low</Badge>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-background">
-                                  <DropdownMenuItem onClick={() => handleResolveRisk('schedule')}>
-                                    <Check className="h-4 w-4 mr-2" />
-                                    Resolve
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleFlagRisk('schedule')}>
-                                    <Flag className="h-4 w-4 mr-2" />
-                                    Flag for Follow-up
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Project timeline is realistic with adequate buffer periods. Regular milestone reviews in place.
-                          </p>
-                        </div>
-
-                        <div className="border rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-medium">Resource Allocation</h4>
-                              {riskStatuses['resource'] === 'resolved' && (
-                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20">Resolved</Badge>
-                              )}
-                              {riskStatuses['resource'] === 'flagged' && (
-                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20">Flagged</Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Badge className="bg-yellow-500/20 text-yellow-700 border-yellow-500/30">Medium</Badge>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-background">
-                                  <DropdownMenuItem onClick={() => handleResolveRisk('resource')}>
-                                    <Check className="h-4 w-4 mr-2" />
-                                    Resolve
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleFlagRisk('resource')}>
-                                    <Flag className="h-4 w-4 mr-2" />
-                                    Flag for Follow-up
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Current staffing levels may be insufficient for peak testing phase. Recommend additional QA resources.
-                          </p>
-                        </div>
-
-                        <div className="border rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-medium">Technical Complexity</h4>
-                              {riskStatuses['technical'] === 'resolved' && (
-                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20">Resolved</Badge>
-                              )}
-                              {riskStatuses['technical'] === 'flagged' && (
-                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20">Flagged</Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Badge className="bg-green-500/20 text-green-700 border-green-500/30">Low</Badge>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-background">
-                                  <DropdownMenuItem onClick={() => handleResolveRisk('technical')}>
-                                    <Check className="h-4 w-4 mr-2" />
-                                    Resolve
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleFlagRisk('technical')}>
-                                    <Flag className="h-4 w-4 mr-2" />
-                                    Flag for Follow-up
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Technology stack is well-established. Team has appropriate expertise in chosen platforms.
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
+              <TabsContent value="highlights" className="mt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle>Reviewer Comments</CardTitle>
+                      <CardTitle className="flex items-center gap-2">
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        Key Achievements
+                      </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Textarea
-                          placeholder="Add a comment..."
-                          className="min-h-[100px]"
-                        />
-                        <Button className="w-full">Add Comment</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="compliance" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <Card className="lg:col-span-2">
-                    <CardHeader>
-                      <CardTitle>Compliance Checklist</CardTitle>
-                      <CardDescription>Regulatory and policy compliance status</CardDescription>
-                    </CardHeader>
-                     <CardContent>
-                      <div className="space-y-2">
-                        {[
-                          { id: "hipaa", item: "HIPAA Compliance Review", status: "Complete" },
-                          { id: "security", item: "State IT Security Standards", status: "Complete" },
-                          { id: "ada", item: "Accessibility (ADA) Requirements", status: "In Progress" },
-                          { id: "privacy", item: "Data Privacy Impact Assessment", status: "Complete" },
-                          { id: "disaster", item: "Disaster Recovery Plan", status: "In Progress" },
-                        ].map((item) => (
-                          <div key={item.id} className="flex items-center justify-between border-b py-3">
-                            <div className="flex items-center gap-2">
-                              <p className="text-sm">{item.item}</p>
-                              {complianceStatuses[item.id] === 'resolved' && (
-                                <Badge className="bg-green-500/10 text-green-700 border-green-500/20 text-xs">Resolved</Badge>
-                              )}
-                              {complianceStatuses[item.id] === 'flagged' && (
-                                <Badge className="bg-red-500/10 text-red-700 border-red-500/20 text-xs">Flagged</Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Badge className={
-                                item.status === "Complete" 
-                                  ? "bg-green-500/20 text-green-700 border-green-500/30" 
-                                  : "bg-yellow-500/20 text-yellow-700 border-yellow-500/30"
-                              }>
-                                {item.status}
-                              </Badge>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-background">
-                                  <DropdownMenuItem onClick={() => handleResolveCompliance(item.id)}>
-                                    <Check className="h-4 w-4 mr-2" />
-                                    Resolve
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem onClick={() => handleFlagCompliance(item.id)}>
-                                    <Flag className="h-4 w-4 mr-2" />
-                                    Flag for Follow-up
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          </div>
+                    <CardContent>
+                      <ul className="space-y-3">
+                        {mockReport.keyAchievements.map((achievement, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <div className="h-1.5 w-1.5 rounded-full bg-green-600 mt-2 flex-shrink-0" />
+                            <span className="text-sm text-muted-foreground">{achievement}</span>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </CardContent>
                   </Card>
 
                   <Card>
                     <CardHeader>
-                      <CardTitle>Reviewer Comments</CardTitle>
+                      <CardTitle className="flex items-center gap-2">
+                        <AlertCircle className="h-5 w-5 text-yellow-600" />
+                        Key Challenges
+                      </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Textarea
-                          placeholder="Add a comment..."
-                          className="min-h-[100px]"
-                        />
-                        <Button className="w-full">Add Comment</Button>
-                      </div>
+                    <CardContent>
+                      <ul className="space-y-3">
+                        {mockReport.keyChallenges.map((challenge, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <div className="h-1.5 w-1.5 rounded-full bg-yellow-600 mt-2 flex-shrink-0" />
+                            <span className="text-sm text-muted-foreground">{challenge}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </CardContent>
                   </Card>
                 </div>
               </TabsContent>
 
               <TabsContent value="findings" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <Card className="lg:col-span-2">
-                    <CardHeader>
-                      <CardTitle>Findings & Recommendations</CardTitle>
-                      <CardDescription>Key observations and suggested actions</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-4">
-                        <div className="border-l-4 border-primary pl-4">
-                          <h4 className="font-medium mb-2">Finding #1: Testing Coverage</h4>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Current test plan covers 85% of critical user workflows. Recommend expanding coverage to include edge cases.
-                          </p>
-                          <p className="text-sm font-medium text-primary">Recommendation: Add 15 additional test scenarios</p>
-                        </div>
-
-                        <div className="border-l-4 border-primary pl-4">
-                          <h4 className="font-medium mb-2">Finding #2: Documentation Quality</h4>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Technical documentation is comprehensive and well-organized. User documentation needs enhancement.
-                          </p>
-                          <p className="text-sm font-medium text-primary">Recommendation: Engage technical writer for user guides</p>
-                        </div>
-
-                        <div className="border-l-4 border-primary pl-4">
-                          <h4 className="font-medium mb-2">Finding #3: Stakeholder Engagement</h4>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            Regular stakeholder meetings are conducted. Consider increasing frequency during critical phases.
-                          </p>
-                          <p className="text-sm font-medium text-primary">Recommendation: Bi-weekly updates during Phase 3</p>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Findings Summary</CardTitle>
+                    <CardDescription>Risks and issues identified in this report</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {mockFindings.map((finding) => (
+                      <div key={finding.id} className="border rounded-lg p-4 space-y-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Badge variant="outline" className="font-mono text-xs">
+                                {finding.findingNumber}
+                              </Badge>
+                              <Badge variant="outline" className="capitalize">
+                                {finding.findingType}
+                              </Badge>
+                              <Badge className={getRiskColor(finding.calculatedRiskRating)}>
+                                Risk: {finding.calculatedRiskRating}/9
+                              </Badge>
+                              <Badge className={getStatusColor(finding.currentStatus)}>
+                                {finding.currentStatus.replace('-', ' ')}
+                              </Badge>
+                            </div>
+                            <p className="text-sm font-medium mb-2">{finding.description}</p>
+                            {finding.significance && (
+                              <p className="text-xs text-muted-foreground italic mb-2">
+                                Significance: {finding.significance}
+                              </p>
+                            )}
+                            <div className="grid grid-cols-2 gap-2 text-xs mb-2">
+                              <div>
+                                <span className="text-muted-foreground">Impact: </span>
+                                <span className="font-medium">{finding.impactRating}/3</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Likelihood: </span>
+                                <span className="font-medium">{finding.likelihoodRating}/3</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">First Raised: </span>
+                                <span className="font-medium">{format(new Date(finding.dateFirstRaised), "PP")}</span>
+                              </div>
+                              {finding.closureDate && (
+                                <div>
+                                  <span className="text-muted-foreground">Closed: </span>
+                                  <span className="font-medium">{format(new Date(finding.closureDate), "PP")}</span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="bg-muted/50 rounded p-3 mt-2">
+                              <p className="text-xs font-medium text-muted-foreground mb-1">Vendor Recommendation:</p>
+                              <p className="text-sm">{finding.vendorRecommendation}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Reviewer Comments</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Textarea
-                          placeholder="Add a comment..."
-                          className="min-h-[100px]"
-                        />
-                        <Button className="w-full">Add Comment</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                    ))}
+                  </CardContent>
+                </Card>
               </TabsContent>
 
               <TabsContent value="attachments" className="mt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <Card className="lg:col-span-2">
-                    <CardHeader>
-                      <CardTitle>Supporting Documents</CardTitle>
-                      <CardDescription>Attachments and reference materials</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        {[
-                          { name: "Project Charter.pdf", size: "2.4 MB", date: "2024-01-10" },
-                          { name: "Risk Register.xlsx", size: "1.1 MB", date: "2024-01-12" },
-                          { name: "Test Plan v2.docx", size: "3.7 MB", date: "2024-01-15" },
-                          { name: "Architecture Diagram.pdf", size: "5.2 MB", date: "2024-01-08" },
-                        ].map((file, index) => (
-                          <div key={index} className="flex items-center justify-between border rounded-lg p-4 hover:bg-muted/50 transition-colors">
-                            <div className="flex items-center gap-3">
-                              <FileText className="h-5 w-5 text-primary" />
-                              <div>
-                                <p className="text-sm font-medium">{file.name}</p>
-                                <p className="text-xs text-muted-foreground">{file.size} • {file.date}</p>
-                              </div>
-                            </div>
-                            <Button variant="ghost" size="sm">
-                              <Download className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Reviewer Comments</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Textarea
-                          placeholder="Add a comment..."
-                          className="min-h-[100px]"
-                        />
-                        <Button className="w-full">Add Comment</Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Report Attachments</CardTitle>
+                    <CardDescription>Supporting documents and files</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-center py-12 text-sm text-muted-foreground">
+                      No attachments available for this report
+                    </div>
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
-
-            {/* Report Progress */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle>Report Progress</CardTitle>
-              </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-end text-sm mb-1">
-                        <span className="font-medium">{mockReport.progress}%</span>
-                      </div>
-                      <div className="relative h-2 w-full overflow-hidden rounded-full bg-muted">
-                        <div 
-                          className="h-full transition-all bg-gradient-to-r from-blue-500 via-yellow-500 to-green-500"
-                          style={{ width: `${mockReport.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-4 gap-2 text-xs text-center">
-                      <div>
-                        <div className="w-2 h-2 rounded-full bg-blue-500 mx-auto mb-1"></div>
-                        <p className={mockReport.timeline.submitted.completed ? "font-medium" : "text-muted-foreground"}>
-                          Submitted
-                        </p>
-                        {mockReport.timeline.submitted.date && (
-                          <p className="text-muted-foreground text-[10px] mt-0.5">
-                            {format(new Date(mockReport.timeline.submitted.date), "MMM dd")}
-                          </p>
-                        )}
-                      </div>
-                      <div>
-                        <div className="w-2 h-2 rounded-full bg-yellow-500 mx-auto mb-1"></div>
-                        <p className={mockReport.timeline.inReview.completed ? "font-medium" : "text-muted-foreground"}>
-                          In Review
-                        </p>
-                        {mockReport.timeline.inReview.date && (
-                          <p className="text-muted-foreground text-[10px] mt-0.5">
-                            {format(new Date(mockReport.timeline.inReview.date), "MMM dd")}
-                          </p>
-                        )}
-                      </div>
-                      <div>
-                        <div className="w-2 h-2 rounded-full bg-green-500 mx-auto mb-1"></div>
-                        <p className={mockReport.timeline.approved.completed ? "font-medium" : "text-muted-foreground"}>
-                          Approved
-                        </p>
-                        {mockReport.timeline.approved.date ? (
-                          <p className="text-muted-foreground text-[10px] mt-0.5">
-                            {format(new Date(mockReport.timeline.approved.date), "MMM dd")}
-                          </p>
-                        ) : (
-                          <p className="text-muted-foreground text-[10px] mt-0.5">Pending</p>
-                        )}
-                      </div>
-                      <div>
-                        <div className="w-2 h-2 rounded-full bg-purple-500 mx-auto mb-1"></div>
-                        <p className={mockReport.timeline.published.completed ? "font-medium" : "text-muted-foreground"}>
-                          Published
-                        </p>
-                        {mockReport.timeline.published.date ? (
-                          <p className="text-muted-foreground text-[10px] mt-0.5">
-                            {format(new Date(mockReport.timeline.published.date), "MMM dd")}
-                          </p>
-                        ) : (
-                          <p className="text-muted-foreground text-[10px] mt-0.5">Pending</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-            </Card>
 
             {/* Activity Log */}
             <Card>
@@ -785,12 +615,9 @@ export default function ReportDetail() {
               <CardContent>
                 <div className="space-y-3">
                   {mockActivityLog.map((activity, index) => (
-                    <div key={index} className="flex items-start gap-3 pb-3 border-b last:border-0">
-                      <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                      <div className="flex-1">
-                        <p className="text-sm">{activity.action}</p>
-                        <p className="text-xs text-muted-foreground">{activity.date}</p>
-                      </div>
+                    <div key={index} className="flex gap-3 text-sm">
+                      <div className="text-muted-foreground min-w-[100px]">{activity.date}</div>
+                      <div>{activity.action}</div>
                     </div>
                   ))}
                 </div>
