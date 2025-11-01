@@ -365,6 +365,135 @@ const VendorReportForm = () => {
                           <p className="text-sm text-destructive mt-2">{errors.overallRating.message}</p>
                         )}
                       </div>
+
+                      <div className="space-y-4 pt-6 border-t">
+                        <div>
+                          <Label className="text-base">Detailed Ratings</Label>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Rate each category using Green (On Track), Yellow (Minor Issues), or Red (Critical)
+                          </p>
+                        </div>
+
+                        {/* Team Performance Rating */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm font-medium">Team Performance</Label>
+                            {watch("peopleRating") && (
+                              <span className="text-accent text-sm">✓</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Evaluate staffing, communication, and skill adequacy
+                          </p>
+                          <div className="flex gap-3">
+                            {["green", "yellow", "red"].map((rating) => (
+                              <button
+                                key={rating}
+                                type="button"
+                                onClick={() => setValue("peopleRating", rating as "green" | "yellow" | "red")}
+                                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                                  watch("peopleRating") === rating
+                                    ? getRatingColor(rating)
+                                    : "border-border hover:border-primary/50"
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div
+                                    className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                      rating === "green"
+                                        ? "bg-accent"
+                                        : rating === "yellow"
+                                        ? "bg-yellow-500"
+                                        : "bg-destructive"
+                                    }`}
+                                  />
+                                  <p className="font-medium text-xs">{getRatingLabel(rating)}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Project Management Rating */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm font-medium">Project Management</Label>
+                            {watch("processRating") && (
+                              <span className="text-accent text-sm">✓</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Assess organization, communication, and schedule control
+                          </p>
+                          <div className="flex gap-3">
+                            {["green", "yellow", "red"].map((rating) => (
+                              <button
+                                key={rating}
+                                type="button"
+                                onClick={() => setValue("processRating", rating as "green" | "yellow" | "red")}
+                                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                                  watch("processRating") === rating
+                                    ? getRatingColor(rating)
+                                    : "border-border hover:border-primary/50"
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div
+                                    className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                      rating === "green"
+                                        ? "bg-accent"
+                                        : rating === "yellow"
+                                        ? "bg-yellow-500"
+                                        : "bg-destructive"
+                                    }`}
+                                  />
+                                  <p className="font-medium text-xs">{getRatingLabel(rating)}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Technical Readiness Rating */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm font-medium">Technical Readiness</Label>
+                            {watch("technologyRating") && (
+                              <span className="text-accent text-sm">✓</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Assess system stability, implementation readiness, and architecture
+                          </p>
+                          <div className="flex gap-3">
+                            {["green", "yellow", "red"].map((rating) => (
+                              <button
+                                key={rating}
+                                type="button"
+                                onClick={() => setValue("technologyRating", rating as "green" | "yellow" | "red")}
+                                className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                                  watch("technologyRating") === rating
+                                    ? getRatingColor(rating)
+                                    : "border-border hover:border-primary/50"
+                                }`}
+                              >
+                                <div className="flex items-center justify-center gap-2">
+                                  <div
+                                    className={`w-4 h-4 rounded-full flex-shrink-0 ${
+                                      rating === "green"
+                                        ? "bg-accent"
+                                        : rating === "yellow"
+                                        ? "bg-yellow-500"
+                                        : "bg-destructive"
+                                    }`}
+                                  />
+                                  <p className="font-medium text-xs">{getRatingLabel(rating)}</p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
