@@ -488,6 +488,9 @@ const VendorReportForm = () => {
                   <Card id="summary" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Executive Summary</CardTitle>
+                      <CardDescription>
+                        Provide a comprehensive summary of the month's activities (max 5,000 characters)
+                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
@@ -512,6 +515,7 @@ const VendorReportForm = () => {
                   <Card id="highlights" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Key Highlights</CardTitle>
+                      <CardDescription>Document accomplishments, challenges, and upcoming milestones</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 gap-6">
@@ -549,6 +553,7 @@ const VendorReportForm = () => {
                   <Card id="variance" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Budget & Schedule Status</CardTitle>
+                      <CardDescription>Provide current status for budget and schedule</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-2">
@@ -556,6 +561,9 @@ const VendorReportForm = () => {
                           <DollarSign className="h-5 w-5 text-primary" />
                           <Label className="text-base font-semibold">Budget Status</Label>
                         </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Current budget utilization and any variances
+                        </p>
                         <Textarea
                           {...register("budgetStatus")}
                           placeholder=""
@@ -568,6 +576,9 @@ const VendorReportForm = () => {
                           <Clock className="h-5 w-5 text-primary" />
                           <Label className="text-base font-semibold">Schedule Status</Label>
                         </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Current timeline position and any delays
+                        </p>
                         <Textarea
                           {...register("scheduleStatus")}
                           placeholder=""
@@ -577,6 +588,9 @@ const VendorReportForm = () => {
 
                       <div className="space-y-2">
                         <Label className="text-base font-semibold">Risk Summary</Label>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Summarize key risks and mitigation strategies
+                        </p>
                         <Textarea
                           {...register("riskSummary")}
                           placeholder=""
@@ -592,6 +606,7 @@ const VendorReportForm = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <CardTitle>Report Findings</CardTitle>
+                          <CardDescription>Add risks and issues identified this month</CardDescription>
                         </div>
                         <Dialog open={findingDialogOpen} onOpenChange={setFindingDialogOpen}>
                           <DialogTrigger asChild>
