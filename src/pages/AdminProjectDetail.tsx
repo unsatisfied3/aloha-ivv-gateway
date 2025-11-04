@@ -343,29 +343,6 @@ export default function AdminProjectDetail() {
                       </TooltipProvider>
                     </div>
                   </div>
-                  
-                  <div className="pt-4 mt-4 border-t">
-                    <p className="text-sm font-medium text-muted-foreground mb-3">Detailed Ratings</p>
-                    <div className="space-y-2">
-                      {[
-                        { label: "Team Performance", rating: project.teamRating },
-                        { label: "Project Management", rating: project.processRating },
-                        { label: "Technical Readiness", rating: project.techRating }
-                      ].map((item) => {
-                        const config = getStatusBadge(item.rating as string);
-                        const Icon = config.icon;
-                        return (
-                          <div key={item.label} className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">{item.label}</span>
-                            <Badge className={cn("border", config.className)} variant="outline">
-                              <Icon className="h-3 w-3 mr-1" />
-                              {config.label}
-                            </Badge>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
 
@@ -511,7 +488,37 @@ export default function AdminProjectDetail() {
                   </div>
                 </CardContent>
               </Card>
-              </div>
+            </div>
+
+              {/* Section 3: Detailed Ratings */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Detailed Ratings</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[
+                      { label: "Team Performance", rating: project.teamRating },
+                      { label: "Project Management", rating: project.processRating },
+                      { label: "Technical Readiness", rating: project.techRating }
+                    ].map((item) => {
+                      const config = getStatusBadge(item.rating as string);
+                      const Icon = config.icon;
+                      return (
+                        <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
+                          <Icon className={`h-5 w-5 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
+                            <Badge className={config.className} variant="outline">
+                              {config.label}
+                            </Badge>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Section 4: Reports for This Project */}
