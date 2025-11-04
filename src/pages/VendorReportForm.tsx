@@ -42,6 +42,7 @@ const reportSchema = z.object({
   upcomingMilestones: z.string().optional(),
   scheduleStatus: z.string().optional(),
   budgetStatus: z.string().optional(),
+  riskSummary: z.string().optional(),
   peopleRating: z.enum(["green", "yellow", "red"]).optional(),
   processRating: z.enum(["green", "yellow", "red"]).optional(),
   technologyRating: z.enum(["green", "yellow", "red"]).optional(),
@@ -593,6 +594,18 @@ const VendorReportForm = () => {
                         <Textarea
                           {...register("scheduleStatus")}
                           placeholder="On schedule / 2 weeks behind due to..."
+                          className="min-h-[100px]"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label className="text-base font-semibold">Risk Summary</Label>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Summarize key risks and mitigation strategies (e.g., "Medium risk: API integration delays. Mitigation: Added DevOps resource")
+                        </p>
+                        <Textarea
+                          {...register("riskSummary")}
+                          placeholder="Medium risk: API integration delays and performance optimization needed. Mitigation: Added specialized DevOps resource and extended testing phase."
                           className="min-h-[100px]"
                         />
                       </div>
