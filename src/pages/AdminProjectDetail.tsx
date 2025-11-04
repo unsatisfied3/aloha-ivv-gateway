@@ -495,23 +495,25 @@ export default function AdminProjectDetail() {
                 <CardTitle>Detailed Ratings</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-0">
                   {[
                     { label: "Team Performance", rating: project.teamRating },
                     { label: "Project Management", rating: project.processRating },
                     { label: "Technical Readiness", rating: project.techRating }
-                  ].map((item) => {
+                  ].map((item, index, array) => {
                     const config = getStatusBadge(item.rating as string);
-                    const Icon = config.icon;
                     return (
-                      <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
-                        <Icon className={`h-5 w-5 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
+                      <div key={item.label}>
+                        <div className="flex items-center justify-between py-3">
+                          <p className="text-sm font-medium">{item.label}</p>
                           <Badge className={config.className} variant="outline">
+                            <config.icon className="h-3 w-3 mr-1" />
                             {config.label}
                           </Badge>
                         </div>
+                        {index < array.length - 1 && (
+                          <div className="h-px bg-border" />
+                        )}
                       </div>
                     );
                   })}
