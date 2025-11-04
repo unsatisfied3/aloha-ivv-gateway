@@ -43,6 +43,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { DetailedRatings } from "@/components/DetailedRatings";
 
 // Mock data - matches AdminProjects
 const mockProjects = [
@@ -345,26 +346,11 @@ export default function AdminProjectDetail() {
                   </div>
                   
                   <div className="pt-4 mt-4 border-t">
-                    <p className="text-sm font-medium text-muted-foreground mb-3">Detailed Ratings</p>
-                    <div className="grid grid-cols-3 gap-3">
-                      {[
-                        { label: "Team Performance", rating: project.teamRating },
-                        { label: "Project Management", rating: project.processRating },
-                        { label: "Technical Readiness", rating: project.techRating }
-                      ].map((item) => {
-                        const config = getStatusBadge(item.rating as string);
-                        const Icon = config.icon;
-                        return (
-                          <div key={item.label}>
-                            <p className="text-xs text-muted-foreground mb-1">{item.label}</p>
-                            <Badge className={cn("border", config.className)} variant="outline">
-                              <Icon className="h-3 w-3 mr-1" />
-                              {config.label}
-                            </Badge>
-                          </div>
-                        );
-                      })}
-                    </div>
+                    <DetailedRatings
+                      peopleRating={project.teamRating as "green" | "yellow" | "red"}
+                      processRating={project.processRating as "green" | "yellow" | "red"}
+                      technologyRating={project.techRating as "green" | "yellow" | "red"}
+                    />
                   </div>
                 </CardContent>
               </Card>
