@@ -21,6 +21,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import {
   Table,
   TableBody,
   TableCell,
@@ -309,26 +314,50 @@ export default function AdminProjectDetail() {
                     <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-sm text-muted-foreground">Status</p>
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="inline-block mt-1">
-                              <Badge className={cn("border cursor-help", statusBadge.className)}>
-                                <statusBadge.icon className="h-3 w-3 mr-1" />
-                                {statusBadge.label}
-                              </Badge>
+                      <HoverCard openDelay={200}>
+                        <HoverCardTrigger asChild>
+                          <div className="inline-block mt-1 cursor-pointer">
+                            <Badge className={cn("border", statusBadge.className)}>
+                              <statusBadge.icon className="h-3 w-3 mr-1" />
+                              {statusBadge.label}
+                            </Badge>
+                          </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-[400px]" align="start">
+                          <div className="space-y-4">
+                            <div>
+                              <h4 className="text-sm font-semibold mb-2">Detailed Ratings</h4>
+                              <div className="space-y-3">
+                                {[
+                                  { label: "Team Performance", rating: project.teamRating },
+                                  { label: "Project Management", rating: project.processRating },
+                                  { label: "Technical Readiness", rating: project.techRating }
+                                ].map((item) => {
+                                  const config = getStatusBadge(item.rating as string);
+                                  const Icon = config.icon;
+                                  return (
+                                    <div key={item.label} className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <Icon className={`h-4 w-4 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
+                                        <span className="text-sm">{item.label}</span>
+                                      </div>
+                                      <Badge className={config.className} variant="outline">
+                                        {config.label}
+                                      </Badge>
+                                    </div>
+                                  );
+                                })}
+                              </div>
                             </div>
-                          </TooltipTrigger>
-                          <TooltipContent className="max-w-xs p-4" side="right">
-                            <div className="space-y-2">
-                              <p className="text-sm text-muted-foreground">
+                            <div className="pt-2 border-t">
+                              <p className="text-xs text-muted-foreground">
                                 {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
                                 {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
                                 {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
                               </p>
-                              <div className="text-right">
+                              <div className="text-right mt-2">
                                 <button
-                                  className="text-sm underline hover:no-underline"
+                                  className="text-xs underline hover:no-underline"
                                   onClick={() => {
                                     document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
                                   }}
@@ -337,9 +366,9 @@ export default function AdminProjectDetail() {
                                 </button>
                               </div>
                             </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
                     </div>
                   </div>
                 </CardContent>
@@ -489,35 +518,6 @@ export default function AdminProjectDetail() {
               </Card>
             </div>
 
-            {/* Section 3: Detailed Ratings */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Detailed Ratings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {[
-                    { label: "Team Performance", rating: project.teamRating },
-                    { label: "Project Management", rating: project.processRating },
-                    { label: "Technical Readiness", rating: project.techRating }
-                  ].map((item) => {
-                    const config = getStatusBadge(item.rating as string);
-                    const Icon = config.icon;
-                    return (
-                      <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
-                        <Icon className={`h-5 w-5 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                          <Badge className={config.className} variant="outline">
-                            {config.label}
-                          </Badge>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
