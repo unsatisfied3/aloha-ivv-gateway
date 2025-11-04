@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Download, CheckCircle, AlertCircle, XCircle } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type OverallRating = "green" | "yellow" | "red";
 
@@ -119,22 +120,25 @@ const mockReport: ReportData = {
 const getRatingConfig = (rating: OverallRating) => {
   const configs = {
     green: {
-      label: "On Track",
+      label: "Satisfactory",
       className: "bg-green-100 text-green-800 border-green-200",
       icon: CheckCircle,
       color: "#10B981",
+      description: "Project is meeting expectations and proceeding according to plan",
     },
     yellow: {
-      label: "At Risk",
+      label: "Needs Attention",
       className: "bg-yellow-100 text-yellow-800 border-yellow-200",
       icon: AlertCircle,
       color: "#F59E0B",
+      description: "Project has issues that require monitoring and corrective action",
     },
     red: {
-      label: "Critical",
+      label: "Unsatisfactory",
       className: "bg-red-100 text-red-800 border-red-200",
       icon: XCircle,
       color: "#EF4444",
+      description: "Project has critical issues requiring immediate intervention",
     },
   };
   return configs[rating];
@@ -156,8 +160,9 @@ const PublicReportDetail = () => {
   const OverallIcon = overallConfig.icon;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAF9' }}>
-      <Header />
+    <TooltipProvider>
+      <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#F8FAF9' }}>
+        <Header />
       
       <main className="flex-1 py-8">
         <div className="container max-w-6xl mx-auto px-4">
@@ -267,7 +272,18 @@ const PublicReportDetail = () => {
                       {(() => {
                         const config = getRatingConfig(report.peopleRating);
                         const Icon = config.icon;
-                        return <Icon className="h-5 w-5" style={{ color: config.color }} />;
+                        return (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Icon className="h-5 w-5 cursor-help" style={{ color: config.color }} />
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{config.description}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        );
                       })()}
                     </div>
                     <Badge variant="outline" className={getRatingConfig(report.peopleRating).className}>
@@ -281,7 +297,18 @@ const PublicReportDetail = () => {
                       {(() => {
                         const config = getRatingConfig(report.processRating);
                         const Icon = config.icon;
-                        return <Icon className="h-5 w-5" style={{ color: config.color }} />;
+                        return (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Icon className="h-5 w-5 cursor-help" style={{ color: config.color }} />
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{config.description}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        );
                       })()}
                     </div>
                     <Badge variant="outline" className={getRatingConfig(report.processRating).className}>
@@ -295,7 +322,18 @@ const PublicReportDetail = () => {
                       {(() => {
                         const config = getRatingConfig(report.technologyRating);
                         const Icon = config.icon;
-                        return <Icon className="h-5 w-5" style={{ color: config.color }} />;
+                        return (
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Icon className="h-5 w-5 cursor-help" style={{ color: config.color }} />
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{config.description}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        );
                       })()}
                     </div>
                     <Badge variant="outline" className={getRatingConfig(report.technologyRating).className}>
@@ -415,8 +453,9 @@ const PublicReportDetail = () => {
         </div>
       </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </TooltipProvider>
   );
 };
 
