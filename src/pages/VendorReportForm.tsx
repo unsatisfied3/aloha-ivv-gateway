@@ -558,9 +558,6 @@ const VendorReportForm = () => {
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Clock className="h-5 w-5 text-primary" />
-                        </div>
                         <Textarea
                           {...register("scheduleVarianceAnalysis")}
                           placeholder="📅 Schedule Variance&#10;&#10;Describe schedule changes, reasons, and mitigation (e.g., testing delays, resource gaps)."
@@ -569,9 +566,6 @@ const VendorReportForm = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 mb-2">
-                          <DollarSign className="h-5 w-5 text-primary" />
-                        </div>
                         <Textarea
                           {...register("budgetVarianceAnalysis")}
                           placeholder="💰 Budget Variance&#10;&#10;Describe budget deviations (e.g., spending 10% ahead due to change request #34)."
