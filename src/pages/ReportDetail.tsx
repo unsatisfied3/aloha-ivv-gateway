@@ -31,6 +31,7 @@ import {
   ChevronDown,
   Flag,
   Check,
+  XCircle,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -50,6 +51,10 @@ const mockReport = {
   status: "In Review",
   lastUpdated: "2024-01-20",
   progress: 60,
+  overallRating: "yellow" as const,
+  teamRating: "green" as const,
+  processRating: "yellow" as const,
+  techRating: "yellow" as const,
   timeline: {
     submitted: { date: "2024-01-15", completed: true },
     inReview: { date: "2024-01-19", completed: true },
@@ -148,6 +153,32 @@ export default function ReportDetail() {
   const handleFlagCompliance = (itemId: string) => {
     setComplianceStatuses(prev => ({ ...prev, [itemId]: 'flagged' }));
     toast({ title: "Item flagged", description: "The compliance item has been flagged for follow-up." });
+  };
+
+  const getRatingConfig = (rating: "green" | "yellow" | "red") => {
+    switch (rating) {
+      case "green":
+        return {
+          label: "On Track",
+          className: "bg-accent/20 text-accent border-accent/30",
+          icon: CheckCircle,
+          color: "text-accent"
+        };
+      case "yellow":
+        return {
+          label: "At Risk",
+          className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30",
+          icon: AlertCircle,
+          color: "text-yellow-700"
+        };
+      case "red":
+        return {
+          label: "Critical",
+          className: "bg-destructive/20 text-destructive border-destructive/30",
+          icon: XCircle,
+          color: "text-destructive"
+        };
+    }
   };
 
   return (
@@ -283,6 +314,36 @@ export default function ReportDetail() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Detailed Ratings */}
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className="text-lg">Detailed Ratings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    { label: "Team Performance", rating: mockReport.teamRating },
+                    { label: "Project Management", rating: mockReport.processRating },
+                    { label: "Technical Readiness", rating: mockReport.techRating }
+                  ].map((item) => {
+                    const config = getRatingConfig(item.rating);
+                    const Icon = config.icon;
+                    return (
+                      <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
+                        <Icon className={`h-5 w-5 ${config.color}`} />
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
+                          <Badge className={config.className} variant="outline">
+                            {config.label}
+                          </Badge>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Tabs Content */}
             <Tabs defaultValue="overview" className="mb-6">
