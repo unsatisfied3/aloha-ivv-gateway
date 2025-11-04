@@ -506,7 +506,7 @@ const VendorReportForm = () => {
                       <div className="space-y-2">
                         <Textarea
                           {...register("executiveSummary")}
-                          placeholder="Enter your executive summary here..."
+                          placeholder="Provide a comprehensive summary of the month's activities, key accomplishments, challenges, and overall project status..."
                           className="min-h-[300px]"
                         />
                         <div className="flex justify-between items-center text-sm">
@@ -560,14 +560,10 @@ const VendorReportForm = () => {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-2">
                           <Clock className="h-5 w-5 text-primary" />
-                          <Label className="text-base font-semibold">Schedule Variance</Label>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Describe schedule changes, reasons, and mitigation (e.g., testing delays, resource gaps).
-                        </p>
                         <Textarea
                           {...register("scheduleVarianceAnalysis")}
-                          placeholder="Describe schedule variances, causes, and mitigation strategies..."
+                          placeholder="📅 Schedule Variance&#10;&#10;Describe schedule changes, reasons, and mitigation (e.g., testing delays, resource gaps)."
                           className="min-h-[150px]"
                         />
                       </div>
@@ -575,14 +571,10 @@ const VendorReportForm = () => {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-2">
                           <DollarSign className="h-5 w-5 text-primary" />
-                          <Label className="text-base font-semibold">Budget Variance</Label>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Describe budget deviations (e.g., spending 10% ahead due to change request #34).
-                        </p>
                         <Textarea
                           {...register("budgetVarianceAnalysis")}
-                          placeholder="Describe budget variances, causes, and corrective actions..."
+                          placeholder="💰 Budget Variance&#10;&#10;Describe budget deviations (e.g., spending 10% ahead due to change request #34)."
                           className="min-h-[150px]"
                         />
                       </div>
