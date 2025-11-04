@@ -37,10 +37,11 @@ const reportSchema = z.object({
   reportingYear: z.string().min(1, "Year is required"),
   executiveSummary: z.string().min(10, "Executive summary must be at least 10 characters").max(5000, "Executive summary must be less than 5000 characters"),
   overallRating: z.enum(["green", "yellow", "red"], { required_error: "Please select an overall rating" }),
-  keyAchievements: z.string().optional(),
-  keyChallenges: z.string().optional(),
-  scheduleVarianceAnalysis: z.string().optional(),
-  budgetVarianceAnalysis: z.string().optional(),
+  keyAccomplishments: z.string().optional(),
+  challenges: z.string().optional(),
+  upcomingMilestones: z.string().optional(),
+  scheduleStatus: z.string().optional(),
+  budgetStatus: z.string().optional(),
   peopleRating: z.enum(["green", "yellow", "red"]).optional(),
   processRating: z.enum(["green", "yellow", "red"]).optional(),
   technologyRating: z.enum(["green", "yellow", "red"]).optional(),
@@ -111,7 +112,7 @@ const VendorReportForm = () => {
     { id: "period", label: "Project & Period" },
     { id: "summary", label: "Summary" },
     { id: "highlights", label: "Highlights" },
-    { id: "variance", label: "Variance" },
+    { id: "variance", label: "Budget & Schedule" },
     { id: "findings", label: "Findings" },
   ];
 
@@ -525,24 +526,33 @@ const VendorReportForm = () => {
                   <Card id="highlights" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Key Highlights</CardTitle>
-                      <CardDescription>Document achievements and challenges</CardDescription>
+                      <CardDescription>Document accomplishments, challenges, and upcoming milestones</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-2">
-                          <Label>Key Achievements</Label>
+                          <Label>Key Accomplishments</Label>
                           <Textarea
-                            {...register("keyAchievements")}
-                            placeholder="• Achievement 1&#10;• Achievement 2&#10;• Achievement 3"
+                            {...register("keyAccomplishments")}
+                            placeholder="• Completed Phase 1 database migration (90% of records)&#10;• Successfully deployed UAT environment&#10;• Onboarded 3 additional senior developers"
                             className="min-h-[200px]"
                           />
                         </div>
 
                         <div className="space-y-2">
-                          <Label>Key Challenges</Label>
+                          <Label>Challenges & Issues</Label>
                           <Textarea
-                            {...register("keyChallenges")}
-                            placeholder="• Challenge 1&#10;• Challenge 2&#10;• Challenge 3"
+                            {...register("challenges")}
+                            placeholder="• Delay in receiving production API credentials&#10;• Performance issues during load testing&#10;• Two key team members on medical leave"
+                            className="min-h-[200px]"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>Upcoming Milestones</Label>
+                          <Textarea
+                            {...register("upcomingMilestones")}
+                            placeholder="• Complete integration testing (May 15)&#10;• User acceptance testing sign-off (May 28)&#10;• Production deployment (June 1)"
                             className="min-h-[200px]"
                           />
                         </div>
@@ -550,40 +560,40 @@ const VendorReportForm = () => {
                     </CardContent>
                   </Card>
 
-                  {/* Variance Analysis */}
+                  {/* Budget & Schedule Status */}
                   <Card id="variance" className="bg-background scroll-mt-24">
                     <CardHeader>
-                      <CardTitle>Variance Analysis</CardTitle>
-                      <CardDescription>Explain any schedule or budget differences this period.</CardDescription>
+                      <CardTitle>Budget & Schedule Status</CardTitle>
+                      <CardDescription>Provide current status for budget and schedule</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-2">
-                          <Clock className="h-5 w-5 text-primary" />
-                          <Label className="text-base font-semibold">Schedule Variance</Label>
+                          <DollarSign className="h-5 w-5 text-primary" />
+                          <Label className="text-base font-semibold">Budget Status</Label>
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">
-                          Describe schedule changes, reasons, and mitigation (e.g., testing delays, resource gaps).
+                          Current budget utilization and any variances (e.g., "On track - 65% of allocated budget utilized")
                         </p>
                         <Textarea
-                          {...register("scheduleVarianceAnalysis")}
-                          placeholder="Describe schedule variances, causes, and mitigation strategies..."
-                          className="min-h-[150px]"
+                          {...register("budgetStatus")}
+                          placeholder="On track - 65% of allocated budget utilized"
+                          className="min-h-[100px]"
                         />
                       </div>
 
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 mb-2">
-                          <DollarSign className="h-5 w-5 text-primary" />
-                          <Label className="text-base font-semibold">Budget Variance</Label>
+                          <Clock className="h-5 w-5 text-primary" />
+                          <Label className="text-base font-semibold">Schedule Status</Label>
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">
-                          Describe budget deviations (e.g., spending 10% ahead due to change request #34).
+                          Current timeline position and any delays (e.g., "2 weeks behind original timeline due to API credential delays")
                         </p>
                         <Textarea
-                          {...register("budgetVarianceAnalysis")}
-                          placeholder="Describe budget variances, causes, and corrective actions..."
-                          className="min-h-[150px]"
+                          {...register("scheduleStatus")}
+                          placeholder="On schedule / 2 weeks behind due to..."
+                          className="min-h-[100px]"
                         />
                       </div>
                     </CardContent>
