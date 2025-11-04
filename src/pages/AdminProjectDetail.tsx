@@ -267,107 +267,79 @@ export default function AdminProjectDetail() {
             </Card>
 
             {/* Section 2: Project Snapshot */}
-            <div className="space-y-6 mb-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* Details Card */}
               <Card>
                 <CardHeader>
                   <CardTitle>Project Details</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Agency */}
-                    <div className="flex items-start gap-3">
-                      <Building2 className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground mb-1">Agency</p>
-                        <p className="font-medium text-sm">{project.sponsoringAgency}</p>
-                      </div>
+                <CardContent className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Building2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Sponsoring Agency</p>
+                      <p className="font-medium">{project.sponsoringAgency}</p>
                     </div>
-
-                    {/* Vendor */}
-                    <div className="flex items-start gap-3">
-                      <User className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground mb-1">Vendor</p>
-                        <p className="font-medium text-sm">{project.ivvVendorName}</p>
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <User className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">IV&V Vendor</p>
+                      <p className="font-medium">{project.ivvVendorName}</p>
                     </div>
-
-                    {/* Status */}
-                    <div className="flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground mb-1">Status</p>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className="inline-block">
-                                <Badge className={cn("border cursor-help text-xs", statusBadge.className)}>
-                                  <statusBadge.icon className="h-3 w-3 mr-1" />
-                                  {statusBadge.label}
-                                </Badge>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-xs p-4" side="right">
-                              <div className="space-y-2">
-                                <p className="text-sm text-muted-foreground">
-                                  {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
-                                  {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
-                                  {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
-                                </p>
-                                <div className="text-right">
-                                  <button
-                                    className="text-sm underline hover:no-underline"
-                                    onClick={() => {
-                                      document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
-                                    }}
-                                  >
-                                    View Issues
-                                  </button>
-                                </div>
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                    </div>
-
-                    {/* Start Date */}
-                    <div className="flex items-start gap-3">
-                      <Calendar className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground mb-1">Start Date</p>
-                        <p className="font-medium text-sm">{format(new Date(project.startDate), "MMM dd, yyyy")}</p>
-                      </div>
-                    </div>
-
-                    {/* Current End Date */}
-                    <div className="flex items-start gap-3">
-                      <Calendar className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground mb-1">Current End Date</p>
-                        <p className={cn("font-medium text-sm", scheduleDelayDays > 0 ? "text-red-600" : "")}>
-                          {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Calendar className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div className="space-y-1">
+                      <p className="text-sm text-muted-foreground">Project Dates</p>
+                      <p className="font-medium">
+                        Start: {format(new Date(project.startDate), "MMM dd, yyyy")}
+                      </p>
+                      <p className={cn("font-bold", scheduleDelayDays > 0 ? "text-red-600" : "text-foreground")}>
+                        Current End: {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
+                      </p>
+                      {scheduleDelayDays > 0 && (
+                        <p className="text-sm text-red-600">
+                          Delayed {Math.floor(scheduleDelayDays / 7)} weeks • <span className="line-through text-muted-foreground">{format(new Date(project.plannedEndDate), "MMMM dd, yyyy")}</span>
                         </p>
-                        {scheduleDelayDays > 0 && (
-                          <p className="text-xs text-red-600 mt-1">
-                            Delayed {Math.floor(scheduleDelayDays / 7)} weeks
-                          </p>
-                        )}
-                      </div>
+                      )}
                     </div>
-
-                    {/* Budget Used */}
-                    <div className="flex items-start gap-3">
-                      <DollarSign className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm text-muted-foreground mb-1">Budget Used</p>
-                        <p className="font-medium text-sm">{budgetUsed}%</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          ${(project.totalPaidToDate / 1000000).toFixed(2)}M of ${(project.originalContractAmount / 1000000).toFixed(2)}M
-                        </p>
-                      </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Status</p>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="inline-block mt-1">
+                              <Badge className={cn("border cursor-help", statusBadge.className)}>
+                                <statusBadge.icon className="h-3 w-3 mr-1" />
+                                {statusBadge.label}
+                              </Badge>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-xs p-4" side="right">
+                            <div className="space-y-2">
+                              <p className="text-sm text-muted-foreground">
+                                {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
+                                {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
+                                {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
+                              </p>
+                              <div className="text-right">
+                                <button
+                                  className="text-sm underline hover:no-underline"
+                                  onClick={() => {
+                                    document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
+                                  }}
+                                >
+                                  View Issues
+                                </button>
+                              </div>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                   </div>
                 </CardContent>
@@ -517,36 +489,35 @@ export default function AdminProjectDetail() {
               </Card>
             </div>
 
-              {/* Section 3: Detailed Ratings */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Detailed Ratings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[
-                      { label: "Team Performance", rating: project.teamRating },
-                      { label: "Project Management", rating: project.processRating },
-                      { label: "Technical Readiness", rating: project.techRating }
-                    ].map((item) => {
-                      const config = getStatusBadge(item.rating as string);
-                      const Icon = config.icon;
-                      return (
-                        <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
-                          <Icon className={`h-5 w-5 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                            <Badge className={config.className} variant="outline">
-                              {config.label}
-                            </Badge>
-                          </div>
+            {/* Section 3: Detailed Ratings */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Detailed Ratings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    { label: "Team Performance", rating: project.teamRating },
+                    { label: "Project Management", rating: project.processRating },
+                    { label: "Technical Readiness", rating: project.techRating }
+                  ].map((item) => {
+                    const config = getStatusBadge(item.rating as string);
+                    const Icon = config.icon;
+                    return (
+                      <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
+                        <Icon className={`h-5 w-5 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
+                          <Badge className={config.className} variant="outline">
+                            {config.label}
+                          </Badge>
                         </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
