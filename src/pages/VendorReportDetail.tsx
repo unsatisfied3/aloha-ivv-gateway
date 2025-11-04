@@ -14,6 +14,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { 
   ArrowLeft, 
   Calendar, 
@@ -218,50 +223,51 @@ const VendorReportDetail = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="mt-1">
-                        <OverallIcon className={`h-5 w-5 ${overallConfig.color}`} />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-muted-foreground">Overall Status</p>
-                        <Badge className={overallConfig.className}>
-                          {overallConfig.label}
-                        </Badge>
-                      </div>
-                    </div>
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger asChild>
+                        <div className="flex items-start gap-3 cursor-pointer">
+                          <div className="mt-1">
+                            <OverallIcon className={`h-5 w-5 ${overallConfig.color}`} />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-muted-foreground">Overall Status</p>
+                            <Badge className={overallConfig.className}>
+                              {overallConfig.label}
+                            </Badge>
+                          </div>
+                        </div>
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-[400px]" align="end">
+                        <div className="space-y-4">
+                          <h4 className="text-sm font-semibold">Detailed Ratings</h4>
+                          <div className="space-y-3">
+                            {[
+                              { label: "Team Performance", rating: report.teamRating },
+                              { label: "Project Management", rating: report.processRating },
+                              { label: "Technical Readiness", rating: report.techRating }
+                            ].map((item) => {
+                              const config = getRatingConfig(item.rating);
+                              const Icon = config.icon;
+                              return (
+                                <div key={item.label} className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <Icon className={`h-4 w-4 ${config.color}`} />
+                                    <span className="text-sm">{item.label}</span>
+                                  </div>
+                                  <Badge className={config.className} variant="outline">
+                                    {config.label}
+                                  </Badge>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Detailed Ratings */}
-              <Card className="bg-background">
-                <CardHeader>
-                  <CardTitle className="text-lg">Detailed Ratings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[
-                      { label: "Team Performance", rating: report.teamRating },
-                      { label: "Project Management", rating: report.processRating },
-                      { label: "Technical Readiness", rating: report.techRating }
-                    ].map((item) => {
-                      const config = getRatingConfig(item.rating);
-                      const Icon = config.icon;
-                      return (
-                        <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
-                          <Icon className={`h-5 w-5 ${config.color}`} />
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                            <Badge className={config.className} variant="outline">
-                              {config.label}
-                            </Badge>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
 
               {/* Tabs for detailed information */}
               <Tabs defaultValue="overview" className="w-full">
