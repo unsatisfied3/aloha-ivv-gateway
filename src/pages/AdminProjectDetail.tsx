@@ -133,16 +133,15 @@ const mockActivity = [
 ];
 
 const getStatusBadge = (status: string, includeHover: boolean = true) => {
-  const hoverClass = includeHover ? " hover:bg-green-500/30" : "";
   switch (status) {
     case "green":
-      return { label: "On Track", icon: CheckCircle, className: `bg-green-500/20 text-green-700 border-green-500/30${includeHover ? " hover:bg-green-500/30" : ""}` };
+      return { label: "On Track", icon: CheckCircle, className: `bg-green-500/20 text-green-700 border-green-500/30${includeHover ? " hover:bg-green-500/30" : " hover:bg-green-500/20"}` };
     case "yellow":
-      return { label: "At Risk", icon: AlertCircle, className: `bg-yellow-500/20 text-yellow-700 border-yellow-500/30${includeHover ? " hover:bg-yellow-500/30" : ""}` };
+      return { label: "At Risk", icon: AlertCircle, className: `bg-yellow-500/20 text-yellow-700 border-yellow-500/30${includeHover ? " hover:bg-yellow-500/30" : " hover:bg-yellow-500/20"}` };
     case "red":
-      return { label: "Critical", icon: AlertCircle, className: `bg-red-500/20 text-red-700 border-red-500/30${includeHover ? " hover:bg-red-500/30" : ""}` };
+      return { label: "Critical", icon: AlertCircle, className: `bg-red-500/20 text-red-700 border-red-500/30${includeHover ? " hover:bg-red-500/30" : " hover:bg-red-500/20"}` };
     default:
-      return { label: "Unknown", icon: AlertCircle, className: `bg-muted text-muted-foreground${includeHover ? " hover:bg-muted/80" : ""}` };
+      return { label: "Unknown", icon: AlertCircle, className: `bg-muted text-muted-foreground${includeHover ? " hover:bg-muted/80" : " hover:bg-muted"}` };
   }
 };
 
@@ -308,7 +307,7 @@ export default function AdminProjectDetail() {
                               </Badge>
                             </div>
                           </TooltipTrigger>
-                          <TooltipContent className="max-w-sm p-4" side="right">
+                          <TooltipContent className="max-w-xs p-4" side="right">
                             <div className="space-y-2">
                               <p className="text-sm text-muted-foreground">
                                 {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
