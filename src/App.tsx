@@ -19,6 +19,7 @@ import Auth from "./pages/Auth";
 import VendorDashboard from "./pages/VendorDashboard";
 import VendorReports from "./pages/VendorReports";
 import VendorReportForm from "./pages/VendorReportForm";
+import VendorReportDetail from "./pages/VendorReportDetail";
 import PublicApiInfo from "./pages/PublicApiInfo";
 import NotFound from "./pages/NotFound";
 
@@ -49,7 +50,8 @@ const App = () => (
           <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           <Route path="/vendor/reports" element={<VendorReports />} />
           <Route path="/vendor/report/new" element={<VendorReportForm />} />
-          <Route path="/vendor/report/:id" element={<VendorReportForm />} />
+          <Route path="/vendor/report/:id/edit" element={<VendorReportForm />} />
+          <Route path="/vendor/report/:id" element={<VendorReportDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

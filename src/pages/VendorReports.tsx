@@ -254,10 +254,10 @@ const VendorReports = () => {
                                   <DropdownMenuContent align="end" className="bg-background">
                                     {report.reportStatus === "draft" ? (
                                       <>
-                                        <DropdownMenuItem
+                                         <DropdownMenuItem
                                           onClick={(e) => {
                                             e.stopPropagation();
-                                            navigate(`/vendor/report/${report.id}`);
+                                            navigate(`/vendor/report/${report.id}/edit`);
                                           }}
                                         >
                                           <Edit className="mr-2 h-4 w-4" />
