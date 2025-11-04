@@ -135,13 +135,13 @@ const mockActivity = [
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "green":
-      return { label: "On Track", icon: CheckCircle, className: "bg-green-500/20 text-green-700 border-green-500/30 hover:bg-green-500/30" };
+      return { label: "On Track", icon: CheckCircle, className: "bg-green-500/20 text-green-700 border-green-500/30" };
     case "yellow":
-      return { label: "At Risk", icon: AlertCircle, className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30 hover:bg-yellow-500/30" };
+      return { label: "At Risk", icon: AlertCircle, className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30" };
     case "red":
-      return { label: "Critical", icon: AlertCircle, className: "bg-red-500/20 text-red-700 border-red-500/30 hover:bg-red-500/30" };
+      return { label: "Critical", icon: AlertCircle, className: "bg-red-500/20 text-red-700 border-red-500/30" };
     default:
-      return { label: "Unknown", icon: AlertCircle, className: "bg-muted text-muted-foreground hover:bg-muted/80" };
+      return { label: "Unknown", icon: AlertCircle, className: "bg-muted text-muted-foreground" };
   }
 };
 
@@ -307,26 +307,21 @@ export default function AdminProjectDetail() {
                               </Badge>
                             </div>
                           </TooltipTrigger>
-                          <TooltipContent className="max-w-sm p-4" side="right">
-                            <div className="space-y-3">
-                              <div>
-                                <p className="font-semibold mb-1">Status Explanation</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
-                                  {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
-                                  {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
-                                </p>
-                              </div>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="w-full"
+                          <TooltipContent className="max-w-sm p-3" side="right">
+                            <div className="flex items-center justify-between gap-4">
+                              <p className="text-sm">
+                                {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
+                                {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
+                                {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
+                              </p>
+                              <button
+                                className="text-sm underline whitespace-nowrap hover:text-primary"
                                 onClick={() => {
                                   document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
                                 }}
                               >
                                 View Issues
-                              </Button>
+                              </button>
                             </div>
                           </TooltipContent>
                         </Tooltip>
