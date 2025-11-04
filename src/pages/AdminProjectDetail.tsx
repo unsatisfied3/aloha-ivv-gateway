@@ -346,7 +346,7 @@ export default function AdminProjectDetail() {
                   
                   <div className="pt-4 mt-4 border-t">
                     <p className="text-sm font-medium text-muted-foreground mb-3">Detailed Ratings</p>
-                    <div className="space-y-2">
+                    <div className="grid grid-cols-3 gap-3">
                       {[
                         { label: "Team Performance", rating: project.teamRating },
                         { label: "Project Management", rating: project.processRating },
@@ -355,8 +355,8 @@ export default function AdminProjectDetail() {
                         const config = getStatusBadge(item.rating as string);
                         const Icon = config.icon;
                         return (
-                          <div key={item.label} className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">{item.label}</span>
+                          <div key={item.label} className="text-center">
+                            <p className="text-xs text-muted-foreground mb-1">{item.label}</p>
                             <Badge className={cn("border", config.className)} variant="outline">
                               <Icon className="h-3 w-3 mr-1" />
                               {config.label}
