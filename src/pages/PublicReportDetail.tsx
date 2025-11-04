@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Download, CheckCircle, AlertCircle, XCircle } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
-import { DetailedRatings } from "@/components/DetailedRatings";
 
 type OverallRating = "green" | "yellow" | "red";
 
@@ -260,12 +259,50 @@ const PublicReportDetail = () => {
                   </div>
                 </div>
 
-                {/* Detailed Ratings */}
-                <DetailedRatings
-                  peopleRating={report.peopleRating}
-                  processRating={report.processRating}
-                  technologyRating={report.technologyRating}
-                />
+                {/* Individual Ratings */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-lg border bg-card">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-foreground">People</h4>
+                      {(() => {
+                        const config = getRatingConfig(report.peopleRating);
+                        const Icon = config.icon;
+                        return <Icon className="h-5 w-5" style={{ color: config.color }} />;
+                      })()}
+                    </div>
+                    <Badge variant="outline" className={getRatingConfig(report.peopleRating).className}>
+                      {getRatingConfig(report.peopleRating).label}
+                    </Badge>
+                  </div>
+
+                  <div className="p-4 rounded-lg border bg-card">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-foreground">Process</h4>
+                      {(() => {
+                        const config = getRatingConfig(report.processRating);
+                        const Icon = config.icon;
+                        return <Icon className="h-5 w-5" style={{ color: config.color }} />;
+                      })()}
+                    </div>
+                    <Badge variant="outline" className={getRatingConfig(report.processRating).className}>
+                      {getRatingConfig(report.processRating).label}
+                    </Badge>
+                  </div>
+
+                  <div className="p-4 rounded-lg border bg-card">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-semibold text-foreground">Technology</h4>
+                      {(() => {
+                        const config = getRatingConfig(report.technologyRating);
+                        const Icon = config.icon;
+                        return <Icon className="h-5 w-5" style={{ color: config.color }} />;
+                      })()}
+                    </div>
+                    <Badge variant="outline" className={getRatingConfig(report.technologyRating).className}>
+                      {getRatingConfig(report.technologyRating).label}
+                    </Badge>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </section>
