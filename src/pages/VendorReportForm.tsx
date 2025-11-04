@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Save, Send, Plus, Trash2 } from "lucide-react";
+import { Save, Send, Plus, Trash2, Clock, DollarSign } from "lucide-react";
 
 const reportSchema = z.object({
   projectId: z.string().min(1, "Please select a project"),
@@ -554,11 +554,17 @@ const VendorReportForm = () => {
                   <Card id="variance" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Variance Analysis</CardTitle>
-                      <CardDescription>Analyze schedule and budget deviations</CardDescription>
+                      <CardDescription>Explain any schedule or budget differences this period.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-2">
-                        <Label>Schedule Variance Analysis</Label>
+                        <div className="flex items-center gap-2 mb-2">
+                          <Clock className="h-5 w-5 text-primary" />
+                          <Label className="text-base font-semibold">Schedule Variance</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Describe schedule changes, reasons, and mitigation (e.g., testing delays, resource gaps).
+                        </p>
                         <Textarea
                           {...register("scheduleVarianceAnalysis")}
                           placeholder="Describe schedule variances, causes, and mitigation strategies..."
@@ -567,7 +573,13 @@ const VendorReportForm = () => {
                       </div>
 
                       <div className="space-y-2">
-                        <Label>Budget Variance Analysis</Label>
+                        <div className="flex items-center gap-2 mb-2">
+                          <DollarSign className="h-5 w-5 text-primary" />
+                          <Label className="text-base font-semibold">Budget Variance</Label>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Describe budget deviations (e.g., spending 10% ahead due to change request #34).
+                        </p>
                         <Textarea
                           {...register("budgetVarianceAnalysis")}
                           placeholder="Describe budget variances, causes, and corrective actions..."
