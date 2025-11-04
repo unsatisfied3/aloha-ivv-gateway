@@ -15,6 +15,12 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   Table,
   TableBody,
   TableCell,
@@ -277,15 +283,13 @@ export default function AdminProjectDetail() {
                       <p className="font-medium">
                         Start: {format(new Date(project.startDate), "MMM dd, yyyy")}
                       </p>
-                      <p className={cn("font-medium", scheduleDelayDays > 0 && "text-red-600")}>
+                      <p className={cn("font-bold", scheduleDelayDays > 0 ? "text-red-600" : "text-foreground")}>
                         Current End: {format(new Date(project.currentProjectedEndDate), "MMM dd, yyyy")}
                       </p>
                       {scheduleDelayDays > 0 && (
-                        <div className="mt-1">
-                          <Badge className="text-xs bg-red-500/20 text-red-700 border-red-500/30">
-                            Delayed +{Math.floor(scheduleDelayDays / 7)} weeks
-                          </Badge>
-                        </div>
+                        <p className="text-sm text-red-600">
+                          Delayed {Math.floor(scheduleDelayDays / 7)} weeks • <span className="line-through text-muted-foreground">{format(new Date(project.plannedEndDate), "MMMM dd, yyyy")}</span>
+                        </p>
                       )}
                     </div>
                   </div>
@@ -293,10 +297,38 @@ export default function AdminProjectDetail() {
                     <AlertCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-sm text-muted-foreground">Status</p>
-                      <Badge className={cn("border mt-1", statusBadge.className)}>
-                        <statusBadge.icon className="h-3 w-3 mr-1" />
-                        {statusBadge.label}
-                      </Badge>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Badge className={cn("border mt-1 cursor-help", statusBadge.className)}>
+                              <statusBadge.icon className="h-3 w-3 mr-1" />
+                              {statusBadge.label}
+                            </Badge>
+                          </TooltipTrigger>
+                          <TooltipContent className="max-w-sm p-4" side="right">
+                            <div className="space-y-3">
+                              <div>
+                                <p className="font-semibold mb-1">Status Explanation</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
+                                  {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
+                                  {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
+                                </p>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="w-full"
+                                onClick={() => {
+                                  document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
+                                }}
+                              >
+                                View Issues
+                              </Button>
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                   </div>
                 </CardContent>
@@ -509,7 +541,7 @@ export default function AdminProjectDetail() {
             </Card>
 
             {/* Section 5: Risk Findings - Tasks Table */}
-            <Card className="mb-8">
+            <Card className="mb-8" id="risk-findings">
               <CardHeader>
                 <CardTitle>Risk Findings & Tasks</CardTitle>
                 <CardDescription>Action items and issues requiring attention</CardDescription>
