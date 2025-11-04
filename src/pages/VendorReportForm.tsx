@@ -368,10 +368,7 @@ const VendorReportForm = () => {
                         )}
                       </div>
 
-                      <div className="space-y-4 pt-6 border-t">
-                        <div>
-                          <Label className="text-base">Detailed Ratings</Label>
-                        </div>
+                      <div className="space-y-4 pt-6">
 
                         {/* Team Performance Rating */}
                         <div className="space-y-2">
@@ -381,9 +378,6 @@ const VendorReportForm = () => {
                               <span className="text-accent text-sm">✓</span>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            Evaluate staffing, communication, and skill adequacy
-                          </p>
                           <div className="flex gap-2">
                             {["green", "yellow", "red"].map((rating) => (
                               <button
@@ -421,9 +415,6 @@ const VendorReportForm = () => {
                               <span className="text-accent text-sm">✓</span>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            Assess organization, communication, and schedule control
-                          </p>
                           <div className="flex gap-2">
                             {["green", "yellow", "red"].map((rating) => (
                               <button
@@ -461,9 +452,6 @@ const VendorReportForm = () => {
                               <span className="text-accent text-sm">✓</span>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            Assess system stability, implementation readiness, and architecture
-                          </p>
                           <div className="flex gap-2">
                             {["green", "yellow", "red"].map((rating) => (
                               <button
@@ -500,9 +488,6 @@ const VendorReportForm = () => {
                   <Card id="summary" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Executive Summary</CardTitle>
-                      <CardDescription>
-                        Provide a comprehensive summary of the month's activities (max 5,000 characters)
-                      </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
@@ -527,7 +512,6 @@ const VendorReportForm = () => {
                   <Card id="highlights" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Key Highlights</CardTitle>
-                      <CardDescription>Document accomplishments, challenges, and upcoming milestones</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 gap-6">
@@ -535,7 +519,7 @@ const VendorReportForm = () => {
                           <Label>Key Accomplishments</Label>
                           <Textarea
                             {...register("keyAccomplishments")}
-                            placeholder="• Completed Phase 1 database migration (90% of records)&#10;• Successfully deployed UAT environment&#10;• Onboarded 3 additional senior developers"
+                            placeholder=""
                             className="min-h-[200px]"
                           />
                         </div>
@@ -544,7 +528,7 @@ const VendorReportForm = () => {
                           <Label>Challenges & Issues</Label>
                           <Textarea
                             {...register("challenges")}
-                            placeholder="• Delay in receiving production API credentials&#10;• Performance issues during load testing&#10;• Two key team members on medical leave"
+                            placeholder=""
                             className="min-h-[200px]"
                           />
                         </div>
@@ -553,7 +537,7 @@ const VendorReportForm = () => {
                           <Label>Upcoming Milestones</Label>
                           <Textarea
                             {...register("upcomingMilestones")}
-                            placeholder="• Complete integration testing (May 15)&#10;• User acceptance testing sign-off (May 28)&#10;• Production deployment (June 1)"
+                            placeholder=""
                             className="min-h-[200px]"
                           />
                         </div>
@@ -565,7 +549,6 @@ const VendorReportForm = () => {
                   <Card id="variance" className="bg-background scroll-mt-24">
                     <CardHeader>
                       <CardTitle>Budget & Schedule Status</CardTitle>
-                      <CardDescription>Provide current status for budget and schedule</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-2">
@@ -573,12 +556,9 @@ const VendorReportForm = () => {
                           <DollarSign className="h-5 w-5 text-primary" />
                           <Label className="text-base font-semibold">Budget Status</Label>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Current budget utilization and any variances (e.g., "On track - 65% of allocated budget utilized")
-                        </p>
                         <Textarea
                           {...register("budgetStatus")}
-                          placeholder="On track - 65% of allocated budget utilized"
+                          placeholder=""
                           className="min-h-[100px]"
                         />
                       </div>
@@ -588,24 +568,18 @@ const VendorReportForm = () => {
                           <Clock className="h-5 w-5 text-primary" />
                           <Label className="text-base font-semibold">Schedule Status</Label>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Current timeline position and any delays (e.g., "2 weeks behind original timeline due to API credential delays")
-                        </p>
                         <Textarea
                           {...register("scheduleStatus")}
-                          placeholder="On schedule / 2 weeks behind due to..."
+                          placeholder=""
                           className="min-h-[100px]"
                         />
                       </div>
 
                       <div className="space-y-2">
                         <Label className="text-base font-semibold">Risk Summary</Label>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          Summarize key risks and mitigation strategies (e.g., "Medium risk: API integration delays. Mitigation: Added DevOps resource")
-                        </p>
                         <Textarea
                           {...register("riskSummary")}
-                          placeholder="Medium risk: API integration delays and performance optimization needed. Mitigation: Added specialized DevOps resource and extended testing phase."
+                          placeholder=""
                           className="min-h-[100px]"
                         />
                       </div>
@@ -618,7 +592,6 @@ const VendorReportForm = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <CardTitle>Report Findings</CardTitle>
-                          <CardDescription>Add risks and issues identified this month</CardDescription>
                         </div>
                         <Dialog open={findingDialogOpen} onOpenChange={setFindingDialogOpen}>
                           <DialogTrigger asChild>
