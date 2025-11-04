@@ -300,10 +300,12 @@ export default function AdminProjectDetail() {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <Badge className={cn("border mt-1 cursor-help", statusBadge.className)}>
-                              <statusBadge.icon className="h-3 w-3 mr-1" />
-                              {statusBadge.label}
-                            </Badge>
+                            <div className="inline-block mt-1">
+                              <Badge className={cn("border cursor-help", statusBadge.className)}>
+                                <statusBadge.icon className="h-3 w-3 mr-1" />
+                                {statusBadge.label}
+                              </Badge>
+                            </div>
                           </TooltipTrigger>
                           <TooltipContent className="max-w-sm p-4" side="right">
                             <div className="space-y-3">
