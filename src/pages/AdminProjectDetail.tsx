@@ -132,16 +132,17 @@ const mockActivity = [
   { id: 4, event: "Finding Closed", description: "Risk issue #12 resolved and verified", timestamp: "2025-04-25T09:20:00" },
 ];
 
-const getStatusBadge = (status: string) => {
+const getStatusBadge = (status: string, includeHover: boolean = true) => {
+  const hoverClass = includeHover ? " hover:bg-green-500/30" : "";
   switch (status) {
     case "green":
-      return { label: "On Track", icon: CheckCircle, className: "bg-green-500/20 text-green-700 border-green-500/30 hover:bg-green-500/30" };
+      return { label: "On Track", icon: CheckCircle, className: `bg-green-500/20 text-green-700 border-green-500/30${includeHover ? " hover:bg-green-500/30" : ""}` };
     case "yellow":
-      return { label: "At Risk", icon: AlertCircle, className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30 hover:bg-yellow-500/30" };
+      return { label: "At Risk", icon: AlertCircle, className: `bg-yellow-500/20 text-yellow-700 border-yellow-500/30${includeHover ? " hover:bg-yellow-500/30" : ""}` };
     case "red":
-      return { label: "Critical", icon: AlertCircle, className: "bg-red-500/20 text-red-700 border-red-500/30 hover:bg-red-500/30" };
+      return { label: "Critical", icon: AlertCircle, className: `bg-red-500/20 text-red-700 border-red-500/30${includeHover ? " hover:bg-red-500/30" : ""}` };
     default:
-      return { label: "Unknown", icon: AlertCircle, className: "bg-muted text-muted-foreground hover:bg-muted/80" };
+      return { label: "Unknown", icon: AlertCircle, className: `bg-muted text-muted-foreground${includeHover ? " hover:bg-muted/80" : ""}` };
   }
 };
 
@@ -308,25 +309,22 @@ export default function AdminProjectDetail() {
                             </div>
                           </TooltipTrigger>
                           <TooltipContent className="max-w-sm p-4" side="right">
-                            <div className="space-y-3">
-                              <div>
-                                <p className="font-semibold mb-1">Status Explanation</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
-                                  {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
-                                  {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
-                                </p>
+                            <div className="space-y-2">
+                              <p className="text-sm text-muted-foreground">
+                                {project.overallProjectStatus === "green" && "Project is progressing as planned with no major issues or delays."}
+                                {project.overallProjectStatus === "yellow" && "Project has some risks or minor delays that need attention but is generally on track."}
+                                {project.overallProjectStatus === "red" && "Project has critical issues, significant delays, or major risks requiring immediate action."}
+                              </p>
+                              <div className="text-right">
+                                <button
+                                  className="text-sm underline hover:no-underline"
+                                  onClick={() => {
+                                    document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
+                                  }}
+                                >
+                                  View Issues
+                                </button>
                               </div>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="w-full"
-                                onClick={() => {
-                                  document.getElementById('risk-findings')?.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                              >
-                                View Issues
-                              </Button>
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -502,7 +500,7 @@ export default function AdminProjectDetail() {
                       </TableHeader>
                       <TableBody>
                         {projectReports.map((report) => {
-                          const ratingBadge = getStatusBadge(report.overallRating);
+                          const ratingBadge = getStatusBadge(report.overallRating, false);
                           return (
                             <TableRow key={report.id}>
                               <TableCell className="font-medium">{report.reportingPeriod}</TableCell>
@@ -562,7 +560,7 @@ export default function AdminProjectDetail() {
                     </TableHeader>
                     <TableBody>
                       {mockTasks.map((task) => {
-                        const riskBadge = getStatusBadge(task.riskFactor);
+                        const riskBadge = getStatusBadge(task.riskFactor, false);
                         return (
                           <TableRow key={task.id}>
                             <TableCell className="font-medium">{task.task}</TableCell>
