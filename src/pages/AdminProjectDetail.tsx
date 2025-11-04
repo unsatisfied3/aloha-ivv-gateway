@@ -355,7 +355,7 @@ export default function AdminProjectDetail() {
                         const config = getStatusBadge(item.rating as string);
                         const Icon = config.icon;
                         return (
-                          <div key={item.label} className="text-center">
+                          <div key={item.label}>
                             <p className="text-xs text-muted-foreground mb-1">{item.label}</p>
                             <Badge className={cn("border", config.className)} variant="outline">
                               <Icon className="h-3 w-3 mr-1" />
