@@ -135,13 +135,13 @@ const mockActivity = [
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "green":
-      return { label: "On Track", icon: CheckCircle, className: "bg-green-500/20 text-green-700 border-green-500/30" };
+      return { label: "On Track", icon: CheckCircle, className: "bg-green-500/20 text-green-700 border-green-500/30 hover:bg-green-500/30" };
     case "yellow":
-      return { label: "At Risk", icon: AlertCircle, className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30" };
+      return { label: "At Risk", icon: AlertCircle, className: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30 hover:bg-yellow-500/30" };
     case "red":
-      return { label: "Critical", icon: AlertCircle, className: "bg-red-500/20 text-red-700 border-red-500/30" };
+      return { label: "Critical", icon: AlertCircle, className: "bg-red-500/20 text-red-700 border-red-500/30 hover:bg-red-500/30" };
     default:
-      return { label: "Unknown", icon: AlertCircle, className: "bg-muted text-muted-foreground" };
+      return { label: "Unknown", icon: AlertCircle, className: "bg-muted text-muted-foreground hover:bg-muted/80" };
   }
 };
 
