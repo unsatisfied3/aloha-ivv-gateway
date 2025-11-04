@@ -315,36 +315,6 @@ export default function ReportDetail() {
               </Card>
             </div>
 
-            {/* Detailed Ratings */}
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">Detailed Ratings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {[
-                    { label: "Team Performance", rating: mockReport.teamRating },
-                    { label: "Project Management", rating: mockReport.processRating },
-                    { label: "Technical Readiness", rating: mockReport.techRating }
-                  ].map((item) => {
-                    const config = getRatingConfig(item.rating);
-                    const Icon = config.icon;
-                    return (
-                      <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
-                        <Icon className={`h-5 w-5 ${config.color}`} />
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                          <Badge className={config.className} variant="outline">
-                            {config.label}
-                          </Badge>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Tabs Content */}
             <Tabs defaultValue="overview" className="mb-6">
               <TabsList>

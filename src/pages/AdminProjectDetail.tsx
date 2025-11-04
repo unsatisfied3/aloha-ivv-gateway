@@ -59,6 +59,9 @@ const mockProjects = [
     plannedEndDate: "2025-07-31",
     currentProjectedEndDate: "2025-10-15",
     description: "Comprehensive modernization of the state's health information systems to improve patient care coordination, enable real-time data sharing between healthcare providers, and streamline administrative processes. This multi-phase project includes system integration, data migration, and staff training components.",
+    teamRating: "green",
+    processRating: "yellow",
+    techRating: "yellow",
   },
   {
     id: "2",
@@ -73,6 +76,9 @@ const mockProjects = [
     plannedEndDate: "2025-08-15",
     currentProjectedEndDate: "2025-08-15",
     description: "Implementation of a modern student information system to centralize student records, attendance tracking, and academic performance monitoring across all public schools in the state.",
+    teamRating: "green",
+    processRating: "green",
+    techRating: "green",
   },
   {
     id: "3",
@@ -87,6 +93,9 @@ const mockProjects = [
     plannedEndDate: "2025-06-30",
     currentProjectedEndDate: "2025-06-30",
     description: "Development and deployment of an integrated fleet management platform for tracking vehicle maintenance, fuel consumption, and route optimization across all state-owned vehicles.",
+    teamRating: "green",
+    processRating: "green",
+    techRating: "yellow",
   },
   {
     id: "4",
@@ -101,6 +110,9 @@ const mockProjects = [
     plannedEndDate: "2025-12-31",
     currentProjectedEndDate: "2026-03-15",
     description: "Creation of a secure online portal for tax filing, payment processing, and account management. The system will modernize the state's tax collection infrastructure and improve taxpayer services.",
+    teamRating: "red",
+    processRating: "red",
+    techRating: "yellow",
   },
 ];
 
@@ -476,6 +488,36 @@ export default function AdminProjectDetail() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Section 3: Detailed Ratings */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Detailed Ratings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    { label: "Team Performance", rating: project.teamRating },
+                    { label: "Project Management", rating: project.processRating },
+                    { label: "Technical Readiness", rating: project.techRating }
+                  ].map((item) => {
+                    const config = getStatusBadge(item.rating as string);
+                    const Icon = config.icon;
+                    return (
+                      <div key={item.label} className="flex items-center gap-3 p-4 border rounded-lg">
+                        <Icon className={`h-5 w-5 ${item.rating === "green" ? "text-green-700" : item.rating === "yellow" ? "text-yellow-700" : "text-red-700"}`} />
+                        <div>
+                          <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
+                          <Badge className={config.className} variant="outline">
+                            {config.label}
+                          </Badge>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Section 4: Reports for This Project */}
             <Card className="mb-8">
