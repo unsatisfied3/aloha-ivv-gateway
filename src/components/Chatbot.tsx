@@ -3,13 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, X, Send } from "lucide-react";
+import { X, Send } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import lokahiAvatar from "@/assets/lokahi-avatar.png";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
+
+const SAMPLE_QUESTIONS = [
+  "What is Lokahi?",
+  "How do I submit a report?",
+  "What are the different project ratings?",
+  "How can I view public reports?",
+];
 
 export const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -132,10 +140,14 @@ export const Chatbot = () => {
       {/* Floating button */}
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 p-0 overflow-hidden"
         size="icon"
       >
-        {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+        {isOpen ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <img src={lokahiAvatar} alt="Lokahi" className="h-full w-full object-cover" />
+        )}
       </Button>
 
       {/* Chat window */}
@@ -151,8 +163,28 @@ export const Chatbot = () => {
           <ScrollArea className="flex-1 p-4" ref={scrollRef}>
             <div className="space-y-4">
               {messages.length === 0 && (
-                <div className="text-center text-muted-foreground text-sm py-8">
-                  Start a conversation by typing a message below.
+                <div className="space-y-4 py-4">
+                  <div className="flex justify-center mb-4">
+                    <img src={lokahiAvatar} alt="Lokahi" className="h-20 w-20 object-contain" />
+                  </div>
+                  <p className="text-center text-muted-foreground text-sm mb-4">
+                    Hi! I'm Lokahi. How can I help you today?
+                  </p>
+                  <div className="space-y-2">
+                    {SAMPLE_QUESTIONS.map((question, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                        className="w-full justify-start text-left h-auto py-3 px-4"
+                        onClick={() => {
+                          setInput(question);
+                          streamChat(question);
+                        }}
+                      >
+                        {question}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               )}
               {messages.map((message, index) => (
